@@ -15,6 +15,7 @@ typedef struct Polygon {
 
 typedef struct Mesh {
     Polygon *polygons;
+    int count_polygons;
 } Mesh;
 
 

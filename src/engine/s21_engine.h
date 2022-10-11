@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "s21_mesh.h"
+
+enum { OK, ERROR, MALLOC_ERROR };
 
 #endif  // SRC_ENGINE_S21_ENGINE_H
