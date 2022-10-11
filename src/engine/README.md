@@ -1,3 +1,8 @@
+from TheDolaxom aka @merlinst (slack) 
+
+for vvoidcat aka @fleurdel
+
+---
 # screen.c
 ## void render_tris(Mesh mesh)
 We use **for** loop instead of:
@@ -17,3 +22,4 @@ We use **for** loop instead of:
          glVertex3f(mesh.polygons[1].points[1].x, mesh.polygons[1].points[1].z, mesh.polygons[1].points[1].y);
          glVertex3f(mesh.polygons[1].points[2].x, mesh.polygons[1].points[2].z, mesh.polygons[1].points[2].y);
     glEnd();
+    
