@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-enum { OK, ERROR, MALLOC_ERROR };
+#define MALLOC_ERROR 5
+
+typedef struct Vec3D {
+    float x;
+    float y;
+    float z;
+} vec3D;
 
 #endif  // SRC_ENGINE_S21_ENGINE_H

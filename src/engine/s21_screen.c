@@ -1,5 +1,21 @@
 #include "s21_screen.h"
 
+// int main() {
+//     Mesh mesh = plane();
+//     mesh.count_polygons = 2;
+//     vec3D size = {0.5, 0.5, 0.5};
+//     s21_scale(&mesh, size);
+//     // s21_calc_scale_matrix(&mesh.polygons[0].points[0], size);
+
+//     // printf("%f %f %f\n", mesh.polygons[0].points[0].x, mesh.polygons[0].points[0].y, mesh.polygons[0].points[0].z);
+//     // printf("%f %f %f\n", mesh.polygons[0].points[1].x, mesh.polygons[0].points[1].y, mesh.polygons[0].points[1].z);
+//     // printf("%f %f %f\n", mesh.polygons[0].points[2].x, mesh.polygons[0].points[2].y, mesh.polygons[0].points[2].z);
+    
+
+//     free(mesh.polygons);
+// }
+
+
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -15,7 +31,10 @@ int main(int argc, char **argv) {
 
 void display() {
     Mesh mesh = plane();
+    vec3D size = {0.5, 0.5, 0.5};
     mesh.count_polygons = 2;
+    s21_scale(&mesh, size);
+    printf("%f %f %f\n", mesh.polygons[0].points[0].x, mesh.polygons[0].points[0].y, mesh.polygons[0].points[0].z);
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

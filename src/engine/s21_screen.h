@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 #include "s21_engine.h"
 #include "s21_mesh.h"
+#include "math/s21_matrix.h"
 
 void display();
 void render_tris(Mesh mesh);

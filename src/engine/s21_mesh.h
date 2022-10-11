@@ -3,12 +3,6 @@
 
 #include "s21_engine.h"
 
-typedef struct Vec3D {
-    float x;
-    float y;
-    float z;
-} vec3D;
-
 typedef struct Polygon {
     vec3D points[3];
 } Polygon;

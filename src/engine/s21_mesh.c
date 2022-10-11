@@ -4,10 +4,10 @@ Mesh plane() {
     Mesh plane;
     plane.polygons = malloc(2 * sizeof(Polygon));
     if (plane.polygons == NULL) {
-        exit(1);    
+        exit(MALLOC_ERROR);    
     }
 
-    vec3D points[4] = { {-0.5, 0, 0.5}, {0.5, 0, 0.5}, {-0.5, 0, -0.5}, {0.5, 0, -0.5} };
+    vec3D points[4] = { {-1, 0, 1}, {1, 0, 1}, {-1, 0, -1}, {1, 0, -1} };
 
     plane.polygons[0].points[0] = points[1];
     plane.polygons[0].points[1] = points[3];
