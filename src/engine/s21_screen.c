@@ -1,5 +1,5 @@
 #include "s21_screen.h"
-
+#include <unistd.h>
 // int main() {
 //     Mesh mesh = plane();
 //     mesh.count_polygons = 2;
@@ -29,11 +29,18 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+float move = 0.0;
 void display() {
-    Mesh mesh = plane();
+    Mesh mesh = cube();
     vec3D size = {0.5, 0.5, 0.5};
-    mesh.count_polygons = 2;
+    mesh.count_polygons = 12;
     s21_scale(&mesh, size);
+    s21_rotation_x(&mesh, 0.1);
+    s21_rotation_y(&mesh, move);
+    move += 0.01;
+    usleep(10000);
+    // s21_rotation_x(&mesh, 0.1);
+    // s21_rotation_z(&mesh, 0.1);
     printf("%f %f %f\n", mesh.polygons[0].points[0].x, mesh.polygons[0].points[0].y, mesh.polygons[0].points[0].z);
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -49,7 +56,7 @@ void display() {
     render_tris(mesh);
 
     glutSwapBuffers();
-
+    glutPostRedisplay();
     free(mesh.polygons);
 }
 
@@ -58,7 +65,7 @@ void render_tris(Mesh mesh) {
         glBegin(GL_TRIANGLES);
         for (int point = 0; point < 3; point++) {
             glColor3f(0, 0, 0);
-            glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].z, mesh.polygons[polygon].points[point].y);
+            glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].y, mesh.polygons[polygon].points[point].z);
         }
         glEnd();
     }

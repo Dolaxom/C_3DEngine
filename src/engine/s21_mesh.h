@@ -14,5 +14,6 @@ typedef struct Mesh {
 
 
 Mesh plane();
+Mesh cube();
 
 #endif  // SRC_S21_CALCULATOR_H_
