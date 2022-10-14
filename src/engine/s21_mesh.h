@@ -5,6 +5,7 @@
 
 typedef struct Polygon {
     vec3D points[3];
+    int count_points;
 } Polygon;
 
 typedef struct Mesh {
@@ -12,6 +13,7 @@ typedef struct Mesh {
     int count_polygons;
 } Mesh;
 
+int mesh_info(Mesh mesh);
 
 Mesh plane();
 Mesh cube();

@@ -39,22 +39,6 @@ int s21_determinant(matrix_t *A, double *result);
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result);
 
-int s21_scale_matrix(vec3D size_vector, matrix_t *result);
-int s21_calc_scale_matrix(vec3D *point, vec3D size_vector);
-int s21_scale(Mesh *mesh, vec3D size_vector);
-
-int s21_rotation_matrix_y(float rot, matrix_t *result);
-int s21_calc_rotation_matrix_y(vec3D *point, float rot);
-int s21_rotation_y(Mesh *mesh, float rot);
-
-int s21_rotation_matrix_z(float rot, matrix_t *result);
-int s21_calc_rotation_matrix_z(vec3D *point, float rot);
-int s21_rotation_z(Mesh *mesh, float rot);
-
-int s21_rotation_matrix_x(float rot, matrix_t *result);
-int s21_calc_rotation_matrix_x(vec3D *point, float rot);
-int s21_rotation_x(Mesh *mesh, float rot);
-
 // helpers
 int s21_init_matrix(int rows, int columns, matrix_t *result);
 // void s21_output_matrix(const matrix_t result);
