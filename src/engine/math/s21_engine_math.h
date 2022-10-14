@@ -1,6 +1,6 @@
 #include "s21_matrix_based.h"
 
-float to_radians(float degree);
+float s21_to_radians(float degree);
 
 int s21_scale_matrix(vec3D size_vector, matrix_t *result);
 int s21_calc_scale_matrix(vec3D *point, vec3D size_vector);

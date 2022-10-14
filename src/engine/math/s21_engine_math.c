@@ -1,6 +1,6 @@
 #include "s21_engine_math.h"
 
-float to_radians(float degree) {
+float s21_to_radians(float degree) {
     return degree * 3.141593 / 180;
 }
 
