@@ -13,7 +13,7 @@ typedef struct Mesh {
     int count_polygons;
 } Mesh;
 
-int mesh_info(Mesh mesh);
+int s21_mesh_info(Mesh mesh);
 
 Mesh plane();
 Mesh cube();

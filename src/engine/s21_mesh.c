@@ -1,9 +1,12 @@
 #include "s21_mesh.h"
 
-int mesh_info(Mesh mesh) {
+int s21_mesh_info(Mesh mesh) {
     printf("Mesh info:\n");
     printf("Importing from: Blender\nCount of polygons: %d\nCount of points: %d\n", mesh.count_polygons, mesh.polygons->count_points);
-
+    printf("polygon1: x%f y%f z%f\n", mesh.polygons[0].points[0].x, mesh.polygons[0].points[0].y, mesh.polygons[0].points[0].z);
+    printf("polygon2: x%f y%f z%f\n", mesh.polygons[1].points[0].x, mesh.polygons[1].points[0].y, mesh.polygons[1].points[0].z);
+    printf("\e[H\e[2J\e[3J");
+    
     return mesh.count_polygons;
 }
 
