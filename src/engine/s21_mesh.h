@@ -1,6 +1,7 @@
 #ifndef SRC_S21_MESH_H_
 #define SRC_S21_MESH_H_
 
+#include <string.h>
 #include "s21_engine.h"
 
 typedef struct Polygon {
@@ -17,5 +18,7 @@ int s21_mesh_info(Mesh mesh);
 
 Mesh plane();
 Mesh cube();
+
+Mesh mesh_main();
 
 #endif  // SRC_S21_CALCULATOR_H_
