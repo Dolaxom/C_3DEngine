@@ -13,4 +13,6 @@ void s21_setup_settings();
 void s21_test_transform(Mesh mesh, float move);
 float move = 0.0;
 
+Mesh mesh;
+
 #endif  // SRC_ENGINE_S21_SCREEN_H
