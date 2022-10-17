@@ -12,15 +12,16 @@ int main(int argc, char **argv) {
 }
 
 void display() {
-    Mesh mesh = cube();
-    mesh.count_polygons = 12;
-    mesh.polygons->count_points = 8;
-    move += 0.01;
-    usleep(10000);
-    s21_mesh_info(mesh);
+    mesh = mesh_main();
+    // mesh.count_polygons = 20;
     
-    s21_test_transform(mesh, move);
-
+    move += 0.01;
+    // usleep(10000);
+    s21_mesh_info(mesh);
+    vec3D size = {0.5, 0.5, 0.5};
+    s21_scale(&mesh, size);
+    // s21_test_transform(mesh, move);
+    
     glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBlendFunc(GL_ONE, GL_ZERO);
@@ -37,7 +38,7 @@ void display() {
     s21_render_tris(mesh);
 
     glutSwapBuffers();
-    glutPostRedisplay();
+    // glutPostRedisplay();
     free(mesh.polygons);
 }
 
@@ -47,8 +48,12 @@ void s21_render_tris(Mesh mesh) {
         for (int point = 0; point < 3; point++) {
             glColor3f(0, 0, 0);
             glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].y, mesh.polygons[polygon].points[point].z);
+            printf("polygon%d point%d.x = %f\n", polygon, point, mesh.polygons[polygon].points[point].x);
+            printf("polygon%d point%d.y = %f\n", polygon, point, mesh.polygons[polygon].points[point].y);
+            printf("polygon%d point%d.z = %f\n", polygon, point, mesh.polygons[polygon].points[point].z);
         }
         glEnd();
+        printf("\n");
     }
 }
 
@@ -61,11 +66,11 @@ void s21_setup_settings() {
 
 void s21_test_transform(Mesh mesh, float move) {
     vec3D size = {0.5, 0.5, 0.5};
-    vec3D translate = {0.0, 0.0, -2.0};
+    vec3D translate = {0.0, 0.0, -5.0};
     s21_rotation_x(&mesh, move);
     s21_rotation_y(&mesh, move);
     s21_translate(&mesh, translate);
-    s21_rotation_z(&mesh, move);
+    // s21_rotation_z(&mesh, move);
     s21_projection(&mesh, 1.77777, s21_to_radians(45), 3000, 0.0);
     s21_scale(&mesh, size);
 }
