@@ -18,6 +18,7 @@ int s21_mesh_info(Mesh mesh);
 
 Mesh plane();
 Mesh cube();
+Mesh cube_many_polygons();
 
 Mesh mesh_main();
 

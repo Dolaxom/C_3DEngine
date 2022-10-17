@@ -3,17 +3,15 @@
 int s21_mesh_info(Mesh mesh) {
     printf("Mesh info:\n");
     printf("Importing from: Blender\nCount of polygons: %d\nCount of points: %d\n", mesh.count_polygons, mesh.polygons->count_points);
-    printf("polygon1: x%f y%f z%f\n", mesh.polygons[0].points[0].x, mesh.polygons[0].points[0].y, mesh.polygons[0].points[0].z);
-    printf("polygon2: x%f y%f z%f\n", mesh.polygons[1].points[0].x, mesh.polygons[1].points[0].y, mesh.polygons[1].points[0].z);
-    printf("\e[H\e[2J\e[3J");
+
+    // printf("\e[H\e[2J\e[3J");
     
     return mesh.count_polygons;
 }
 
 
 Mesh mesh_main() {
-    char path_to_obj_file[128] = "../materials/raw/cube.obj";
-    // scanf("%s", path_to_obj_file);
+    char path_to_obj_file[128] = "../materials/raw/monkey.obj";
 
     Mesh object;
     object.polygons = malloc(sizeof(Polygon));
@@ -39,6 +37,9 @@ Mesh mesh_main() {
             memset(coordinate_x, 0, 12);
             memset(coordinate_y, 0, 12);
             memset(coordinate_z, 0, 12);
+            memset(point_1, 0, 12);
+            memset(point_2, 0, 12);
+            memset(point_3, 0, 12);
             if (str_from_file[0] == 'v') {
                 size_points++;
                 size_t i = 0;
@@ -83,7 +84,6 @@ Mesh mesh_main() {
                 tmp_array_of_points[size_points - 1].y = tmp_y;
                 tmp_array_of_points[size_points - 1].z = tmp_z;
             } else if (str_from_file[0] == 'f') {
-                printf("\nFIND\n");
                 size_t i = 0;
                 size_polygons++;
                 // parse point_1
@@ -118,21 +118,29 @@ Mesh mesh_main() {
                 }
                 id = 0;
 
-                int index_1 = atoi(point_1) - 1;
-                int index_2 = atoi(point_2) - 1;
-                int index_3 = atoi(point_3) - 1;
-                
+                int index_1 = atoi(point_1);
+                int index_2 = atoi(point_2);
+                int index_3 = atoi(point_3);
+                printf("\nARRAY OF POLYGONS:\n");
+                printf("f %d %d %d\n", index_1, index_2, index_3);
                 object.polygons = realloc(object.polygons, size_polygons * sizeof(Polygon));
-                object.polygons[size_polygons - 1].points[0] = tmp_array_of_points[index_1];
-                object.polygons[size_polygons - 1].points[1] = tmp_array_of_points[index_2];
-                object.polygons[size_polygons - 1].points[2] = tmp_array_of_points[index_3];
+                object.polygons[size_polygons - 1].points[0] = tmp_array_of_points[index_1 - 1];
+                object.polygons[size_polygons - 1].points[1] = tmp_array_of_points[index_2 - 1];
+                object.polygons[size_polygons - 1].points[2] = tmp_array_of_points[index_3 - 1];
             }
         }
     } else {
         printf("\nPIDORAS\n");
     }
+    object.polygons->count_points = size_points;
     object.count_polygons = size_polygons;
+    printf("\nARRAY OF POINTS:\n");
+    for (int i = 0; i < size_points; i++) {
+        printf("v %f %f %f\n", tmp_array_of_points[i].x, tmp_array_of_points[i].y, tmp_array_of_points[i].z);
+    }
+    printf("\n");
     free(tmp_array_of_points);
+
     return object;
 }
 
@@ -209,6 +217,95 @@ Mesh cube() {
     cube.polygons[11].points[0] = points[4];
     cube.polygons[11].points[1] = points[0];
     cube.polygons[11].points[2] = points[1];
+
+    return cube;
+}
+
+Mesh cube_many_polygons() {
+    Mesh cube;
+    cube.polygons = malloc(20 * sizeof(Polygon));
+
+    vec3D points[12] = { {-1, 1, -1}, {1, 1, 1}, {1, 1, -1}, {-1, -1, 1}, {1, -1, 1}, {-1, 1, 1}, {-1, -1, -1}, {1, -1, -1}, {-1, 0, 0}, {0, -0, 1}, {1, 0, 0}, {0, 0, -1} };
+
+    cube.polygons[0].points[0] = points[0];
+    cube.polygons[0].points[1] = points[1];
+    cube.polygons[0].points[2] = points[2];
+
+    cube.polygons[1].points[0] = points[9];
+    cube.polygons[1].points[1] = points[3];
+    cube.polygons[1].points[2] = points[4];
+
+    cube.polygons[2].points[0] = points[8];
+    cube.polygons[2].points[1] = points[6];
+    cube.polygons[2].points[2] = points[3];
+
+    cube.polygons[3].points[0] = points[7];
+    cube.polygons[3].points[1] = points[3];
+    cube.polygons[3].points[2] = points[6];
+
+    cube.polygons[4].points[0] = points[10];
+    cube.polygons[4].points[1] = points[4];
+    cube.polygons[4].points[2] = points[7];
+
+    cube.polygons[5].points[0] = points[11];
+    cube.polygons[5].points[1] = points[7];
+    cube.polygons[5].points[2] = points[6];
+
+    cube.polygons[6].points[0] = points[0];
+    cube.polygons[6].points[1] = points[5];
+    cube.polygons[6].points[2] = points[1];
+
+    cube.polygons[7].points[0] = points[5];
+    cube.polygons[7].points[1] = points[3];
+    cube.polygons[7].points[2] = points[9];
+
+    cube.polygons[8].points[0] = points[0];
+    cube.polygons[8].points[1] = points[6];
+    cube.polygons[8].points[2] = points[8];
+
+    cube.polygons[9].points[0] = points[7];
+    cube.polygons[9].points[1] = points[4];
+    cube.polygons[9].points[2] = points[3];
+
+    cube.polygons[10].points[0] = points[1];
+    cube.polygons[10].points[1] = points[4];
+    cube.polygons[10].points[2] = points[10];
+
+    cube.polygons[11].points[0] = points[2];
+    cube.polygons[11].points[1] = points[7];
+    cube.polygons[11].points[2] = points[11];
+
+    cube.polygons[12].points[0] = points[5];
+    cube.polygons[12].points[1] = points[8];
+    cube.polygons[12].points[2] = points[3];
+
+    cube.polygons[13].points[0] = points[5];
+    cube.polygons[13].points[1] = points[0];
+    cube.polygons[13].points[2] = points[8];
+
+    cube.polygons[14].points[0] = points[1];
+    cube.polygons[14].points[1] = points[5];
+    cube.polygons[14].points[2] = points[9];
+
+    cube.polygons[15].points[0] = points[1];
+    cube.polygons[15].points[1] = points[9];
+    cube.polygons[15].points[2] = points[4];
+
+    cube.polygons[16].points[0] = points[2];
+    cube.polygons[16].points[1] = points[10];
+    cube.polygons[16].points[2] = points[7];
+
+    cube.polygons[17].points[0] = points[2];
+    cube.polygons[17].points[1] = points[1];
+    cube.polygons[17].points[2] = points[10];
+
+    cube.polygons[18].points[0] = points[0];
+    cube.polygons[18].points[1] = points[11];
+    cube.polygons[18].points[2] = points[6];
+
+    cube.polygons[19].points[0] = points[0];
+    cube.polygons[19].points[1] = points[2];
+    cube.polygons[19].points[2] = points[11];
 
     return cube;
 }
