@@ -12,14 +12,14 @@ int main(int argc, char **argv) {
 }
 
 void display() {
-    mesh = mesh_main();
+    main_mesh = mesh_main();
     
     move += 0.01;
     usleep(1000);
-    s21_mesh_info(mesh);
+    s21_mesh_info(main_mesh);
     // vec3D size = {0.5, 0.5, 0.5};
     // s21_scale(&mesh, size);
-    s21_test_transform(mesh, move);
+    s21_test_transform(main_mesh, move);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -30,11 +30,11 @@ void display() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Display all points and lines
-    s21_render_tris(mesh);
+    s21_render_tris(main_mesh);
 
     glutSwapBuffers();
     glutPostRedisplay();
-    free(mesh.polygons);
+    free(main_mesh.polygons);
 }
 
 void s21_render_tris(Mesh mesh) {
