@@ -79,6 +79,9 @@ Mesh mesh_main() {
                 float tmp_y = atof(coordinate_y);
                 float tmp_z = atof(coordinate_z);
                 tmp_array_of_points = realloc(tmp_array_of_points, size_points * sizeof(vec3D));
+                if (tmp_array_of_points == NULL) {
+                    exit(REALLOC_ERROR);
+                }
 
                 tmp_array_of_points[size_points - 1].x = tmp_x;
                 tmp_array_of_points[size_points - 1].y = tmp_y;
@@ -129,8 +132,10 @@ Mesh mesh_main() {
                 object.polygons[size_polygons - 1].points[2] = tmp_array_of_points[index_3 - 1];
             }
         }
+        fclose(file);
     } else {
-        printf("\nPIDORAS\n");
+        printf("\n%d\n", FILE_NOT_FIND);
+        exit(FILE_NOT_FIND);
     }
     object.polygons->count_points = size_points;
     object.count_polygons = size_polygons;
