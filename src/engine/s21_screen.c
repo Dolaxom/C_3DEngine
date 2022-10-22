@@ -16,7 +16,7 @@ void display() {
     // mesh.count_polygons = 20;
     
     move += 0.01;
-    usleep(10000);
+    usleep(1000);
     s21_mesh_info(mesh);
     // vec3D size = {0.5, 0.5, 0.5};
     // s21_scale(&mesh, size);
@@ -28,8 +28,8 @@ void display() {
     glEnable(GL_BLEND);
 
     // Smooth lines
-    glEnable(GL_LINE_SMOOTH);               
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    // glEnable(GL_LINE_SMOOTH);               
+    // glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     // Wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -44,6 +44,7 @@ void display() {
 
 void s21_render_tris(Mesh mesh) {
     for (int polygon = 0; polygon < mesh.count_polygons; polygon++) {
+        glLineWidth(0.01);
         glBegin(GL_TRIANGLES);
         for (int point = 0; point < 3; point++) {
             glColor3f(1, 1, 1);
@@ -65,12 +66,12 @@ void s21_setup_settings() {
 }
 
 void s21_test_transform(Mesh mesh, float move) {
-    // vec3D size = {0.5, 0.5, 0.5};
+    vec3D size = {1, -1, 1};
     vec3D translate = {0.0, 0.0, -5.0};
-    // s21_rotation_x(&mesh, move);
+    s21_rotation_x(&mesh, move);
     s21_rotation_y(&mesh, move);
     s21_translate(&mesh, translate);
-    // s21_rotation_z(&mesh, move);
-    s21_projection(&mesh, 1.77777, s21_to_radians(30), 3000, 0.0);
-    // s21_scale(&mesh, size);
+    s21_rotation_z(&mesh, move);
+    s21_projection(&mesh, 1.77777, s21_to_radians(25), 3000, 0.0);
+    s21_scale(&mesh, size);
 }
