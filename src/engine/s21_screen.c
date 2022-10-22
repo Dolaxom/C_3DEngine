@@ -13,7 +13,6 @@ int main(int argc, char **argv) {
 
 void display() {
     mesh = mesh_main();
-    // mesh.count_polygons = 20;
     
     move += 0.01;
     usleep(1000);
@@ -26,10 +25,6 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBlendFunc(GL_ONE, GL_ZERO);
     glEnable(GL_BLEND);
-
-    // Smooth lines
-    // glEnable(GL_LINE_SMOOTH);               
-    // glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     // Wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
