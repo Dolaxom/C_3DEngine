@@ -13,12 +13,10 @@ int main(int argc, char **argv) {
 
 void display() {
     main_mesh = mesh_main();
-    
-    move += 0.01;
+    float move = 0.0;
+    scanf("%f", &move);
     usleep(1000);
     s21_mesh_info(main_mesh);
-    // vec3D size = {0.5, 0.5, 0.5};
-    // s21_scale(&mesh, size);
     s21_test_transform(main_mesh, move);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -61,12 +59,12 @@ void s21_setup_settings() {
 }
 
 void s21_test_transform(Mesh mesh, float move) {
-    vec3D size = {1, -1, 1};
+    vec3D size = {0.5, -0.5, 0.5};
     vec3D translate = {0.0, 0.0, -5.0};
-    s21_rotation_x(&mesh, move);
-    s21_rotation_y(&mesh, move);
+    // s21_rotation_x(&mesh, move);
+    s21_rotation_y(&mesh, s21_to_radians(move));
+    // s21_rotation_z(&mesh, move);
     s21_translate(&mesh, translate);
-    s21_rotation_z(&mesh, move);
-    s21_projection(&mesh, 1.77777, s21_to_radians(25), 3000, 0.0);
+    s21_projection(&mesh, 1.77777, s21_to_radians(10), 3000, 0.0);
     s21_scale(&mesh, size);
 }
