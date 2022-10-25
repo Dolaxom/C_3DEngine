@@ -21,6 +21,7 @@ int s21_rotation_z(Mesh *mesh, float rot);
 int s21_rotation_matrix_x(float rot, matrix_t *result);
 int s21_calc_rotation_matrix_x(vec3D *point, float rot);
 int s21_rotation_x(Mesh *mesh, float rot);
+int s21_rotation(Mesh *mesh, vec3D rot);
 
 int s21_projection_matrix(float aspect, float fov, float far, float near, matrix_t *result);
 int s21_calc_projection_matrix(vec3D *point, float aspect, float fov, float far, float near);

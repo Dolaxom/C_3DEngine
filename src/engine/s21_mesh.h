@@ -14,7 +14,7 @@ typedef struct Mesh {
     int count_polygons;
 } Mesh;
 
-int s21_mesh_info(Mesh mesh);
+Mesh mesh_copy(Mesh original);
 
 Mesh plane();
 Mesh cube();

@@ -252,6 +252,33 @@ int s21_rotation_x(Mesh *mesh, float rot) {
   return OK;
 }
 
+int s21_rotation(Mesh *mesh, vec3D rot) {
+  if (rot.x != 0) {
+    for (int polygon = 0; polygon < mesh->count_polygons; polygon++) {
+        for (int point = 0; point < 3; point++) {
+            s21_calc_rotation_matrix_x(&mesh->polygons[polygon].points[point], rot.x);
+        }
+    }
+  }
+
+  if (rot.y != 0) {
+    for (int polygon = 0; polygon < mesh->count_polygons; polygon++) {
+        for (int point = 0; point < 3; point++) {
+            s21_calc_rotation_matrix_y(&mesh->polygons[polygon].points[point], rot.y);
+        }
+    }
+  }
+
+  if (rot.z != 0) {
+    for (int polygon = 0; polygon < mesh->count_polygons; polygon++) {
+        for (int point = 0; point < 3; point++) {
+            s21_calc_rotation_matrix_z(&mesh->polygons[polygon].points[point], rot.z);
+        }
+    }
+  }
+
+  return OK;
+}
 
 int s21_projection_matrix(float aspect, float fov, float far, float near, matrix_t *result) {
   s21_create_matrix(4, 4, result);

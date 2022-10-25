@@ -8,31 +8,31 @@ int main(int argc, char **argv) {
     
     glutMainLoop();
 
+    free(main_mesh.polygons);
     return 0;
 }
 
 void display() {
-    main_mesh = mesh_main();
-    float move = 0.0;
-    scanf("%f", &move);
-    usleep(1000);
-    s21_mesh_info(main_mesh);
-    s21_test_transform(main_mesh, move);
+    glutPostRedisplay();
+    duplicate_mesh = mesh_copy(main_mesh);
+    move += 0.01;
+    s21_test_transform(duplicate_mesh, move);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glBlendFunc(GL_ONE, GL_ZERO);
-    glEnable(GL_BLEND);
+    // glBlendFunc(GL_ONE, GL_ZERO);
+    // glEnable(GL_BLEND);
 
     // Wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Display all points and lines
-    s21_render_tris(main_mesh);
+    // s21_render_tris(duplicate_mesh);
 
     glutSwapBuffers();
-    glutPostRedisplay();
-    free(main_mesh.polygons);
+    free(duplicate_mesh.polygons);
+    // usleep(100);
+    // exit(1);
 }
 
 void s21_render_tris(Mesh mesh) {
@@ -42,29 +42,25 @@ void s21_render_tris(Mesh mesh) {
         for (int point = 0; point < 3; point++) {
             glColor3f(1, 1, 1);
             glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].y, mesh.polygons[polygon].points[point].z);
-            printf("polygon%d point%d.x = %f\n", polygon, point, mesh.polygons[polygon].points[point].x);
-            printf("polygon%d point%d.y = %f\n", polygon, point, mesh.polygons[polygon].points[point].y);
-            printf("polygon%d point%d.z = %f\n", polygon, point, mesh.polygons[polygon].points[point].z);
         }
         glEnd();
-        printf("\n");
     }
 }
 
 void s21_setup_settings() {
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    main_mesh = mesh_main();
+    // glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(1280, 720);
     glutCreateWindow("3DViewer");
 }
 
 void s21_test_transform(Mesh mesh, float move) {
-    vec3D size = {0.5, -0.5, 0.5};
-    vec3D translate = {0.0, 0.0, -5.0};
-    // s21_rotation_x(&mesh, move);
-    s21_rotation_y(&mesh, s21_to_radians(move));
-    // s21_rotation_z(&mesh, move);
+    vec3D size = {1, -1, 1};
+    vec3D translate = {0.0, 0.0, -3.0};
+    vec3D rotation = {move, move, move};
+    s21_rotation(&mesh, rotation);
     s21_translate(&mesh, translate);
-    s21_projection(&mesh, 1.77777, s21_to_radians(10), 3000, 0.0);
+    s21_projection(&mesh, 1.77777, s21_to_radians(35), 3000, 0.0);
     s21_scale(&mesh, size);
 }

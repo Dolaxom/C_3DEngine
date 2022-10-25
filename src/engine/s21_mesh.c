@@ -1,19 +1,9 @@
 #include "s21_mesh.h"
 
-int s21_mesh_info(Mesh mesh) {
-    printf("Mesh info:\n");
-    printf("Importing from: Blender\nCount of polygons: %d\nCount of points: %d\n", mesh.count_polygons, mesh.polygons->count_points);
-
-    // printf("\e[H\e[2J\e[3J");
-    
-    return mesh.count_polygons;
-}
-
-
 Mesh mesh_main() {
-    char path_to_obj_file[128] = "../materials/raw/monkey.obj";
-
+    char path_to_obj_file[128] = "../materials/raw/krossovok.obj";
     Mesh object;
+
     object.polygons = malloc(sizeof(Polygon));
     FILE *file;
     char str_from_file[64];
@@ -124,8 +114,8 @@ Mesh mesh_main() {
                 int index_1 = atoi(point_1);
                 int index_2 = atoi(point_2);
                 int index_3 = atoi(point_3);
-                printf("\nARRAY OF POLYGONS:\n");
-                printf("f %d %d %d\n", index_1, index_2, index_3);
+                // printf("\nARRAY OF POLYGONS:\n");
+                // printf("f %d %d %d\n", index_1, index_2, index_3);
                 object.polygons = realloc(object.polygons, size_polygons * sizeof(Polygon));
                 object.polygons[size_polygons - 1].points[0] = tmp_array_of_points[index_1 - 1];
                 object.polygons[size_polygons - 1].points[1] = tmp_array_of_points[index_2 - 1];
@@ -139,14 +129,25 @@ Mesh mesh_main() {
     }
     object.polygons->count_points = size_points;
     object.count_polygons = size_polygons;
-    printf("\nARRAY OF POINTS:\n");
-    for (int i = 0; i < size_points; i++) {
-        printf("v %f %f %f\n", tmp_array_of_points[i].x, tmp_array_of_points[i].y, tmp_array_of_points[i].z);
-    }
-    printf("\n");
-    free(tmp_array_of_points);
 
+    free(tmp_array_of_points);
+    printf("\nReading file: success\n");
     return object;
+}
+
+Mesh mesh_copy(Mesh original) {
+    Mesh new_mesh;
+
+    new_mesh.count_polygons = original.count_polygons;
+    new_mesh.polygons = malloc(new_mesh.count_polygons * sizeof(Polygon));
+    for (int i = 0; i < new_mesh.count_polygons; i++) {
+        for (int j = 0; j < 3; j++)
+        {
+            new_mesh.polygons[i].points[j] = original.polygons[i].points[j];
+        }
+    }
+
+    return new_mesh;
 }
 
 Mesh plane() {

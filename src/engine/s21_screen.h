@@ -11,7 +11,8 @@ void display();
 void s21_render_tris(Mesh mesh);
 void s21_setup_settings();
 void s21_test_transform(Mesh mesh, float move);
-
+float move = 0.0;
 Mesh main_mesh;
+Mesh duplicate_mesh;
 
 #endif  // SRC_ENGINE_S21_SCREEN_H
