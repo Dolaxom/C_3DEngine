@@ -9,10 +9,10 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
   if (rows < 1 || columns < 1) {
     error_id = MATRIX_ERROR;
   } else {
-    result->matrix = (double **)malloc(rows * sizeof(double *));
+    result->matrix = (float **)malloc(rows * sizeof(float *));
     if (result->matrix != NULL) {
       for (int i = 0; i < rows; i++) {
-        result->matrix[i] = (double *)malloc(columns * sizeof(double));
+        result->matrix[i] = (float *)malloc(columns * sizeof(float));
         if (!result->matrix[i]) {
           for (int j = 0; j < i; j++) free(result->matrix[j]);
           free(result->matrix);
@@ -102,7 +102,7 @@ int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   return error_id;
 }
 
-int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
+int s21_mult_number(matrix_t *A, float number, matrix_t *result) {
   int error_id = OK;
   int check_matrix_1 = s21_check_matrix(A);
   if (check_matrix_1) {
@@ -174,7 +174,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
   return error_id;
 }
 
-int s21_determinant(matrix_t *A, double *result) {
+int s21_determinant(matrix_t *A, float *result) {
   int error_id = OK;
   int check_matrix_1 = s21_check_matrix(A);
   if (check_matrix_1 || !result) {
@@ -194,7 +194,7 @@ int s21_determinant(matrix_t *A, double *result) {
         *result += A->matrix[0][j] * buffer.matrix[0][j];
       s21_remove_matrix(&buffer);
     } else {
-      double det = 0;
+      float det = 0;
       for (int j = 0; j < A->rows; j++) {
         s21_minor_element(A, &buffer, 0, j);
         s21_determinant(&buffer, &det);
@@ -220,7 +220,7 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   } else if (A->rows != A->columns) {
     error_id = CALC_ERROR;
   } else {
-    double det = 0.0;
+    float det = 0.0;
     s21_determinant(A, &det);
 
     if (det != 0.0) {
@@ -284,7 +284,7 @@ int s21_minor_element(matrix_t *A, matrix_t *result, int rows, int columns) {
 int s21_minor_matrix(matrix_t *A, matrix_t *result) {
   s21_create_matrix(A->rows, A->columns, result);
   matrix_t buffer = {NULL, 0, 0};
-  double det = 0.0;
+  float det = 0.0;
   for (int i = 0; i < A->rows; i++) {
     for (int j = 0; j < A->columns; j++) {
       s21_minor_element(A, &buffer, i, j);
@@ -308,7 +308,7 @@ int s21_chess_sign_matrix(matrix_t A, matrix_t *result) {
   return OK;
 }
 
-int s21_determinant_simple2x2(matrix_t *A, double *result) {
+int s21_determinant_simple2x2(matrix_t *A, float *result) {
   return *result = A->matrix[0][0] * A->matrix[1][1] -
                    A->matrix[0][1] * A->matrix[1][0];
 }
