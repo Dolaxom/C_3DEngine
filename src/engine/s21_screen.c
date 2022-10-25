@@ -1,7 +1,10 @@
 #include "s21_screen.h"
 #include <unistd.h>
 
+int choice;
+
 int main(int argc, char **argv) {
+    scanf("%d", &choice);
     glutInit(&argc, argv);
     s21_setup_settings();
     glutDisplayFunc(display);
@@ -13,9 +16,20 @@ int main(int argc, char **argv) {
 }
 
 void display() {
+    if (choice) {
+        float new_transform;
+        scanf("%f", &new_transform);
+        if (new_transform == 999) {
+            choice = 0;
+        } else {
+            move = s21_to_radians(new_transform);
+        }
+    } else {
+        move += 0.01;
+    }
+
     glutPostRedisplay();
     duplicate_mesh = mesh_copy(main_mesh);
-    move += 0.01;
     s21_test_transform(duplicate_mesh, move);
     
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -27,11 +41,11 @@ void display() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Display all points and lines
-    // s21_render_tris(duplicate_mesh);
+    s21_render_tris(duplicate_mesh);
 
     glutSwapBuffers();
     free(duplicate_mesh.polygons);
-    // usleep(100);
+    usleep(100);
     // exit(1);
 }
 
@@ -58,7 +72,7 @@ void s21_setup_settings() {
 void s21_test_transform(Mesh mesh, float move) {
     vec3D size = {1, -1, 1};
     vec3D translate = {0.0, 0.0, -3.0};
-    vec3D rotation = {move, move, move};
+    vec3D rotation = {0, move, 0};
     s21_rotation(&mesh, rotation);
     s21_translate(&mesh, translate);
     s21_projection(&mesh, 1.77777, s21_to_radians(35), 3000, 0.0);
