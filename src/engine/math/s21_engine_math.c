@@ -4,6 +4,16 @@ float s21_to_radians(float degree) {
     return degree * 3.141593 / 180;
 }
 
+int s21_scale_matrix(vec3D size_vector, matrix_t *result) {
+  s21_create_matrix(4, 4, result); 
+  
+  result->matrix[0][0] = size_vector.x;
+  result->matrix[1][1] = size_vector.y;
+  result->matrix[2][2] = size_vector.z;
+  result->matrix[3][3] = 1;
+
+  return OK;
+}
 
 int s21_calc_scale_matrix(vec3D *point, vec3D size_vector) {
   matrix_t vector = {NULL, 0, 0};
@@ -26,17 +36,6 @@ int s21_calc_scale_matrix(vec3D *point, vec3D size_vector) {
   s21_remove_matrix(&vector);
   s21_remove_matrix(&scale_matrix4x4);
   s21_remove_matrix(&mul_result);
-
-  return OK;
-}
-
-int s21_scale_matrix(vec3D size_vector, matrix_t *result) {
-  s21_create_matrix(4, 4, result); 
-  
-  result->matrix[0][0] = size_vector.x;
-  result->matrix[1][1] = size_vector.y;
-  result->matrix[2][2] = size_vector.z;
-  result->matrix[3][3] = 1;
 
   return OK;
 }
