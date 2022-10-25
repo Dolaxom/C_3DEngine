@@ -26,3 +26,7 @@ int s21_rotation(Mesh *mesh, vec3D rot);
 int s21_projection_matrix(float aspect, float fov, float far, float near, matrix_t *result);
 int s21_calc_projection_matrix(vec3D *point, float aspect, float fov, float far, float near);
 int s21_projection(Mesh *mesh, float aspect, float fov, float far, float near);
+
+int s21_orthogonal_matrix(float left, float right, float bottom, float top, float far, float near, matrix_t *result);
+int s21_calc_orthogonal_matrix(vec3D *point, float left, float right, float bottom, float top, float far, float near);
+int s21_orthogonal(Mesh *mesh, float left, float right, float bottom, float top, float far, float near);

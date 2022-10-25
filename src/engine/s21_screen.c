@@ -70,11 +70,12 @@ void s21_setup_settings() {
 }
 
 void s21_test_transform(Mesh mesh, float move) {
-    vec3D size = {1, -1, 1};
+    vec3D size = {0.5, -0.5, 0.5};
     vec3D translate = {0.0, 0.0, -3.0};
     vec3D rotation = {0, move, 0};
     s21_rotation(&mesh, rotation);
     s21_translate(&mesh, translate);
-    s21_projection(&mesh, 1.77777, s21_to_radians(35), 3000, 0.0);
+    s21_projection(&mesh, 1.77777, s21_to_radians(18), 3000, 0.0);
+    // s21_orthogonal(&mesh, 0, 1.28, 0, 0.72, 100, -0.1);
     s21_scale(&mesh, size);
 }

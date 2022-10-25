@@ -332,3 +332,59 @@ int s21_projection(Mesh *mesh, float aspect, float fov, float far, float near) {
 
   return OK;
 }
+
+int s21_orthogonal_matrix(float left, float right, float bottom, float top, float far, float near, matrix_t *result) {
+  s21_create_matrix(4, 4, result);
+
+  result->matrix[0][0] = 2 / (right - left);
+  result->matrix[1][1] = 2 / (top - bottom);
+  result->matrix[2][2] = -2 / (far - near);
+  result->matrix[3][3] = 1;
+  result->matrix[0][3] = -( (right + left) / (right - left) );
+  result->matrix[1][3] = -( (top + bottom) / (top - bottom) );
+  result->matrix[2][3] = -( (far + near) / (far - near) );
+
+  return OK;
+}
+
+
+int s21_calc_orthogonal_matrix(vec3D *point, float left, float right, float bottom, float top, float far, float near) {
+  matrix_t vector = {NULL, 0, 0};
+  matrix_t orthogonal_matrix = {NULL, 0, 0};
+  matrix_t mul_result = {NULL, 0, 0};
+  s21_create_matrix(4, 1, &vector);
+  s21_orthogonal_matrix(left, right, bottom, top, far, near, &orthogonal_matrix);
+  float old_z = point->z;
+
+  vector.matrix[0][0] = point->x;
+  vector.matrix[1][0] = point->y;
+  vector.matrix[2][0] = point->z;
+  vector.matrix[3][0] = 1;
+
+  s21_mult_matrix(&orthogonal_matrix, &vector, &mul_result);
+
+
+  point->x = mul_result.matrix[0][0];
+  point->y = mul_result.matrix[1][0];
+  point->z = mul_result.matrix[2][0];
+
+  point->x = point->x / old_z;
+  point->y = point->y / old_z;
+  point->z = point->z / old_z;
+
+  s21_remove_matrix(&vector);
+  s21_remove_matrix(&orthogonal_matrix);
+  s21_remove_matrix(&mul_result);
+
+  return OK;
+}
+
+int s21_orthogonal(Mesh *mesh, float left, float right, float bottom, float top, float far, float near) {
+  for (int polygon = 0; polygon < mesh->count_polygons; polygon++) {
+      for (int point = 0; point < 3; point++) {
+          s21_calc_orthogonal_matrix(&mesh->polygons[polygon].points[point], left, right, bottom, top, far, near);
+      }
+  }
+
+  return OK;
+}
