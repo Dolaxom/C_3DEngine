@@ -1,5 +1,2 @@
-all:
-	gcc engine/math/s21_matrix_based.c engine/s21_mesh.c engine/s21_screen.c engine/math/s21_engine_math.c -lm -Wall -Werror -Wextra -lglut -lGL -o app -g
-
-simple:
-	gcc engine/math/s21_matrix_based.c engine/s21_mesh.c engine/s21_screen.c engine/math/s21_engine_math.c -lm -lglut -lGL -o app -g
+base:
+	gcc s21_world.c s21_camera.c s21_mesh.c -lm -lglut -lGL -o app -g
