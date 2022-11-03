@@ -14,13 +14,16 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-  glLineWidth(0.01);
-  glBegin(GL_TRIANGLES);
-  glColor3f(1, 1, 1);
-  glVertex3f(-1, -1, 0);
-  glVertex3f(1, -1, 0);
-  glVertex3f(0.0, 1, 0);
-  glEnd();
+  mesh_t mesh = test_cube();
+  for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
+    glLineWidth(0.01);
+    glBegin(GL_TRIANGLES);
+    for (int point = 0; point < 3; point++) {
+        glColor3f(1, 1, 1);
+        glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].y, mesh.polygons[polygon].points[point].z);
+    }
+    glEnd();
+  }
 
   glutSwapBuffers();
 }
