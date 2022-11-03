@@ -1,12 +1,12 @@
 #ifndef SRC_S21_ENGINE_H_
 #define SRC_S21_ENGINE_H_
 
+#include <GL/freeglut.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <GL/freeglut.h>
 
 enum errors { S21_OK, S21_FAIL, S21_MALLOC, S21_REALLOC, S21_FILE };
 
