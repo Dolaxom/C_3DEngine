@@ -9,13 +9,22 @@ void fleeglut_init(int argc, char **argv) {
 }
 
 void display() {
+  display_init();
+  mesh_t render_mesh = test_cube();
+  s21_scale(&render_mesh, 0.5, 0.5, 0.5);
+  rendering_mesh(render_mesh);
+
+  glutSwapBuffers();
+}
+
+void display_init() {
   glutPostRedisplay();
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
 
-  mesh_t mesh = test_cube();
-  s21_scale(&mesh, 0.5, 0.5, 0.5);
+void rendering_mesh(mesh_t mesh) {
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
     glLineWidth(0.01);
     glBegin(GL_TRIANGLES);
@@ -25,6 +34,4 @@ void display() {
     }
     glEnd();
   }
-
-  glutSwapBuffers();
 }
