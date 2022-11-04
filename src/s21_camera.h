@@ -3,6 +3,7 @@
 
 #include "s21_engine.h"
 #include "s21_mesh.h"
+#include "math/s21_engine_math.h"
 
 void fleeglut_init(int argc, char **argv);
 void display();

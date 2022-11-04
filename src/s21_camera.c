@@ -15,6 +15,7 @@ void display() {
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   mesh_t mesh = test_cube();
+  s21_scale(&mesh, 0.5, 0.5, 0.5);
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
     glLineWidth(0.01);
     glBegin(GL_TRIANGLES);

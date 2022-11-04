@@ -42,6 +42,7 @@ mesh_t test_cube() {
   result_mesh.polygons = malloc(12 * sizeof(polygons_t));
   for (int i = 0; i < 12; i++) {
     result_mesh.polygons[i].points = (vector*)malloc(3 * sizeof(vector));
+    result_mesh.polygons[i].count_of_points = 3;
   }
 
   vector points[8] = { {1, 1, -1}, {1, -1, -1}, {1, 1, 1}, {1, -1, 1}, {-1, 1, -1}, {-1, -1, -1}, {-1, 1, 1}, {-1, -1, 1} };
