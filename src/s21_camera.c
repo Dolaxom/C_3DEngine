@@ -10,8 +10,6 @@ void fleeglut_init(int argc, char **argv) {
 
 void display() {
   display_init();
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
   camera_init();
   mesh_t render_mesh = test_cube();
   s21_rotate_y(&render_mesh, s21_degree_to_radian(30));
@@ -33,6 +31,8 @@ void camera_init() {
   GLdouble aspect = 1.0;
   GLdouble near_dist = 0.5;
   GLdouble far_dist = 5.0;
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
   gluPerspective(fov, aspect, near_dist, far_dist);
 
   glMatrixMode(GL_MODELVIEW);
