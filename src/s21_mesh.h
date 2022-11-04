@@ -11,6 +11,9 @@ typedef struct Polygons_s {
 typedef struct Mesh_s {
   polygons_t* polygons;
   int count_of_polygons;
+  vector scale;
+  vector rotation;
+  vector location;
 } mesh_t;
 
 mesh_t parse_obj_file(char *path_to_file);
