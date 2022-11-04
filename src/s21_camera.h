@@ -8,6 +8,7 @@
 void fleeglut_init(int argc, char **argv);
 void display();
 void display_init();
+void camera_init();
 void rendering_mesh(mesh_t mesh);
 
 #endif  // SRC_S21_CAMERA_H_
