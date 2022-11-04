@@ -97,3 +97,48 @@ mesh_t test_cube() {
 
   return result_mesh;
 }
+
+mesh_t test_simple_cube() {
+  mesh_t result_mesh;
+
+  result_mesh.count_of_polygons = 12;
+  result_mesh.polygons = malloc(12 * sizeof(polygons_t));
+  for (int i = 0; i < 12; i++) {
+    result_mesh.polygons[i].points = (vector*)malloc(4 * sizeof(vector));
+    result_mesh.polygons[i].count_of_points = 4;
+  }
+
+  vector points[8] = { {1, 1, -1}, {1, -1, -1}, {1, 1, 1}, {1, -1, 1}, {-1, 1, -1}, {-1, -1, -1}, {-1, 1, 1}, {-1, -1, 1} };
+
+  result_mesh.polygons[0].points[0] = points[0];
+  result_mesh.polygons[0].points[1] = points[4];
+  result_mesh.polygons[0].points[2] = points[6];
+  result_mesh.polygons[0].points[3] = points[2];
+
+  result_mesh.polygons[1].points[0] = points[3];
+  result_mesh.polygons[1].points[1] = points[2];
+  result_mesh.polygons[1].points[2] = points[6];
+  result_mesh.polygons[1].points[3] = points[7];
+
+  result_mesh.polygons[2].points[0] = points[7];
+  result_mesh.polygons[2].points[1] = points[6];
+  result_mesh.polygons[2].points[2] = points[4];
+  result_mesh.polygons[2].points[3] = points[5];
+
+  result_mesh.polygons[3].points[0] = points[5];
+  result_mesh.polygons[3].points[1] = points[1];
+  result_mesh.polygons[3].points[2] = points[3];
+  result_mesh.polygons[3].points[3] = points[7];
+
+  result_mesh.polygons[4].points[0] = points[1];
+  result_mesh.polygons[4].points[1] = points[0];
+  result_mesh.polygons[4].points[2] = points[2];
+  result_mesh.polygons[4].points[3] = points[3];
+
+  result_mesh.polygons[5].points[0] = points[5];
+  result_mesh.polygons[5].points[1] = points[4];
+  result_mesh.polygons[5].points[2] = points[0];
+  result_mesh.polygons[5].points[3] = points[1];
+
+  return result_mesh;
+}
