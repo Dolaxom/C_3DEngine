@@ -17,3 +17,15 @@ void s21_rotate_y(mesh_t *mesh, float degree) {
     s21_calculate_rotation_y_matrix(degree, mesh->polygons[polygon]);
   }
 }
+
+void s21_rotate_x(mesh_t *mesh, float degree) {
+  for (int polygon = 0; polygon < mesh->count_of_polygons; polygon++) {
+    s21_calculate_rotation_x_matrix(degree, mesh->polygons[polygon]);
+  }
+}
+
+void s21_rotate_z(mesh_t *mesh, float degree) {
+  for (int polygon = 0; polygon < mesh->count_of_polygons; polygon++) {
+    s21_calculate_rotation_z_matrix(degree, mesh->polygons[polygon]);
+  }
+}

@@ -14,6 +14,8 @@ void s21_calculate_scale_matrix(vector new_size_vector, polygons_t polygon);
 matrix4x4 s21_rotation_y_matrix_reference(float degree);
 void s21_calculate_rotation_y_matrix(float degree, polygons_t polygon);
 matrix4x4 s21_rotation_x_matrix_reference(float degree);
+void s21_calculate_rotation_x_matrix(float degree, polygons_t polygon);
 matrix4x4 s21_rotation_z_matrix_reference(float degree);
+void s21_calculate_rotation_z_matrix(float degree, polygons_t polygon);
 
 #endif  // SRC_MATH_S21_MATRIX4X4_H_

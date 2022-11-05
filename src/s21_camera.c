@@ -13,6 +13,8 @@ void display() {
   camera_init();
   mesh_t render_mesh = test_cube();
   s21_rotate_y(&render_mesh, s21_degree_to_radian(30));
+  s21_rotate_x(&render_mesh, s21_degree_to_radian(30));
+  s21_rotate_z(&render_mesh, s21_degree_to_radian(30));
   s21_scale(&render_mesh, 0.5, 0.5, 0.5);
   rendering_mesh(render_mesh);
 

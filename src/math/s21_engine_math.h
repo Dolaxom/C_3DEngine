@@ -6,5 +6,7 @@
 float s21_degree_to_radian(float degree);
 void s21_scale(mesh_t *mesh, float new_x, float new_y, float new_z);
 void s21_rotate_y(mesh_t *mesh, float degree);
+void s21_rotate_x(mesh_t *mesh, float degree);
+void s21_rotate_z(mesh_t *mesh, float degree);
 
 #endif  // SRC_MATH_S21_ENGINE_MATH_H_
