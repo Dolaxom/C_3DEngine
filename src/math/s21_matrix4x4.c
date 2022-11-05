@@ -50,3 +50,21 @@ void s21_calculate_rotation_y_matrix(float degree, polygons_t polygon) {
     polygon.points[i].z = result.z;
   }
 }
+
+matrix4x4 s21_rotation_x_matrix_reference(float degree) {
+  matrix4x4 result = {{{1, 0, 0, 0},
+                       {0, cos(degree), -sin(degree), 0},
+                       {0, sin(degree), cos(degree), 0},
+                       {0, 0, 0, 1}}};
+
+  return result;
+}
+
+matrix4x4 s21_rotation_z_matrix_reference(float degree) {
+  matrix4x4 result = {{{cos(degree), -sin(degree), 0, 0},
+                       {sin(degree), cos(degree), 0, 0},
+                       {0, 0, 1, 0},
+                       {0, 0, 0, 1}}};
+
+  return result;
+}
