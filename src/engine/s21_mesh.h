@@ -17,7 +17,5 @@ typedef struct Mesh_s {
 } mesh_t;
 
 mesh_t parse_obj_file(char *path_to_file);
-mesh_t test_cube();
-mesh_t test_simple_cube();
 
 #endif  // SRC_S21_MESH_H_

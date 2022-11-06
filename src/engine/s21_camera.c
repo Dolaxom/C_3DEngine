@@ -1,5 +1,13 @@
 #include "s21_camera.h"
 
+int main(int argc, char **argv) {
+  mesh_init("../materials/raw/krossovok.obj");
+  fleeglut_init(argc, argv);
+  glutMainLoop();
+
+  return S21_OK;
+}
+
 void fleeglut_init(int argc, char **argv) {
   glutInit(&argc, argv);
   glutInitWindowPosition(100, 100);
@@ -11,14 +19,14 @@ void fleeglut_init(int argc, char **argv) {
 void display() {
   display_init();
   camera_init();
-  mesh_t render_mesh = test_cube();
-  s21_rotate_y(&render_mesh, s21_degree_to_radian(30));
-  s21_rotate_x(&render_mesh, s21_degree_to_radian(30));
-  s21_rotate_z(&render_mesh, s21_degree_to_radian(30));
-  s21_scale(&render_mesh, 0.5, 0.5, 0.5);
+  s21_rotate_y(&render_mesh, s21_degree_to_radian(3));
+  s21_rotate_x(&render_mesh, s21_degree_to_radian(3));
+  s21_rotate_z(&render_mesh, s21_degree_to_radian(3));
+  s21_scale(&render_mesh, 0.9, 0.9, 0.9);
   rendering_mesh(render_mesh);
 
   glutSwapBuffers();
+  // usleep(10);
 }
 
 void display_init() {
@@ -52,4 +60,8 @@ void rendering_mesh(mesh_t mesh) {
     }
     glEnd();
   }
+}
+
+void mesh_init(char *path_to_file) {
+  render_mesh = parse_obj_file(path_to_file);
 }

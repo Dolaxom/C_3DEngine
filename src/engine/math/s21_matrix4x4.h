@@ -1,7 +1,6 @@
 #ifndef SRC_MATH_S21_MATRIX4X4_H_
 #define SRC_MATH_S21_MATRIX4X4_H_
 
-#include "../s21_engine.h"
 #include "../s21_mesh.h"
 
 typedef struct matrix_struct {
