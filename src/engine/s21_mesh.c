@@ -3,6 +3,9 @@
 mesh_t parse_obj_file(char *path_to_file) {
   mesh_t result_mesh;
   result_mesh.polygons = malloc(sizeof(polygons_t));
+  if (result_mesh.polygons == NULL) {
+    exit(S21_MALLOC);
+  }
 
   FILE* file;
   char str_from_file[64];
@@ -39,7 +42,7 @@ mesh_t parse_obj_file(char *path_to_file) {
         }
         index = 0;
 
-        // parse y
+        // parse Y
         for (; i < strlen(str_from_file);) {
             if (str_from_file[i] == ' ') {
                 i++;
@@ -51,7 +54,7 @@ mesh_t parse_obj_file(char *path_to_file) {
         }
         index = 0;
 
-        // parse z
+        // parse Z
         for (; i < strlen(str_from_file);) {
             coordinate_z[index] = str_from_file[i];
             index++;
@@ -84,6 +87,9 @@ mesh_t parse_obj_file(char *path_to_file) {
             i++;
           }
           points_tmp = realloc(points_tmp, (counts + 1) * sizeof(int));
+          if (points_tmp == NULL) {
+              exit(S21_REALLOC);
+          }
           points_tmp[counts] = atoi(point);
           memset(point, 0, 12);
           counts++;
@@ -94,7 +100,13 @@ mesh_t parse_obj_file(char *path_to_file) {
         }
 
         result_mesh.polygons = realloc(result_mesh.polygons, polygons_count * sizeof(polygons_t));
+        if (result_mesh.polygons == NULL) {
+            exit(S21_REALLOC);
+        }
         result_mesh.polygons[polygons_count - 1].points = (vector*)malloc(counts * sizeof(vector));
+        if (result_mesh.polygons[polygons_count - 1].points == NULL) {
+          exit(S21_MALLOC);
+        }
         for (int z = 0; z < counts; z++) {
           result_mesh.polygons[polygons_count - 1].points[z] = tmp_array_of_points[points_tmp[z] - 1];
         }
