@@ -1,6 +1,10 @@
 #ifndef SRC_MATH_S21_MATRIX4X4_H_
 #define SRC_MATH_S21_MATRIX4X4_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "../s21_mesh.h"
 
 typedef struct matrix_struct {
@@ -16,5 +20,9 @@ matrix4x4 s21_rotation_x_matrix_reference(float degree);
 void s21_calculate_rotation_x_matrix(float degree, polygons_t polygon);
 matrix4x4 s21_rotation_z_matrix_reference(float degree);
 void s21_calculate_rotation_z_matrix(float degree, polygons_t polygon);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // SRC_MATH_S21_MATRIX4X4_H_

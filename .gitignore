@@ -12,3 +12,7 @@ C_3DEngine_autogen
 .qt
 build/.qt
 build/C_3DEngine-build-release-v1.tar.gz
+*.so
+*.so.*
+build/build-debug
+build/build-release

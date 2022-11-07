@@ -1,6 +1,10 @@
 #ifndef SRC_S21_MESH_H_
 #define SRC_S21_MESH_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "s21_engine.h"
 
 typedef struct Polygons_s {
@@ -16,6 +20,10 @@ typedef struct Mesh_s {
   vector location;
 } mesh_t;
 
-mesh_t parse_obj_file(char *path_to_file);
+mesh_t parse_obj_file(char* path_to_file);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // SRC_S21_MESH_H_
