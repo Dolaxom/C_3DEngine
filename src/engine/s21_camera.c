@@ -1,7 +1,7 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("../materials/raw/krossovok.obj");
+  mesh_init("materials/raw/krossovok.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
 
@@ -54,9 +54,12 @@ void rendering_mesh(mesh_t mesh) {
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
     glLineWidth(0.01);
     glBegin(GL_POLYGON);
-    for (int point = 0; point < mesh.polygons[polygon].count_of_points; point++) {
-        glColor3f(1, 1, 1);
-        glVertex3f(mesh.polygons[polygon].points[point].x, mesh.polygons[polygon].points[point].y, mesh.polygons[polygon].points[point].z);
+    for (int point = 0; point < mesh.polygons[polygon].count_of_points;
+         point++) {
+      glColor3f(1, 1, 1);
+      glVertex3f(mesh.polygons[polygon].points[point].x,
+                 mesh.polygons[polygon].points[point].y,
+                 mesh.polygons[polygon].points[point].z);
     }
     glEnd();
   }
