@@ -1,0 +1,14 @@
+app
+src/app
+a.out
+tmp/*
+unit_tests/coverage/*
+tests
+C_3DEngine
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+C_3DEngine_autogen
+.qt
+build/.qt
+build/C_3DEngine-build-release-v1.tar.gz
