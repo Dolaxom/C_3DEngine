@@ -46,42 +46,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   return result;
 }
 
-void MainWindow::on_leftb_pressed() {
-    // rotate left
-}
-
-void MainWindow::on_upb_pressed() {
-    // rotate up
-}
-
-void MainWindow::on_rightb_pressed() {
-    // rotate right
-}
-
-void MainWindow::on_downb_pressed() {
-    // rotate down
-}
-
-void MainWindow::on_autoc_clicked(bool checked) {
-    // auto rotation
-}
-
-void MainWindow::on_autoc_stateChanged(int arg1) {
-    //
-}
-
-void MainWindow::on_meshd_activated(int index) {
-    //
-}
-
-void MainWindow::on_meshd_currentIndexChanged(int index) {
-    //
-}
-
-void MainWindow::on_meshd_currentTextChanged(const QString &arg1) {
-    //
-}
-
 void MainWindow::on_visualizeb_clicked() {
     bool error = false;
 
