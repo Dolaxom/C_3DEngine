@@ -206,6 +206,9 @@
       <property name="text">
        <string>perspective</string>
       </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="7" column="2" colspan="5">
@@ -213,14 +216,14 @@
       <item>
        <widget class="QPushButton" name="screenb">
         <property name="text">
-         <string>screenshot</string>
+         <string>screen</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="gifb">
         <property name="text">
-         <string>gif</string>
+         <string>record</string>
         </property>
        </widget>
       </item>

@@ -21,6 +21,10 @@ void MainWindow::start() {
     create_info_labels();
     ui->camera->setFocus();
 
+    ui->persc->setStyleSheet("outline-color: blue");
+    ui->orthc->setStyleSheet("outline-color: blue");
+    ui->autorotationc->setStyleSheet("outline-color: blue");
+
     ui->errl->setStyleSheet("color: grey;");
     display_error("", "no model chosen");
 
@@ -38,15 +42,15 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   } else if (event->type() == QEvent::KeyPress) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
-      on_visualizeb_clicked();
+      process_enterkey();
       result = true;
     } else if (keyEvent->key() == Qt::Key_Alt) {
-      // result = true;
+      ui->camera->setFocus();
     } else if (keyEvent->key() == Qt::Key_Escape) {
       close();
       result = true;
     } else if (keyEvent->key() == Qt::Key_Control) {
-      //ui->meshd->setFocus();
+      cycle_focus();
       result = true;
     } else {
       ui->camera->grabKeyboard();
@@ -55,6 +59,51 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
   QObject::eventFilter(watched, event);
   return result;
+}
+
+void MainWindow::process_enterkey() {
+    if (ui->persc->hasFocus()) {
+        on_persc_clicked(!ui->persc->checkState());
+    } else if (ui->orthc->hasFocus()) {
+        on_orthc_clicked(!ui->orthc->checkState());
+    } else if (ui->autorotationc->hasFocus()) {
+        on_autorotationc_clicked(!ui->autorotationc->checkState());
+    } else {
+        on_visualizeb_clicked();
+    }
+}
+
+void MainWindow::cycle_focus() {
+    if (ui->meshd->hasFocus()) {
+        ui->persc->setFocus();
+    } else if (ui->persc->hasFocus()) {
+        ui->orthc->setFocus();
+    } else if (ui->orthc->hasFocus()) {
+        ui->sxedit->setFocus();
+    } else if (ui->sxedit->hasFocus()) {
+        ui->syedit->setFocus();
+    } else if (ui->syedit->hasFocus()) {
+        ui->szedit->setFocus();
+    } else if (ui->szedit->hasFocus()) {
+        ui->pxedit->setFocus();
+    } else if (ui->pxedit->hasFocus()) {
+        ui->pyedit->setFocus();
+    } else if (ui->pyedit->hasFocus()) {
+        ui->pzedit->setFocus();
+    } else if (ui->pzedit->hasFocus()) {
+        ui->rxedit->setFocus();
+    } else if (ui->rxedit->hasFocus()) {
+        ui->ryedit->setFocus();
+    } else if (ui->ryedit->hasFocus()) {
+        ui->rzedit->setFocus();
+    } else if (ui->rzedit->hasFocus()) {
+        ui->autorotationc->setFocus();
+    } else if (ui->autorotationc->hasFocus()) {
+        ui->camera->setFocus();
+        //
+    } else {
+        ui->meshd->setFocus();
+    }
 }
 
 void MainWindow::on_visualizeb_clicked() {
@@ -67,6 +116,34 @@ void MainWindow::on_visualizeb_clicked() {
         ui->resultl->setStyleSheet("color: red;");
         display_error("ERROR", "errortext errortext errortext");
     }
+}
+
+void MainWindow::on_screenb_clicked()
+{
+    // make a screenshot
+}
+
+
+void MainWindow::on_gifb_clicked()
+{
+    // record a gif
+}
+
+void MainWindow::on_persc_clicked(bool checked)
+{
+    ui->persc->setChecked(checked);
+    ui->orthc->setChecked(!checked);
+}
+
+void MainWindow::on_orthc_clicked(bool checked)
+{
+    ui->orthc->setChecked(checked);
+    ui->persc->setChecked(!checked);
+}
+
+void MainWindow::on_autorotationc_clicked(bool checked)
+{
+    ui->autorotationc->setChecked(checked);
 }
 
 void MainWindow::create_info_labels() {
