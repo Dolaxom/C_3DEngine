@@ -40,7 +40,7 @@ void camera_init() {
   GLdouble fov = 90.0;
   GLdouble aspect = 1.0;
   GLdouble near_dist = 0.5;
-  GLdouble far_dist = 5.0;
+  GLdouble far_dist = 500.0;
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(fov, aspect, near_dist, far_dist);
