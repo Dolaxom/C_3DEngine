@@ -15,30 +15,23 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void start();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
     void on_leftb_pressed();
-
     void on_upb_pressed();
-
     void on_rightb_pressed();
-
     void on_downb_pressed();
-
     void on_autoc_clicked(bool checked);
-
     void on_autoc_stateChanged(int arg1);
-
     void on_meshd_activated(int index);
-
     void on_meshd_currentIndexChanged(int index);
-
     void on_meshd_currentTextChanged(const QString &arg1);
-
-    void on_showb_clicked();
+    void on_visualizeb_clicked();
+    void display_error(QString result, QString errtext);
 
 private:
     Ui::MainWindow *ui;
