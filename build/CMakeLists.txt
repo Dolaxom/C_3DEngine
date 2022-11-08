@@ -22,8 +22,8 @@ set(PROJECT_SOURCES
     ../src/qt/mainwindow.cpp
     ../src/qt/mainwindow.h
     ../src/qt/mainwindow.ui
-    ../src/engine/s21_camera.c 
-    ../src/engine/s21_camera.h 
+##    ../src/engine/s21_camera.c 
+##    ../src/engine/s21_camera.h 
     ../src/engine/s21_engine.h 
     ../src/engine/s21_mesh.c 
     ../src/engine/s21_mesh.h 
