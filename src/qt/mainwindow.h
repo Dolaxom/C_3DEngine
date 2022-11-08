@@ -22,7 +22,9 @@ protected:
 
 private slots:
     void on_visualizeb_clicked();
-    void display_error(QString result, QString errtext);
+    void create_info_labels();
+    void update_info_values(QString filename, QString n_vertices, QString n_edges);
+    void display_error(QString result, QString message);
 
 private:
     Ui::MainWindow *ui;
