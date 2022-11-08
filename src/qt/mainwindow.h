@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtEvents>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +15,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
     void on_leftb_pressed();
@@ -33,6 +37,8 @@ private slots:
     void on_meshd_currentIndexChanged(int index);
 
     void on_meshd_currentTextChanged(const QString &arg1);
+
+    void on_showb_clicked();
 
 private:
     Ui::MainWindow *ui;
