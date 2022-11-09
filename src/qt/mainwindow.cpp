@@ -85,15 +85,9 @@ void MainWindow::process_enterkey() {
 }
 
 void MainWindow::cycle_focus() {
-//    if (ui->meshd->hasFocus()) {
-//        ui->persc->setFocus();
-//    } else if (ui->persc->hasFocus()) {
-//        ui->orthc->setFocus();
-//    } else if (ui->orthc->hasFocus()) {
-//        ui->sxedit->setFocus();
-//    }
-    //else
-    if (ui->sxedit->hasFocus()) {
+    if (ui->meshd->hasFocus()) {
+        ui->sxedit->setFocus();
+    } else if (ui->sxedit->hasFocus()) {
         ui->syedit->setFocus();
     } else if (ui->syedit->hasFocus()) {
         ui->szedit->setFocus();
