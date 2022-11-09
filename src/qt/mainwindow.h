@@ -27,8 +27,8 @@ private slots:
     void on_visualizeb_clicked();    
     void on_screenb_clicked();
     void on_gifb_clicked();
-    void on_persc_clicked(bool checked);
-    void on_orthc_clicked(bool checked);
+    //void on_persc_clicked(bool checked);
+    //void on_orthc_clicked(bool checked);
     void on_autorotationc_clicked(bool checked);
 
 private:

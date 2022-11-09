@@ -22,7 +22,7 @@ void MainWindow::start() {
     ui->camera->setFocus();
 
     ui->errl->setStyleSheet("color: grey;");
-    display_error("", "no model chosen");
+    display_error("N/A", "no model chosen for display.");
 
     // set style sheet for buttons
 }
@@ -70,16 +70,14 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   return result;
 }
 
-//void MainWindow::focusChanged(QWidget *focused) {
-//    focused->
-//}
-
 void MainWindow::process_enterkey() {
-    if (ui->persc->hasFocus()) {
-        on_persc_clicked(!ui->persc->checkState());
-    } else if (ui->orthc->hasFocus()) {
-        on_orthc_clicked(!ui->orthc->checkState());
-    } else if (ui->autorotationc->hasFocus()) {
+//    if (ui->persc->hasFocus()) {
+//        on_persc_clicked(!ui->persc->checkState());
+//    } else if (ui->orthc->hasFocus()) {
+//        on_orthc_clicked(!ui->orthc->checkState());
+//    }
+    //else
+    if (ui->autorotationc->hasFocus()) {
         on_autorotationc_clicked(!ui->autorotationc->checkState());
     } else {
         on_visualizeb_clicked();
@@ -87,13 +85,15 @@ void MainWindow::process_enterkey() {
 }
 
 void MainWindow::cycle_focus() {
-    if (ui->meshd->hasFocus()) {
-        ui->persc->setFocus();
-    } else if (ui->persc->hasFocus()) {
-        ui->orthc->setFocus();
-    } else if (ui->orthc->hasFocus()) {
-        ui->sxedit->setFocus();
-    } else if (ui->sxedit->hasFocus()) {
+//    if (ui->meshd->hasFocus()) {
+//        ui->persc->setFocus();
+//    } else if (ui->persc->hasFocus()) {
+//        ui->orthc->setFocus();
+//    } else if (ui->orthc->hasFocus()) {
+//        ui->sxedit->setFocus();
+//    }
+    //else
+    if (ui->sxedit->hasFocus()) {
         ui->syedit->setFocus();
     } else if (ui->syedit->hasFocus()) {
         ui->szedit->setFocus();
@@ -142,17 +142,17 @@ void MainWindow::on_gifb_clicked()
     // record a gif
 }
 
-void MainWindow::on_persc_clicked(bool checked)
-{
-    ui->persc->setChecked(checked);
-    ui->orthc->setChecked(!checked);
-}
+//void MainWindow::on_persc_clicked(bool checked)
+//{
+//    ui->persc->setChecked(checked);
+//    ui->orthc->setChecked(!checked);
+//}
 
-void MainWindow::on_orthc_clicked(bool checked)
-{
-    ui->orthc->setChecked(checked);
-    ui->persc->setChecked(!checked);
-}
+//void MainWindow::on_orthc_clicked(bool checked)
+//{
+//    ui->orthc->setChecked(checked);
+//    ui->persc->setChecked(!checked);
+//}
 
 void MainWindow::on_autorotationc_clicked(bool checked)
 {
