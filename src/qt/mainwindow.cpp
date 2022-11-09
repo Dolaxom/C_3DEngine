@@ -24,6 +24,8 @@ void MainWindow::start() {
     ui->errl->setStyleSheet("color: grey;");
     display_error("N/A", "no model chosen for display.");
 
+    //ui->sxedit->setText("999");
+
     // set style sheet for buttons
 }
 
@@ -43,8 +45,6 @@ void MainWindow::focusChanged(QWidget* old, QWidget* now)
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   bool result = false;
 
-  ui->camera->releaseKeyboard();
-
   if (event->type() == QEvent::MouseMove) {
     QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
     mouseMoveEvent(mouseEvent);
@@ -61,8 +61,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     } else if (keyEvent->key() == Qt::Key_Control) {
       cycle_focus();
       result = true;
-    } else {
-      ui->camera->grabKeyboard();
     }
   }
 
@@ -71,12 +69,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWindow::process_enterkey() {
-//    if (ui->persc->hasFocus()) {
-//        on_persc_clicked(!ui->persc->checkState());
-//    } else if (ui->orthc->hasFocus()) {
-//        on_orthc_clicked(!ui->orthc->checkState());
-//    }
-    //else
     if (ui->autorotationc->hasFocus()) {
         on_autorotationc_clicked(!ui->autorotationc->checkState());
     } else {
@@ -100,12 +92,12 @@ void MainWindow::cycle_focus() {
     } else if (ui->pzedit->hasFocus()) {
         ui->rxedit->setFocus();
     } else if (ui->rxedit->hasFocus()) {
+        ui->autorotationc->setFocus();
+    } else if (ui->autorotationc->hasFocus()) {
         ui->ryedit->setFocus();
     } else if (ui->ryedit->hasFocus()) {
         ui->rzedit->setFocus();
     } else if (ui->rzedit->hasFocus()) {
-        ui->autorotationc->setFocus();
-    } else if (ui->autorotationc->hasFocus()) {
         ui->camera->setFocus();
         //
     } else {
@@ -115,6 +107,9 @@ void MainWindow::cycle_focus() {
 
 void MainWindow::on_visualizeb_clicked() {
     bool error = false;
+
+    finalize_input_fields();
+    error = check_values();
 
     if (!error) {
         ui->resultl->setStyleSheet("color: green;");
@@ -135,18 +130,6 @@ void MainWindow::on_gifb_clicked()
 {
     // record a gif
 }
-
-//void MainWindow::on_persc_clicked(bool checked)
-//{
-//    ui->persc->setChecked(checked);
-//    ui->orthc->setChecked(!checked);
-//}
-
-//void MainWindow::on_orthc_clicked(bool checked)
-//{
-//    ui->orthc->setChecked(checked);
-//    ui->persc->setChecked(!checked);
-//}
 
 void MainWindow::on_autorotationc_clicked(bool checked)
 {
@@ -190,8 +173,67 @@ void MainWindow::update_info_values(QString filename, QString n_vertices, QStrin
     edgesl_value->setText(n_edges);
 }
 
+void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
+    widget->setText(widget->text() + add);
+    widget->setAlignment(Qt::AlignRight);
+}
+
+void MainWindow::finalize_input_fields() {
+    finalize_field(ui->sxedit);
+    finalize_field(ui->syedit);
+    finalize_field(ui->szedit);
+    finalize_field(ui->pxedit);
+    finalize_field(ui->pyedit);
+    finalize_field(ui->pzedit);
+    finalize_field(ui->rxedit);
+    finalize_field(ui->ryedit);
+    finalize_field(ui->rzedit);
+}
+
+void MainWindow::finalize_field(QWidget *widget) {
+    QLineEdit *ledit = qobject_cast<QLineEdit*>(widget);
+
+    if (ledit) {
+        if (ledit->text().isEmpty()) {
+            ledit->setText(ledit->placeholderText());
+        }
+    }
+}
+
+bool MainWindow::check_values() {
+    bool result = false;
+
+    if (is_valid_textvalue(ui->sxedit->text()) && is_valid_textvalue(ui->syedit->text()) &&
+        is_valid_textvalue(ui->szedit->text()) && is_valid_textvalue(ui->pxedit->text()) &&
+        is_valid_textvalue(ui->pyedit->text()) && is_valid_textvalue(ui->pzedit->text()) &&
+        is_valid_textvalue(ui->rxedit->text()) && is_valid_textvalue(ui->ryedit->text()) &&
+        is_valid_textvalue(ui->rzedit->text())) {
+        result = true;
+    }
+    return result;
+}
+
+bool MainWindow::is_valid_textvalue(QString text) {
+    bool result = false;
+
+    QChar first = text.front();
+    QChar last = text.back();
+
+    if ((first.isNumber() || first == '-') && last.isNumber()) {
+      result = true;
+
+      for (int i = 1; i < text.size() - 1; i++) {
+        if ((i == 1 && !text[i].isNumber() && first == '-') ||
+            (!text[i].isNumber() && text[i] != '.')) {
+          result = false;
+          break;
+        }
+      }
+    }
+    return result;
+}
+
 void MainWindow::display_error(QString result, QString message) {
     ui->errl->setText(message);
     ui->resultl->setText(result);
 }
-

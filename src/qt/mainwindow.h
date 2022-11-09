@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtEvents>
+#include <QLineEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,15 +28,20 @@ private slots:
     void on_visualizeb_clicked();    
     void on_screenb_clicked();
     void on_gifb_clicked();
-    //void on_persc_clicked(bool checked);
-    //void on_orthc_clicked(bool checked);
     void on_autorotationc_clicked(bool checked);
+
+    //void on_sxedit_textChanged(const QString &arg1);
 
 private:
     void process_enterkey();
     void cycle_focus();
     void create_info_labels();
     void update_info_values(QString filename, QString n_vertices, QString n_edges);
+    void update_lineedit(QLineEdit *widget, QString add);
+    void finalize_input_fields();
+    void finalize_field(QWidget *widget);
+    bool check_values();
+    bool is_valid_textvalue(QString text);
     void display_error(QString result, QString message);
     Ui::MainWindow *ui;
 };
