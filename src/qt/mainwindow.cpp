@@ -21,14 +21,23 @@ void MainWindow::start() {
     create_info_labels();
     ui->camera->setFocus();
 
-    ui->persc->setStyleSheet("outline-color: blue");
-    ui->orthc->setStyleSheet("outline-color: blue");
-    ui->autorotationc->setStyleSheet("outline-color: blue");
-
     ui->errl->setStyleSheet("color: grey;");
     display_error("", "no model chosen");
 
     // set style sheet for buttons
+}
+
+void MainWindow::focusChanged(QWidget* old, QWidget* now)
+{
+    QCheckBox *check_old = qobject_cast<QCheckBox*>(old);
+    QCheckBox *check_now = qobject_cast<QCheckBox*>(now);
+
+    if (check_old) {
+        check_old->setStyleSheet("QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
+    }
+    if (check_now) {
+        check_now->setStyleSheet("QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
+    }
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -60,6 +69,10 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   QObject::eventFilter(watched, event);
   return result;
 }
+
+//void MainWindow::focusChanged(QWidget *focused) {
+//    focused->
+//}
 
 void MainWindow::process_enterkey() {
     if (ui->persc->hasFocus()) {

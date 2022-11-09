@@ -105,7 +105,7 @@
      <widget class="QCheckBox" name="orthc">
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
+        <width>105</width>
         <height>20</height>
        </size>
       </property>
@@ -199,9 +199,15 @@
      <widget class="QCheckBox" name="persc">
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
+        <width>105</width>
         <height>20</height>
        </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="text">
        <string>perspective</string>
@@ -262,16 +268,6 @@
       </property>
       <property name="text">
        <string>x</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" rowspan="48">
-     <widget class="QGraphicsView" name="camera">
-      <property name="minimumSize">
-       <size>
-        <width>300</width>
-        <height>300</height>
-       </size>
       </property>
      </widget>
     </item>
@@ -373,7 +369,7 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
+        <width>60</width>
         <height>20</height>
        </size>
       </property>
@@ -441,16 +437,6 @@
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="19" column="6">
-     <widget class="QLineEdit" name="syedit">
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>20</height>
-       </size>
       </property>
      </widget>
     </item>
@@ -543,6 +529,26 @@
       </property>
       <property name="text">
        <string>mesh:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="48">
+     <widget class="QGraphicsView" name="camera">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>300</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="6">
+     <widget class="QLineEdit" name="syedit">
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>20</height>
+       </size>
       </property>
      </widget>
     </item>
