@@ -14,6 +14,7 @@ typedef struct Polygons_s {
 
 typedef struct Mesh_s {
   polygons_t* polygons;
+  polygons_t* polygons_copy;
   int count_of_polygons;
   vector scale;
   vector rotation;
@@ -21,6 +22,7 @@ typedef struct Mesh_s {
 } mesh_t;
 
 mesh_t parse_obj_file(char* path_to_file);
+void copy_polygons(mesh_t original_mesh);
 
 #ifdef __cplusplus
 }

@@ -1,7 +1,7 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("materials/raw/krossovok.obj");
+  mesh_init("materials/raw/building.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
 
@@ -16,17 +16,21 @@ void fleeglut_init(int argc, char **argv) {
   glutDisplayFunc(display);
 }
 
+float deg = 0.0f;
 void display() {
   display_init();
   camera_init();
-  s21_rotate_y(&render_mesh, s21_degree_to_radian(3));
-  s21_rotate_x(&render_mesh, s21_degree_to_radian(3));
-  s21_rotate_z(&render_mesh, s21_degree_to_radian(3));
-  s21_scale(&render_mesh, 0.9, 0.9, 0.9);
-  rendering_mesh(render_mesh);
 
+  copy_polygons(render_mesh);
+  s21_location(0.0f, 0.0f, -150.5f);
+  s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
+  s21_rotate_y(&render_mesh, s21_degree_to_radian(deg));
+  s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
+  s21_scale(&render_mesh, 1, 1, 1);
+  rendering_mesh(render_mesh);
   glutSwapBuffers();
-  // usleep(10);
+  printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
+  scanf("%f", &deg);
 }
 
 void display_init() {
@@ -47,7 +51,6 @@ void camera_init() {
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  glTranslatef(0.0f, 0.0f, -2.5f);
 }
 
 void rendering_mesh(mesh_t mesh) {
@@ -57,9 +60,9 @@ void rendering_mesh(mesh_t mesh) {
     for (int point = 0; point < mesh.polygons[polygon].count_of_points;
          point++) {
       glColor3f(1, 1, 1);
-      glVertex3f(mesh.polygons[polygon].points[point].x,
-                 mesh.polygons[polygon].points[point].y,
-                 mesh.polygons[polygon].points[point].z);
+      glVertex3f(mesh.polygons_copy[polygon].points[point].x,
+                 mesh.polygons_copy[polygon].points[point].y,
+                 mesh.polygons_copy[polygon].points[point].z);
     }
     glEnd();
   }
@@ -67,4 +70,12 @@ void rendering_mesh(mesh_t mesh) {
 
 void mesh_init(char *path_to_file) {
   render_mesh = parse_obj_file(path_to_file);
+  s21_scale(&render_mesh, 1.0f, 1.0f, 1.0f);
+  s21_rotate_x(&render_mesh, 0.0f);
+  s21_rotate_y(&render_mesh, 0.0f);
+  s21_rotate_z(&render_mesh, 0.0f);
+}
+
+void s21_location(float x, float y, float z) {
+  glTranslatef(x, y, z);
 }

@@ -13,6 +13,8 @@ void display_init();
 void camera_init();
 void rendering_mesh(mesh_t mesh);
 void mesh_init(char *path_to_file);
+void s21_location(float x, float y, float z);
+int display_change(); 
 
 mesh_t render_mesh;
 

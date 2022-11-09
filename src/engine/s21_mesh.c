@@ -1,9 +1,19 @@
 #include "s21_mesh.h"
 
+void copy_polygons(mesh_t original_mesh) {
+  for (int i = 0; i < original_mesh.count_of_polygons; i++) {
+    for (int j = 0; j < original_mesh.polygons[i].count_of_points; j++) {
+      original_mesh.polygons_copy[i].points[j] = original_mesh.polygons[i].points[j];
+    }
+  }
+}
+
 mesh_t parse_obj_file(char *path_to_file) {
   mesh_t result_mesh;
   result_mesh.polygons = malloc(sizeof(polygons_t));
-  if (result_mesh.polygons == NULL) {
+  result_mesh.polygons_copy = malloc(sizeof(polygons_t) * 2);
+  if (result_mesh.polygons == NULL ||
+    result_mesh.polygons_copy == NULL) {
     exit(S21_MALLOC);
   }
 
@@ -105,12 +115,15 @@ mesh_t parse_obj_file(char *path_to_file) {
 
         int offset_array = 1;
         result_mesh.polygons = realloc(result_mesh.polygons, polygons_count * sizeof(polygons_t));
-        if (result_mesh.polygons == NULL) {
+        result_mesh.polygons_copy = realloc(result_mesh.polygons_copy, polygons_count * sizeof(polygons_t));
+        if (result_mesh.polygons == NULL || result_mesh.polygons_copy == NULL ) {
             exit(S21_REALLOC);
         }
 
         result_mesh.polygons[polygons_count - offset_array].points = (vector*)malloc(counts * sizeof(vector));
-        if (result_mesh.polygons[polygons_count - offset_array].points == NULL) {
+        result_mesh.polygons_copy[polygons_count - offset_array].points = (vector*)malloc(counts * sizeof(vector));
+        if (result_mesh.polygons[polygons_count - offset_array].points == NULL ||
+        result_mesh.polygons_copy[polygons_count - offset_array].points == NULL) {
           exit(S21_MALLOC);
         }
 
@@ -119,6 +132,7 @@ mesh_t parse_obj_file(char *path_to_file) {
         }
 
         result_mesh.polygons[polygons_count - offset_array].count_of_points = counts;
+        result_mesh.polygons_copy[polygons_count - offset_array].count_of_points = counts;
         free(points_tmp);
       }
     }
