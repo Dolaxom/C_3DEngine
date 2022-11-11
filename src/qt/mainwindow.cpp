@@ -24,8 +24,6 @@ void MainWindow::start() {
     ui->errl->setStyleSheet("color: grey;");
     display_error("N/A", "no model chosen for display.");
 
-    //ui->sxedit->setText("999");
-
     // set style sheet for buttons
 }
 
@@ -201,16 +199,16 @@ void MainWindow::finalize_field(QWidget *widget) {
 }
 
 bool MainWindow::check_values() {
-    bool result = false;
+    bool error = true;
 
     if (is_valid_textvalue(ui->sxedit->text()) && is_valid_textvalue(ui->syedit->text()) &&
         is_valid_textvalue(ui->szedit->text()) && is_valid_textvalue(ui->pxedit->text()) &&
         is_valid_textvalue(ui->pyedit->text()) && is_valid_textvalue(ui->pzedit->text()) &&
         is_valid_textvalue(ui->rxedit->text()) && is_valid_textvalue(ui->ryedit->text()) &&
         is_valid_textvalue(ui->rzedit->text())) {
-        result = true;
+        error = false;
     }
-    return result;
+    return error;
 }
 
 bool MainWindow::is_valid_textvalue(QString text) {
