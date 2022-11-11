@@ -5,7 +5,6 @@
 #include <QtEvents>
 #include <QLineEdit>
 #include <QDir>
-#include <QOpenGLWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,8 +30,6 @@ private slots:
     void on_screenb_clicked();
     void on_gifb_clicked();
     void on_autorotationc_clicked(bool checked);
-
-    //void on_sxedit_textChanged(const QString &arg1);
 
 private:
     void process_enterkey();

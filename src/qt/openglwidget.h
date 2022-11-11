@@ -3,10 +3,13 @@
 
 #include <QOpenGLWidget>
 
-class openglwidget : public QOpenGLWidget
+class OpenGLWidget : public QOpenGLWidget
 {
 public:
-    openglwidget();
+    OpenGLWidget();
+    void initializeGL() override;
+    void resizeGL(int w, int h) override;
+    void paintGL() override;
 };
 
 #endif // OPENGLWIDGET_H
