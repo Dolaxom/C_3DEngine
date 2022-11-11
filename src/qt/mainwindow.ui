@@ -806,13 +806,19 @@
       <item>
        <layout class="QGridLayout" name="lay_bg">
         <property name="horizontalSpacing">
-         <number>2</number>
+         <number>1</number>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="bgl">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>150</width>
+            <width>100</width>
             <height>20</height>
            </size>
           </property>
@@ -821,16 +827,41 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QComboBox" name="bgcolord">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>150</width>
+            <width>100</width>
             <height>20</height>
            </size>
           </property>
           <property name="editable">
-           <bool>true</bool>
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="bgcolorl">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>color</string>
           </property>
          </widget>
         </item>
@@ -841,27 +872,8 @@
         <property name="horizontalSpacing">
          <number>1</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="vertl">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>vertices:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="vertsizel">
+        <item row="2" column="1">
+         <widget class="QLabel" name="vertstylel">
           <property name="minimumSize">
            <size>
             <width>50</width>
@@ -875,12 +887,12 @@
            </size>
           </property>
           <property name="text">
-           <string>size</string>
+           <string>style</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QComboBox" name="vertsized">
+        <item row="2" column="2">
+         <widget class="QComboBox" name="vertstyled">
           <property name="minimumSize">
            <size>
             <width>100</width>
@@ -894,7 +906,7 @@
            </size>
           </property>
           <property name="editable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -917,22 +929,22 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="vertstylel">
+        <item row="0" column="0">
+         <widget class="QLabel" name="vertl">
           <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>100</width>
             <height>20</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>50</width>
+            <width>100</width>
             <height>20</height>
            </size>
           </property>
           <property name="text">
-           <string>style</string>
+           <string>vertices:</string>
           </property>
          </widget>
         </item>
@@ -951,12 +963,31 @@
            </size>
           </property>
           <property name="editable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QComboBox" name="vertstyled">
+        <item row="3" column="1">
+         <widget class="QLabel" name="vertsizel">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QSlider" name="vertsizes">
           <property name="minimumSize">
            <size>
             <width>100</width>
@@ -969,8 +1000,14 @@
             <height>20</height>
            </size>
           </property>
-          <property name="editable">
-           <bool>true</bool>
+          <property name="maximum">
+           <number>5</number>
+          </property>
+          <property name="sliderPosition">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -996,45 +1033,7 @@
            </size>
           </property>
           <property name="editable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="edgesizel">
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>size</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="edgecolorl">
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>color</string>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -1057,6 +1056,25 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="edgecolorl">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>color</string>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="1">
          <widget class="QLabel" name="edgestylel">
           <property name="minimumSize">
@@ -1076,28 +1094,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QComboBox" name="edgesized">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="editable">
-           <bool>true</bool>
-          </property>
-          <property name="placeholderText">
-           <string>1</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
          <widget class="QComboBox" name="edgestyled">
           <property name="minimumSize">
@@ -1113,7 +1109,51 @@
            </size>
           </property>
           <property name="placeholderText">
-           <string>plain</string>
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="edgesizel">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QSlider" name="edgesizes">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximum">
+           <number>5</number>
+          </property>
+          <property name="sliderPosition">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>

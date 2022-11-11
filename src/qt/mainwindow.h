@@ -35,6 +35,7 @@ private slots:
 private:
     void process_enterkey();
     void cycle_focus();
+    void init_dropdowns();
     void create_info_labels();
     void update_info_values(QString filename, QString n_vertices, QString n_edges);
     void update_lineedit(QLineEdit *widget, QString add);

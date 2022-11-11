@@ -18,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::start() {
+    init_dropdowns();
     create_info_labels();
+
     ui->camera->setFocus();
 
     ui->errl->setStyleSheet("color: grey;");
@@ -132,6 +134,18 @@ void MainWindow::on_gifb_clicked()
 void MainWindow::on_autorotationc_clicked(bool checked)
 {
     ui->autorotationc->setChecked(checked);
+}
+
+void MainWindow::init_dropdowns() {
+    QStringList colors = {"red", "blue", "green", "yellow", "pink"};
+    //QStringList sizes = {"0", "0.5", "1"}
+
+    ui->projectiond->addItems({"perspective", "orthogonal"});
+    ui->bgcolord->addItems(colors);
+    ui->vertcolord->addItems(colors);
+    ui->vertstyled->addItems({"none", "circle", "square"});
+    ui->edgecolord->addItems(colors);
+    ui->edgestyled->addItems({"solid", "dashed"});
 }
 
 void MainWindow::create_info_labels() {
