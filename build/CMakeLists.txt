@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(s21_calc VERSION 0.1 LANGUAGES C CXX)
+project(C_3DEngine VERSION 0.1 LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -15,14 +15,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/gcc_64")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGLWidgets OpenGL)
 
 set(PROJECT_SOURCES
     ../src/main.cpp
     ../src/qt/mainwindow.cpp
     ../src/qt/mainwindow.h
     ../src/qt/mainwindow.ui
-##    ../src/engine/s21_camera.c 
+    ../src/qt/openglwidget.cpp
+    ../src/qt/openglwidget.h
+##    ../src/engine/s21_camera.c
 ##    ../src/engine/s21_camera.h 
     ../src/engine/s21_engine.h 
     ../src/engine/s21_mesh.c 
@@ -44,7 +46,11 @@ else()
     )
 endif()
 
-target_link_libraries(C_3DEngine PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(C_3DEngine PRIVATE
+    Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::OpenGLWidgets
+    Qt${QT_VERSION_MAJOR}::OpenGL
+)
 
 set_target_properties(C_3DEngine PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

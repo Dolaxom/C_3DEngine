@@ -5,6 +5,7 @@
 #include <QtEvents>
 #include <QLineEdit>
 #include <QDir>
+#include <QOpenGLWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

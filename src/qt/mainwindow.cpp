@@ -25,8 +25,6 @@ void MainWindow::start() {
 
     ui->errl->setStyleSheet("color: grey;");
     display_error("N/A", "no model chosen for display.");
-
-    // set style sheet for buttons
 }
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)
@@ -138,15 +136,14 @@ void MainWindow::on_autorotationc_clicked(bool checked)
 
 void MainWindow::init_dropdowns() {
     QDir meshpath ("../../materials/raw");
-    QStringList meshfiles = meshpath.entryList(QDir::Files);
-    QStringList colors = {"red", "blue", "green", "yellow", "pink"};
+    QStringList colors = {"black", "white", "red", "blue", "green", "yellow", "pink"};
 
-    ui->meshd->addItems(meshfiles);
+    ui->meshd->addItems(meshpath.entryList(QDir::Files));
     ui->projectiond->addItems({"perspective", "orthogonal"});
     ui->bgcolord->addItems(colors);
     ui->vertcolord->addItems(colors);
-    ui->vertstyled->addItems({"none", "circle", "square"});
     ui->edgecolord->addItems(colors);
+    ui->vertstyled->addItems({"none", "circle", "square"});
     ui->edgestyled->addItems({"solid", "dashed"});
 }
 
