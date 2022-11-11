@@ -122,7 +122,7 @@ void MainWindow::on_visualizeb_clicked() {
 
 void MainWindow::on_screenb_clicked()
 {
-    // make a screenshot
+    // take a screenshot
 }
 
 
@@ -137,9 +137,11 @@ void MainWindow::on_autorotationc_clicked(bool checked)
 }
 
 void MainWindow::init_dropdowns() {
+    QDir meshpath ("../../materials/raw");
+    QStringList meshfiles = meshpath.entryList(QDir::Files);
     QStringList colors = {"red", "blue", "green", "yellow", "pink"};
-    //QStringList sizes = {"0", "0.5", "1"}
 
+    ui->meshd->addItems(meshfiles);
     ui->projectiond->addItems({"perspective", "orthogonal"});
     ui->bgcolord->addItems(colors);
     ui->vertcolord->addItems(colors);
