@@ -8,6 +8,7 @@ QLabel *verticesl = NULL;
 QLabel *verticesl_value = NULL;
 QLabel *edgesl = NULL;
 QLabel *edgesl_value = NULL;
+OpenGLWidget *view = NULL;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -18,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::start() {
+    view = new OpenGLWidget(ui->camera);
     init_dropdowns();
     create_info_labels();
 
@@ -25,10 +27,6 @@ void MainWindow::start() {
 
     ui->errl->setStyleSheet("color: grey;");
     display_error("N/A", "no model chosen for display.");
-
-    OpenGLWidget *view = new OpenGLWidget(ui->camera);
-    //view->initializeGL();
-    view->show();
 }
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)
@@ -64,6 +62,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       cycle_focus();
       result = true;
     }
+  } else if (event->type() == QEvent::Resize) {
+      view->resizeGL(ui->camera->width(), ui->camera->height());
   }
 
   QObject::eventFilter(watched, event);
@@ -109,6 +109,9 @@ void MainWindow::cycle_focus() {
 
 void MainWindow::on_visualizeb_clicked() {
     bool error = false;
+
+    qDebug() << ui->meshd->count() << ui->edgecolord->count();
+    qDebug() << ui->meshd->currentIndex();
 
     finalize_input_fields();
     error = check_values();

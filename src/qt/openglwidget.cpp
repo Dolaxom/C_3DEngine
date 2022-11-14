@@ -1,6 +1,6 @@
 #include "openglwidget.h"
 
-OpenGLWidget::OpenGLWidget(QWidget *parent) {       // : QOpenGLWidget(parent)
+OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
 
 }
 
@@ -15,7 +15,8 @@ void OpenGLWidget::initializeGL() {
 }
 
 void OpenGLWidget::resizeGL(int w, int h) {
-    glViewport(0, 0, w, h);     // get w h from qgraphicsview widget
+    this->resize(w, h);
+    glViewport(0, 0, w, h);
 }
 
 void OpenGLWidget::paintGL() {
@@ -29,9 +30,7 @@ void OpenGLWidget::paintGL() {
 
     if (parent) {
         resizeGL(parent->width(), parent->height());
-        qDebug() << "has parent" << "|" << parent->width() << parent->height();
-    } else {
-        //qDebug() << "null parent";
+        // qDebug() << "has parent" << "|" << parent->width() << parent->height();
     }
 
 }

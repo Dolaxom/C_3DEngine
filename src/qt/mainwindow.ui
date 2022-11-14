@@ -213,6 +213,12 @@
           <property name="editable">
            <bool>true</bool>
           </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+          <property name="maxCount">
+           <number>10</number>
+          </property>
          </widget>
         </item>
         <item row="1" column="0">
