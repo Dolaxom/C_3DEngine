@@ -27,7 +27,8 @@ void MainWindow::start() {
     display_error("N/A", "no model chosen for display.");
 
     OpenGLWidget *view = new OpenGLWidget(ui->camera);
-    //view->show();
+    //view->initializeGL();
+    view->show();
 }
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)

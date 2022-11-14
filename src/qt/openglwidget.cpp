@@ -1,15 +1,17 @@
 #include "openglwidget.h"
 
-OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
+OpenGLWidget::OpenGLWidget(QWidget *parent) {       // : QOpenGLWidget(parent)
 
 }
 
 void OpenGLWidget::initializeGL() {
     // initializeGL();
 
-    //glEnable(GL_DEPTH_TEST);
-    //glMatrixMode(GL_PROJECTION);
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+
+    qDebug() << "init";
 }
 
 void OpenGLWidget::resizeGL(int w, int h) {
@@ -27,7 +29,7 @@ void OpenGLWidget::paintGL() {
 
     if (parent) {
         resizeGL(parent->width(), parent->height());
-        //qDebug() << "has parent";
+        qDebug() << "has parent" << "|" << parent->width() << parent->height();
     } else {
         //qDebug() << "null parent";
     }
