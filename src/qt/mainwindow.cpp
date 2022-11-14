@@ -31,15 +31,15 @@ void MainWindow::start() {
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)
 {
-//    QCheckBox *check_old = qobject_cast<QCheckBox*>(old);
-//    QCheckBox *check_now = qobject_cast<QCheckBox*>(now);
+    QCheckBox *check_old = qobject_cast<QCheckBox*>(old);
+    QCheckBox *check_now = qobject_cast<QCheckBox*>(now);
 
-//    if (check_old) {
-//        check_old->setStyleSheet("QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
-//    }
-//    if (check_now) {
-//        check_now->setStyleSheet("QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
-//    }
+    if (check_old) {
+        check_old->setStyleSheet("QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
+    }
+    if (check_now) {
+        check_now->setStyleSheet("QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
+    }
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
