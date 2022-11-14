@@ -2,9 +2,10 @@
 #define OPENGLWIDGET_H
 
 #include <QOpenGLWidget>
-// #include <QOpenGLBuffer>
-// #include <QOpenGLFunctions>
-// #include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+//#include <QOpenGLVertexArrayObject>
+//#include <QOpenGLShaderProgram>
+//#include <QOpenGLFunctions>
 
 class OpenGLWidget : public QOpenGLWidget
 {
