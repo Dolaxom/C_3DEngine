@@ -31,15 +31,15 @@ void MainWindow::start() {
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)
 {
-    QCheckBox *check_old = qobject_cast<QCheckBox*>(old);
-    QCheckBox *check_now = qobject_cast<QCheckBox*>(now);
+//    QCheckBox *check_old = qobject_cast<QCheckBox*>(old);
+//    QCheckBox *check_now = qobject_cast<QCheckBox*>(now);
 
-    if (check_old) {
-        check_old->setStyleSheet("QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
-    }
-    if (check_now) {
-        check_now->setStyleSheet("QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
-    }
+//    if (check_old) {
+//        check_old->setStyleSheet("QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
+//    }
+//    if (check_now) {
+//        check_now->setStyleSheet("QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
+//    }
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
@@ -110,9 +110,6 @@ void MainWindow::cycle_focus() {
 void MainWindow::on_visualizeb_clicked() {
     bool error = false;
 
-    qDebug() << ui->meshd->count() << ui->edgecolord->count();
-    qDebug() << ui->meshd->currentIndex();
-
     finalize_input_fields();
     error = check_values();
 
@@ -143,9 +140,13 @@ void MainWindow::on_autorotationc_clicked(bool checked)
 
 void MainWindow::init_dropdowns() {
     QDir meshpath ("../../materials/raw");
+    QStringList meshlist = meshpath.entryList(QDir::Files);
     QStringList colors = {"black", "white", "red", "blue", "green", "yellow", "pink"};
 
-    ui->meshd->addItems(meshpath.entryList(QDir::Files));
+    qDebug() << meshpath.entryList(QDir::Files) << meshpath.entryList(QDir::Files).count();
+    qDebug() << colors << colors.count();
+
+    ui->meshd->addItems(meshlist);
     ui->projectiond->addItems({"perspective", "orthogonal"});
     ui->bgcolord->addItems(colors);
     ui->vertcolord->addItems(colors);
