@@ -1,5 +1,4 @@
 #include "openglwidget.h"
-#include "../engine/math/s21_engine_math.h"
 
 mesh_t mesh;
 float deg = 0.0f;
@@ -16,7 +15,6 @@ QString vertcolorstr = NULL;
 QString edgecolorstr = NULL;
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
-
 }
 
 void OpenGLWidget::initializeGL() {
@@ -51,23 +49,15 @@ void OpenGLWidget::paintGL() {
     updateProjection();
 
     displayMesh();
-
-    //glRotatef(90, 0, 0, 1);
-
-//    glBegin(GL_TRIANGLES);
-//    glColor3f(1, 1, 1);
-
-//    glVertex3d(0, 0, -1.0f);
-//    glVertex3d(1, 0, -1.0f);
-//    glVertex3d(0, 1, -1.0f);
-
-    glEnd();
 }
 
 void OpenGLWidget::updateValues(QString newmesh, int projection_index, QString bg_color) {
     projection = projection_index;
     meshstr = newmesh;
     bgcolorstr = bg_color;
+
+    // translate color to rgb
+    // translate values from qstrings to doubles
 
     initMesh();
     update();
@@ -107,10 +97,12 @@ void OpenGLWidget::initMesh() {
   if (path_to_file) {
       strncpy(path_to_file, qpath.toStdString().c_str(), 255);
       mesh = parse_obj_file(path_to_file);
+
       s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
       s21_rotate_x(&mesh, 0.0f);
       s21_rotate_y(&mesh, 0.0f);
       s21_rotate_z(&mesh, 0.0f);
+
       free(path_to_file);
   }
 }
@@ -132,13 +124,15 @@ void OpenGLWidget::renderMesh() {
 
 void OpenGLWidget::displayMesh() {
   copy_polygons(mesh);
-  //glTranslatef(0.0f, 0.0f, -150.5f);
+
+  if (projection == 1) {
+      glTranslatef(0.0f, 0.0f, -150.5f);
+  }
+
   s21_rotate_x(&mesh, s21_degree_to_radian(0));
   s21_rotate_y(&mesh, s21_degree_to_radian(deg));
   s21_rotate_z(&mesh, s21_degree_to_radian(0));
   s21_scale(&mesh, 1, 1, 1);
+
   renderMesh();
-  // glutSwapBuffers();
-  // printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
-  // scanf("%f", &deg);
 }

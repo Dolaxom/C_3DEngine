@@ -7,8 +7,12 @@
 //#include <QOpenGLVertexArrayObject>
 //#include <QOpenGLShaderProgram>
 
+#include "../engine/math/s21_engine_math.h"
+
 class OpenGLWidget : public QOpenGLWidget
 {
+    Q_OBJECT
+
 public:
     OpenGLWidget(QWidget *parent = nullptr);
     void initializeGL() override;
