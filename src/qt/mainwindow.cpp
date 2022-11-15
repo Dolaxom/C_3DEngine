@@ -66,7 +66,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       result = true;
     }
   } else if (event->type() == QEvent::Resize) {
-      //view->resize(ui->camera->width(), ui->camera->height());
       view->resizeGL(ui->camera->width(), ui->camera->height());
   }
 
@@ -126,7 +125,10 @@ void MainWindow::on_visualizeb_clicked() {
     error = check_values();
 
     if (!error) {
-        view->setValues(ui->meshd->itemText(ui->meshd->currentIndex()), ui->projectiond->currentIndex(), ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
+        view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
+                        ui->projectiond->currentIndex(),
+                        ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
+
         ui->resultl->setStyleSheet("color: green;");
         display_error("SUCCESS", "");
     } else {
@@ -166,6 +168,8 @@ void MainWindow::init_dropdowns() {
     ui->edgecolord->addItems(colors);
     ui->vertstyled->addItems({"none", "circle", "square"});
     ui->edgestyled->addItems({"solid", "dashed"});
+
+    // switching between dropdown items crashes the entire program why?
 }
 
 void MainWindow::create_info_labels() {
