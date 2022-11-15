@@ -16,6 +16,11 @@ public:
     void paintGL() override;
     void updateValues(QString mesh, int projection_index, QString bg_color);
     void updateProjection();
+
+private:
+    void initMesh();
+    void renderMesh();
+    void displayMesh();
 };
 
 #endif // OPENGLWIDGET_H

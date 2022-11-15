@@ -154,7 +154,7 @@ void MainWindow::on_autorotationc_clicked(bool checked)
 }
 
 void MainWindow::init_dropdowns() {
-    QDir meshpath ("../../materials/raw");
+    QDir meshpath ("../../materials/raw");      // get path to materials folder some other way
     QStringList meshlist = meshpath.entryList(QDir::Files);
     QStringList colors = {"black", "white", "red", "blue", "green", "yellow", "pink"};
 
