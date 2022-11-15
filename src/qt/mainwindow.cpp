@@ -66,6 +66,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       result = true;
     }
   } else if (event->type() == QEvent::Resize) {
+      // view->resizeGL(ui->camera->width(), ui->camera->height());
       view->resizeGL(ui->camera->width(), ui->camera->height());
   }
 
@@ -125,6 +126,7 @@ void MainWindow::on_visualizeb_clicked() {
     error = check_values();
 
     if (!error) {
+        view->setValues(ui->meshd->itemText(ui->meshd->currentIndex()), ui->projectiond->currentIndex(), ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
         ui->resultl->setStyleSheet("color: green;");
         display_error("SUCCESS", "");
     } else {

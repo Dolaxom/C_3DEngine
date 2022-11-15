@@ -11,7 +11,7 @@ class OpenGLWidget : public QOpenGLWidget
 {
 public:
     OpenGLWidget(QWidget *parent = nullptr);
-    void setValues(bool projection);
+    void setValues(QString mesh, int projection_index, QString bg_color);
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
