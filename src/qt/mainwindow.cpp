@@ -61,6 +61,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     } else if (keyEvent->key() == Qt::Key_Control) {
       cycle_focus();
       result = true;
+    } else if (keyEvent->key() == Qt::Key_Tab) {
+      set_fullscreen();
+      result = true;
     }
   } else if (event->type() == QEvent::Resize) {
       view->resizeGL(ui->camera->width(), ui->camera->height());
@@ -68,6 +71,14 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
   QObject::eventFilter(watched, event);
   return result;
+}
+
+void MainWindow::set_fullscreen() {
+    if (this->isFullScreen()) {
+        showNormal();
+    } else {
+        showFullScreen();
+    }
 }
 
 void MainWindow::process_enterkey() {

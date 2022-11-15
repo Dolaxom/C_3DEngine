@@ -34,6 +34,7 @@ private slots:
     void on_autorotationc_clicked(bool checked);
 
 private:
+    void set_fullscreen();
     void process_enterkey();
     void cycle_focus();
     void init_dropdowns();
