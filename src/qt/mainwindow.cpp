@@ -66,7 +66,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       result = true;
     }
   } else if (event->type() == QEvent::Resize) {
-      // view->resizeGL(ui->camera->width(), ui->camera->height());
+      //view->resize(ui->camera->width(), ui->camera->height());
       view->resizeGL(ui->camera->width(), ui->camera->height());
   }
 
