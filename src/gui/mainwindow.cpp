@@ -65,6 +65,13 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     } else if (keyEvent->key() == Qt::Key_Tab) {
       set_fullscreen();
       result = true;
+    } else if (keyEvent->key() == Qt::Key_Space) {
+      if (ui->projectiond->currentIndex() == 0) {
+          ui->projectiond->setCurrentIndex(1);
+      } else {
+          ui->projectiond->setCurrentIndex(0);
+      }
+      result = true;
     }
   } else if (event->type() == QEvent::Resize) {
     view->resizeGL(ui->camera->width(), ui->camera->height());
