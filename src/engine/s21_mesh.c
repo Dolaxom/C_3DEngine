@@ -8,12 +8,14 @@ void copy_polygons(mesh_t original_mesh) {
   }
 }
 
-mesh_t parse_obj_file(char *path_to_file) {
+mesh_t parse_obj_file(char* path_to_file, int* error_code) {
+  *error_code = S21_OK;
   mesh_t result_mesh;
   result_mesh.polygons = malloc(sizeof(polygons_t));
   result_mesh.polygons_copy = malloc(sizeof(polygons_t) * 2);
   if (result_mesh.polygons == NULL ||
     result_mesh.polygons_copy == NULL) {
+
     exit(S21_MALLOC);
   }
 
@@ -138,10 +140,11 @@ mesh_t parse_obj_file(char *path_to_file) {
     }
     fclose(file);
   } else {
-    exit(S21_FILE);
+    *error_code = S21_FILE;
   }
-  result_mesh.count_of_polygons = polygons_count;
-  // printf("cout: %d\n", result_mesh.count_of_polygons);
-  free(tmp_array_of_points);
-  return result_mesh;
+  if (!(*error_code)) {
+      result_mesh.count_of_polygons = polygons_count;
+      free(tmp_array_of_points);
+      return result_mesh;
+  }
 }

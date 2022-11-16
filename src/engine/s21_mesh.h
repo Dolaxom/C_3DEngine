@@ -21,7 +21,7 @@ typedef struct Mesh_s {
   vector location;
 } mesh_t;
 
-mesh_t parse_obj_file(char* path_to_file);
+mesh_t parse_obj_file(char* path_to_file, int* error_code);
 void copy_polygons(mesh_t original_mesh);
 
 #ifdef __cplusplus
