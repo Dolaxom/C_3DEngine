@@ -109,7 +109,7 @@ void OpenGLWidget::initMesh() {
     mesh = parse_obj_file(path_to_file);
 
 
-    glTranslatef(0.0f, 0.0f, -150.5f);
+    // glTranslatef(0.0f, 0.0f, -150.5f);
     s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
     s21_rotate_x(&mesh, 0.0f);
     s21_rotate_y(&mesh, 0.0f);
