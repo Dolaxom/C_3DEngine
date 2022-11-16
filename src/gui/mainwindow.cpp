@@ -74,22 +74,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   return result;
 }
 
-void MainWindow::set_fullscreen() {
-  if (this->isFullScreen()) {
-    showNormal();
-  } else {
-    showFullScreen();
-  }
-}
-
-void MainWindow::process_enterkey() {
-  if (ui->autorotationc->hasFocus()) {
-    on_autorotationc_clicked(!ui->autorotationc->checkState());
-  } else {
-    on_visualizeb_clicked();
-  }
-}
-
 void MainWindow::cycle_focus() {
   if (ui->meshd->hasFocus()) {
     ui->sxedit->setFocus();
@@ -119,6 +103,23 @@ void MainWindow::cycle_focus() {
   }
 }
 
+
+void MainWindow::set_fullscreen() {
+  if (this->isFullScreen()) {
+    showNormal();
+  } else {
+    showFullScreen();
+  }
+}
+
+void MainWindow::process_enterkey() {
+  if (ui->autorotationc->hasFocus()) {
+    on_autorotationc_clicked(!ui->autorotationc->checkState());
+  } else {
+    on_visualizeb_clicked();
+  }
+}
+
 void MainWindow::on_visualizeb_clicked() {
   bool error = false;
 
@@ -126,9 +127,14 @@ void MainWindow::on_visualizeb_clicked() {
   error = check_values();
 
   if (!error) {
-    //        view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
-    //                        ui->projectiond->currentIndex(),
-    //                        ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
+            view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
+                            ui->projectiond->currentIndex(),
+                            ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
+
+      QDir build_debug("build/build-debug");
+      QString fstrr = build_debug.relativeFilePath("/materials/raw");
+      qDebug() << fstrr; // << QDir::current();
+      //system("cd ../../../../../../materials/raw && pwd && ls");
 
     ui->resultl->setStyleSheet("color: green;");
     display_error("SUCCESS", "");
@@ -157,9 +163,9 @@ void MainWindow::init_dropdowns() {
   QStringList colors = {"black", "white",  "red", "blue",
                         "green", "yellow", "pink"};
 
-  qDebug() << meshpath.entryList(QDir::Files)
-           << meshpath.entryList(QDir::Files).count();
-  qDebug() << colors << colors.count();
+//  qDebug() << meshpath.entryList(QDir::Files)
+//           << meshpath.entryList(QDir::Files).count();
+//  qDebug() << colors << colors.count();
 
   ui->meshd->addItems(meshlist);
   ui->projectiond->addItems({"perspective", "orthogonal"});
@@ -253,6 +259,18 @@ bool MainWindow::check_values() {
     error = false;
   }
   return error;
+}
+
+bool MainWindow::is_valid_mesh() {
+    bool result = false;
+
+
+
+    //QString fstrr = QDir::current().relativeFilePath("/../materials/raw/cube.obj");
+
+    //system("cd ../../materials/raw && pwd && ls");
+
+    return result;
 }
 
 bool MainWindow::is_valid_textvalue(QString text) {

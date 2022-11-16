@@ -50,20 +50,20 @@ void OpenGLWidget::paintGL() {
   displayMesh();
 }
 
-// void OpenGLWidget::updateSettings(QString newmesh, int projection_index) { //
-// QStringList colors, QStringList styles
-//     projection = projection_index;
-//     meshstr = newmesh;
-//     bgcolorstr = bg_color;
+ void OpenGLWidget::updateValues(QString newmesh, int projection_index, QString bg_color) { //
+    //QStringList colors, QStringList styles
+     projection = projection_index;
+     meshstr = newmesh;
+     bgcolorstr = bg_color;
 
-//    // translate color to rgb
-//    // translate values from qstrings to doubles
+    // translate color to rgb
+    // translate values from qstrings to doubles
 
-//    initMesh();
-//    update();
+    initMesh();
+    update();
 
-//    qDebug() << projection << meshstr << bgcolorstr;
-//}
+    qDebug() << projection << meshstr << bgcolorstr;
+}
 
 // void OpenGLWidget::updateValues(QStringList values) {
 
@@ -100,6 +100,7 @@ void OpenGLWidget::updateProjection() {
 
 void OpenGLWidget::initMesh() {
   // concat meshstr and pathstr & turn it to char*
+  // also don't do it here do it in the mainwindow
   QString qpath = "../../materials/raw/monkey.obj";
   char *path_to_file = (char *)malloc(sizeof(char) * 255);
 

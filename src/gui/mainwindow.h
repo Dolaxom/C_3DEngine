@@ -35,9 +35,9 @@ class MainWindow : public QMainWindow {
   void on_autorotationc_clicked(bool checked);
 
  private:
+  void cycle_focus();
   void set_fullscreen();
   void process_enterkey();
-  void cycle_focus();
   void init_dropdowns();
   void create_info_labels();
   void update_info_values(QString filename, QString n_vertices,
@@ -46,6 +46,7 @@ class MainWindow : public QMainWindow {
   void finalize_input_fields();
   void finalize_field(QWidget *widget);
   bool check_values();
+  bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
   void display_error(QString result, QString message);
   Ui::MainWindow *ui;
