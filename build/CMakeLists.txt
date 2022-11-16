@@ -19,13 +19,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGLWidgets Ope
 
 set(PROJECT_SOURCES
     ../src/main.cpp
-    ../src/qt/mainwindow.cpp
-    ../src/qt/mainwindow.h
-    ../src/qt/mainwindow.ui
-    ../src/qt/openglwidget.cpp
-    ../src/qt/openglwidget.h
-##    ../src/engine/s21_camera.c
-##    ../src/engine/s21_camera.h 
+    ../src/gui/mainwindow.cpp
+    ../src/gui/mainwindow.h
+    ../src/gui/mainwindow.ui
+    ../src/gui/openglwidget.cpp
+    ../src/gui/openglwidget.h
     ../src/engine/s21_engine.h 
     ../src/engine/s21_mesh.c 
     ../src/engine/s21_mesh.h 
