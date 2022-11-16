@@ -18,7 +18,7 @@ public:
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
-    void updateValues(QString mesh, int projection_index, QString bg_color);
+    //void updateValues(QString mesh, int projection_index, QString bg_color);
     void updateProjection();
 
 private:

@@ -1,7 +1,6 @@
 #include "openglwidget.h"
 
 mesh_t mesh;
-float deg = 0.0f;
 GLdouble fov = 90.0;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
@@ -51,19 +50,23 @@ void OpenGLWidget::paintGL() {
     displayMesh();
 }
 
-void OpenGLWidget::updateValues(QString newmesh, int projection_index, QString bg_color) {
-    projection = projection_index;
-    meshstr = newmesh;
-    bgcolorstr = bg_color;
+//void OpenGLWidget::updateSettings(QString newmesh, int projection_index) {  //  QStringList colors, QStringList styles
+//    projection = projection_index;
+//    meshstr = newmesh;
+//    bgcolorstr = bg_color;
 
-    // translate color to rgb
-    // translate values from qstrings to doubles
+//    // translate color to rgb
+//    // translate values from qstrings to doubles
 
-    initMesh();
-    update();
+//    initMesh();
+//    update();
 
-    qDebug() << projection << meshstr << bgcolorstr;
-}
+//    qDebug() << projection << meshstr << bgcolorstr;
+//}
+
+//void OpenGLWidget::updateValues(QStringList values) {
+
+//}
 
 void OpenGLWidget::updateProjection() {
     if (projection == 0) {
@@ -130,7 +133,7 @@ void OpenGLWidget::displayMesh() {
   }
 
   s21_rotate_x(&mesh, s21_degree_to_radian(0));
-  s21_rotate_y(&mesh, s21_degree_to_radian(deg));
+  s21_rotate_y(&mesh, s21_degree_to_radian(0));
   s21_rotate_z(&mesh, s21_degree_to_radian(0));
   s21_scale(&mesh, 1, 1, 1);
 

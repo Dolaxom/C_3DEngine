@@ -3,15 +3,18 @@
 argc=$#
 flag="all"
 
-if [ -f "$(pwd)/utils/utils.conf" ]; then
-    source $(pwd)/utils/utils.conf
+configfile=$(find $(dirname "$0") -name "utils.conf")
+configcount=$(echo "$configfile" | wc -l)
+
+if [ -n "$configfile" ] && [ $configcount -eq 1 ]; then
+    source $configfile
 else
-    echo "ERROR: rerun the script from the s21_calc/ folder" && echo ""
+    echo "ERROR: unable to locate utils.congig file"
     exit 0
 fi
 
 if [ $argc -gt 1 ]; then
-    echo "ERROR: too many arguments" && echo ""
+    echo "ERROR: too many arguments"
     flag="h"
 elif [ $argc -eq 1 ]; then
     if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
@@ -21,14 +24,13 @@ elif [ $argc -eq 1 ]; then
     elif [[ "$1" == "--optional" ]] || [[ "$1" == "-o" ]]; then
         flag="o"
     else
-        echo "ERROR: unknown option" && echo ""
+        echo "ERROR: unknown option"
         flag="h"
     fi
 fi
 
 if [[ "$flag" == "h" ]]; then
     echo "usage: ./linux_package_installer.sh [ options ]"
-    echo "       ./utils/linux_package_installer.sh [ options ]"
     echo "options:"
     echo "  -h --help       - displays help"
     echo "  -e --essential  - installs essential packages"
@@ -39,7 +41,7 @@ fi
 
 sudo apt-get update
 
-echo "" && echo "installing kit: ESSENTIAL"
+echo "" && echo "installing kit: $projectname: ESSENTIAL"
 if [[ "$flag" == "e" ]] || [[ "$flag" == "all" ]]; then
     for ((i=0; i<${#packages_ess[@]}; i++)); do
         package="${packages_ess[i]}"
@@ -59,7 +61,7 @@ if [[ "$flag" == "e" ]] || [[ "$flag" == "all" ]]; then
 else echo "      skip"
 fi
 
-echo "" && echo "installing kit: OPTIONAL"
+echo "" && echo "installing kit: $projectname: OPTIONAL"
 if [[ "$flag" == "o" ]] || [[ "$flag" == "all" ]]; then
     for ((i=0; i<${#packages_opt[@]}; i++)); do
         package="${packages_opt[i]}"

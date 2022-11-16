@@ -125,9 +125,9 @@ void MainWindow::on_visualizeb_clicked() {
     error = check_values();
 
     if (!error) {
-        view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
-                        ui->projectiond->currentIndex(),
-                        ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
+//        view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
+//                        ui->projectiond->currentIndex(),
+//                        ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
 
         ui->resultl->setStyleSheet("color: green;");
         display_error("SUCCESS", "");
