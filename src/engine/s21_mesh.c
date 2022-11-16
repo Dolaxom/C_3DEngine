@@ -141,6 +141,7 @@ mesh_t parse_obj_file(char *path_to_file) {
     exit(S21_FILE);
   }
   result_mesh.count_of_polygons = polygons_count;
+  // printf("cout: %d\n", result_mesh.count_of_polygons);
   free(tmp_array_of_points);
   return result_mesh;
 }

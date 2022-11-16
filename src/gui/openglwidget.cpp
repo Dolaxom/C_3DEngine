@@ -108,6 +108,8 @@ void OpenGLWidget::initMesh() {
     strncpy(path_to_file, qpath.toStdString().c_str(), 255);
     mesh = parse_obj_file(path_to_file);
 
+
+    glTranslatef(0.0f, 0.0f, -150.5f);
     s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
     s21_rotate_x(&mesh, 0.0f);
     s21_rotate_y(&mesh, 0.0f);
@@ -135,9 +137,9 @@ void OpenGLWidget::renderMesh() {
 void OpenGLWidget::displayMesh() {
   copy_polygons(mesh);
 
-  if (projection == 1) {
-    glTranslatef(0.0f, 0.0f, -150.5f);
-  }
+//  if (projection == 1) {
+//    glTranslatef(0.0f, 0.0f, -150.5f);
+//  }
 
   s21_rotate_x(&mesh, s21_degree_to_radian(0));
   s21_rotate_y(&mesh, s21_degree_to_radian(0));
