@@ -84,9 +84,16 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void MainWindow::cycle_focus() {
-  if (ui->meshd->hasFocus()) {
-    ui->sxedit->setFocus();
-  } else if (ui->sxedit->hasFocus()) {
+  // this is horrible and needs a rewrite
+
+  if (ui->meshpathedit->hasFocus()) {
+      ui->meshd->setFocus();
+  } else if (ui->meshd->hasFocus()) {
+      ui->projectiond->setFocus();
+  } else if (ui->projectiond->hasFocus()) {
+      ui->sxedit->setFocus();
+  }
+  else if (ui->sxedit->hasFocus()) {
     ui->syedit->setFocus();
   } else if (ui->syedit->hasFocus()) {
     ui->szedit->setFocus();
@@ -108,7 +115,7 @@ void MainWindow::cycle_focus() {
     ui->camera->setFocus();
     //
   } else {
-    ui->meshd->setFocus();
+    ui->meshpathedit->setFocus();
   }
 }
 
@@ -124,7 +131,28 @@ void MainWindow::set_fullscreen() {
 void MainWindow::process_enterkey() {
   if (ui->autorotationc->hasFocus()) {
     on_autorotationc_clicked(!ui->autorotationc->checkState());
-  } else {
+  } else if (ui->meshpathedit->hasFocus()) {
+    on_meshpathedit_editingFinished();
+  } else if (ui->meshd->hasFocus()) {
+      //
+  } else if (ui->projectiond->hasFocus()) {
+      //
+  } else if (ui->bgcolord->hasFocus()) {
+      //
+  } else if (ui->edgecolord->hasFocus()) {
+      //
+  } else if (ui->vertcolord->hasFocus()) {
+      //
+  } else if (ui->edgestyled->hasFocus()) {
+      //
+  } else if (ui->vertstyled->hasFocus()) {
+      //
+  } else if (ui->edgesizes->hasFocus()) {
+      //
+  } else if (ui->vertsizes->hasFocus()) {
+      //
+  }
+  else {
     on_visualizeb_clicked();
   }
 }

@@ -126,7 +126,6 @@ void OpenGLWidget::setProjection(int new_projection) {
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
-    qDebug() << new_meshpath;
     char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
 
     if (meshpath) {
@@ -138,6 +137,7 @@ void OpenGLWidget::setMeshpath(QString new_meshpath) {
         errcode = -100;
     }
 
+    qDebug() << new_meshpath;
     qDebug() << "setmeshpath errcode = " << errcode;
 }
 
