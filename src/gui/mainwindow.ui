@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1011</width>
-    <height>800</height>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -222,6 +222,9 @@
           <property name="maxCount">
            <number>10</number>
           </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
@@ -278,6 +281,9 @@
             <width>170</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="placeholderText">
+           <string>(none)</string>
           </property>
          </widget>
         </item>
@@ -1255,13 +1261,13 @@
         <property name="minimumSize">
          <size>
           <width>252</width>
-          <height>40</height>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>252</width>
-          <height>40</height>
+          <height>60</height>
          </size>
         </property>
         <property name="text">
@@ -1269,6 +1275,9 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

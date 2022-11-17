@@ -17,11 +17,17 @@ class OpenGLWidget : public QOpenGLWidget {
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;
-  void updateValues(QString mesh, int projection_index, QString bg_color);
-  void updateProjection();
+  void setProjection(int new_projection);
+  void setMeshpath(QString new_meshpath);
+  void setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor);
+  void setSizes(double new_vertsize, double new_edgesize);
+  void setStyles(QString new_vertstyle, QString new_edgestyle);
+  void setErrcode(int new_code);
+  int getErrcode();
 
  private:
-  void initMesh();
+  void updateProjection();
+  void initMesh(char *path_to_mesh);
   void renderMesh();
   void displayMesh();
 };

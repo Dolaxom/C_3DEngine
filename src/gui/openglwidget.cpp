@@ -1,5 +1,6 @@
 #include "openglwidget.h"
 
+int errcode = 0;
 mesh_t mesh;
 GLdouble fov = 90.0;
 GLdouble aspect_w = 0.0;
@@ -8,10 +9,6 @@ GLdouble range = 2.0;
 GLdouble near_dist = 0.5;
 GLdouble far_dist = 500.0;
 int projection = 0;
-QString meshstr = NULL;
-QString bgcolorstr = NULL;
-QString vertcolorstr = NULL;
-QString edgecolorstr = NULL;
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
@@ -50,25 +47,6 @@ void OpenGLWidget::paintGL() {
   displayMesh();
 }
 
- void OpenGLWidget::updateValues(QString newmesh, int projection_index, QString bg_color) { //
-    //QStringList colors, QStringList styles
-     projection = projection_index;
-     meshstr = newmesh;
-     bgcolorstr = bg_color;
-
-    // translate color to rgb
-    // translate values from qstrings to doubles
-
-    initMesh();
-    update();
-
-    qDebug() << projection << meshstr << bgcolorstr;
-}
-
-// void OpenGLWidget::updateValues(QStringList values) {
-
-//}
-
 void OpenGLWidget::updateProjection() {
   if (projection == 0) {
     if (this->width() >= this->height()) {
@@ -98,16 +76,9 @@ void OpenGLWidget::updateProjection() {
   }
 }
 
-void OpenGLWidget::initMesh() {
-  // concat meshstr and pathstr & turn it to char*
-  // also don't do it here do it in the mainwindow
-  QString qpath = "../../materials/raw/monkey.obj";
-  char *path_to_file = (char *)malloc(sizeof(char) * 255);
-
-  if (path_to_file) {
-    strncpy(path_to_file, qpath.toStdString().c_str(), 255);
-    mesh = parse_obj_file(path_to_file);
-
+void OpenGLWidget::initMesh(char *path_to_mesh) {
+    int errcode = 0;
+    mesh = parse_obj_file(path_to_mesh, &errcode);
 
     // glTranslatef(0.0f, 0.0f, -150.5f);
     s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
@@ -115,8 +86,7 @@ void OpenGLWidget::initMesh() {
     s21_rotate_y(&mesh, 0.0f);
     s21_rotate_z(&mesh, 0.0f);
 
-    free(path_to_file);
-  }
+    //qDebug() << errcode;
 }
 
 void OpenGLWidget::renderMesh() {
@@ -135,16 +105,58 @@ void OpenGLWidget::renderMesh() {
 }
 
 void OpenGLWidget::displayMesh() {
-  copy_polygons(mesh);
+  if (errcode == 0) {
+      copy_polygons(mesh);
 
-//  if (projection == 1) {
-//    glTranslatef(0.0f, 0.0f, -150.5f);
-//  }
+        //  if (projection == 1) {
+        //    glTranslatef(0.0f, 0.0f, -150.5f);
+        //  }
 
-  s21_rotate_x(&mesh, s21_degree_to_radian(0));
-  s21_rotate_y(&mesh, s21_degree_to_radian(0));
-  s21_rotate_z(&mesh, s21_degree_to_radian(0));
-  s21_scale(&mesh, 1, 1, 1);
+      s21_rotate_x(&mesh, s21_degree_to_radian(0));
+      s21_rotate_y(&mesh, s21_degree_to_radian(0));
+      s21_rotate_z(&mesh, s21_degree_to_radian(0));
+      s21_scale(&mesh, 1, 1, 1);
 
-  renderMesh();
+      renderMesh();
+  }
+}
+
+void OpenGLWidget::setProjection(int new_projection) {
+    projection = new_projection;
+}
+
+void OpenGLWidget::setMeshpath(QString new_meshpath) {
+    qDebug() << new_meshpath;
+    char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
+
+    if (meshpath) {
+        strncpy(meshpath, new_meshpath.toStdString().c_str(), (new_meshpath.length() + 1));
+        initMesh(meshpath);
+        update();
+        free(meshpath);
+    } else {
+        errcode = -100;
+    }
+
+    qDebug() << errcode;
+}
+
+void OpenGLWidget::setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor) {
+
+}
+
+void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
+
+}
+
+void OpenGLWidget::setStyles(QString new_vertstyle, QString new_edgestyle) {
+
+}
+
+void OpenGLWidget::setErrcode(int new_code) {
+    errcode = new_code;
+}
+
+int OpenGLWidget::getErrcode() {
+    return errcode;
 }

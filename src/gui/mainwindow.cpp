@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 
-#include "./ui_mainwindow.h"
-
 QLabel *filenamel = NULL;
 QLabel *filenamel_value = NULL;
 QLabel *verticesl = NULL;
@@ -20,13 +18,16 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::start() {
   view = new OpenGLWidget(ui->camera);
+
+  ui->errl->setStyleSheet("color: grey;");
+  ui->errl->setText("");
+  ui->resultl->setText("");
+
+  init_meshpath();
   init_dropdowns();
   create_info_labels();
 
   ui->camera->setFocus();
-
-  ui->errl->setStyleSheet("color: grey;");
-  display_error("N/A", "no model chosen for display.");
 }
 
 void MainWindow::focusChanged(QWidget *old, QWidget *now) {
@@ -71,6 +72,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       } else {
           ui->projectiond->setCurrentIndex(0);
       }
+      on_visualizeb_clicked();
       result = true;
     }
   } else if (event->type() == QEvent::Resize) {
@@ -134,20 +136,14 @@ void MainWindow::on_visualizeb_clicked() {
   error = check_values();
 
   if (!error) {
-            view->updateValues(ui->meshd->itemText(ui->meshd->currentIndex()),
-                            ui->projectiond->currentIndex(),
-                            ui->bgcolord->itemText(ui->bgcolord->currentIndex()));
-
-      QDir build_debug("build/build-debug");
-      QString fstrr = build_debug.relativeFilePath("/materials/raw");
-      qDebug() << fstrr; // << QDir::current();
-      //system("cd ../../../../../../materials/raw && pwd && ls");
-
-    ui->resultl->setStyleSheet("color: green;");
-    display_error("SUCCESS", "");
+    update_openglwidget();
+    if (view->getErrcode() != 0) {
+        display_error("error when parsing mesh.", false);
+    } else {
+        display_error("", true);
+    }
   } else {
-    ui->resultl->setStyleSheet("color: red;");
-    display_error("ERROR", "errortext errortext errortext");
+    display_error("incorrect input value(s); unable to proceed", false);
   }
 }
 
@@ -163,18 +159,29 @@ void MainWindow::on_autorotationc_clicked(bool checked) {
   ui->autorotationc->setChecked(checked);
 }
 
+void MainWindow::on_meshpathedit_editingFinished()
+{
+    QDir newpath(ui->meshpathedit->text());
+    update_meshfields(newpath);
+}
+
+void MainWindow::init_meshpath() {
+    QDir def("../../materials/raw");
+    update_meshfields(def);
+
+    if (!def.exists()) {
+        ui->meshpathedit->setText("");
+        ui->meshpathedit->setPlaceholderText("(none)");
+        display_error("failure when trying to load the default path variable; set meshpath field manually.", false);
+    }
+}
+
 void MainWindow::init_dropdowns() {
-  QDir meshpath(
-      "../../materials/raw");  // get path to materials folder some other way
-  QStringList meshlist = meshpath.entryList(QDir::Files);
   QStringList colors = {"black", "white",  "red", "blue",
                         "green", "yellow", "pink"};
 
-//  qDebug() << meshpath.entryList(QDir::Files)
-//           << meshpath.entryList(QDir::Files).count();
 //  qDebug() << colors << colors.count();
 
-  ui->meshd->addItems(meshlist);
   ui->projectiond->addItems({"perspective", "orthogonal"});
   ui->bgcolord->addItems(colors);
   ui->vertcolord->addItems(colors);
@@ -210,10 +217,10 @@ void MainWindow::create_info_labels() {
   filenamel->setText("filename: ");
   verticesl->setText("vertices: ");
   edgesl->setText("edges: ");
-  update_info_values("n/a", "0", "0");
+  update_info_labels("n/a", "0", "0");
 }
 
-void MainWindow::update_info_values(QString filename, QString n_vertices,
+void MainWindow::update_info_labels(QString filename, QString n_vertices,
                                     QString n_edges) {
   filenamel_value->setAlignment(Qt::AlignRight);
   verticesl_value->setAlignment(Qt::AlignRight);
@@ -224,24 +231,43 @@ void MainWindow::update_info_values(QString filename, QString n_vertices,
   edgesl_value->setText(n_edges);
 }
 
+void MainWindow::update_meshfields(QDir meshpath) {
+    if (meshpath.exists()) {
+        ui->meshpathedit->setText(meshpath.absolutePath());
+        ui->meshd->clear();
+        ui->meshd->addItems(meshpath.entryList(QDir::Files));
+    } else {
+        ui->meshd->clear();
+        ui->meshd->addItem("(none)");
+    }
+}
+
 void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
   widget->setText(widget->text() + add);
   widget->setAlignment(Qt::AlignRight);
 }
 
-void MainWindow::finalize_input_fields() {
-  finalize_field(ui->sxedit);
-  finalize_field(ui->syedit);
-  finalize_field(ui->szedit);
-  finalize_field(ui->pxedit);
-  finalize_field(ui->pyedit);
-  finalize_field(ui->pzedit);
-  finalize_field(ui->rxedit);
-  finalize_field(ui->ryedit);
-  finalize_field(ui->rzedit);
+void MainWindow::update_openglwidget() {
+    view->setProjection(ui->projectiond->currentIndex());
+    view->setMeshpath(ui->meshpathedit->text() + "/" + ui->meshd->currentText());
+    //
+    view->update();
 }
 
-void MainWindow::finalize_field(QWidget *widget) {
+void MainWindow::finalize_input_fields() {
+  finalize_lineedit(ui->sxedit);
+  finalize_lineedit(ui->syedit);
+  finalize_lineedit(ui->szedit);
+  finalize_lineedit(ui->pxedit);
+  finalize_lineedit(ui->pyedit);
+  finalize_lineedit(ui->pzedit);
+  finalize_lineedit(ui->rxedit);
+  finalize_lineedit(ui->ryedit);
+  finalize_lineedit(ui->rzedit);
+  finalize_lineedit(ui->meshpathedit);
+}
+
+void MainWindow::finalize_lineedit(QWidget *widget) {
   QLineEdit *ledit = qobject_cast<QLineEdit *>(widget);
 
   if (ledit) {
@@ -262,7 +288,8 @@ bool MainWindow::check_values() {
       is_valid_textvalue(ui->pzedit->text()) &&
       is_valid_textvalue(ui->rxedit->text()) &&
       is_valid_textvalue(ui->ryedit->text()) &&
-      is_valid_textvalue(ui->rzedit->text())) {
+      is_valid_textvalue(ui->rzedit->text()) &&
+      is_valid_mesh()) {
     error = false;
   }
   return error;
@@ -271,12 +298,12 @@ bool MainWindow::check_values() {
 bool MainWindow::is_valid_mesh() {
     bool result = false;
 
+    QString finpath = ui->meshpathedit->text() + "/" + ui->meshd->currentText();
+    QFile finmesh(finpath);
 
-
-    //QString fstrr = QDir::current().relativeFilePath("/../materials/raw/cube.obj");
-
-    //system("cd ../../materials/raw && pwd && ls");
-
+    if (finmesh.exists()) {
+        result = true;
+    }
     return result;
 }
 
@@ -300,7 +327,14 @@ bool MainWindow::is_valid_textvalue(QString text) {
   return result;
 }
 
-void MainWindow::display_error(QString result, QString message) {
+void MainWindow::display_error(QString message, bool noerror) {
+  if (noerror) {
+      ui->resultl->setStyleSheet("color: green;");
+      ui->resultl->setText("SUCCESS");
+  } else {
+      ui->resultl->setStyleSheet("color: red;");
+      ui->resultl->setText("ERROR");
+  }
   ui->errl->setText(message);
-  ui->resultl->setText(result);
 }
+
