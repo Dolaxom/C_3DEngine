@@ -77,7 +77,7 @@ void OpenGLWidget::updateProjection() {
 }
 
 void OpenGLWidget::initMesh(char *path_to_mesh) {
-    int errcode = 0;
+    errcode = 0;
     mesh = parse_obj_file(path_to_mesh, &errcode);
 
     // glTranslatef(0.0f, 0.0f, -150.5f);
@@ -86,7 +86,7 @@ void OpenGLWidget::initMesh(char *path_to_mesh) {
     s21_rotate_y(&mesh, 0.0f);
     s21_rotate_z(&mesh, 0.0f);
 
-    //qDebug() << errcode;
+    qDebug() << "initmesh errcode = " << errcode;
 }
 
 void OpenGLWidget::renderMesh() {
@@ -138,7 +138,7 @@ void OpenGLWidget::setMeshpath(QString new_meshpath) {
         errcode = -100;
     }
 
-    qDebug() << errcode;
+    qDebug() << "setmeshpath errcode = " << errcode;
 }
 
 void OpenGLWidget::setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor) {
