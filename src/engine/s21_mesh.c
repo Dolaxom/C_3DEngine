@@ -143,8 +143,9 @@ mesh_t parse_obj_file(char* path_to_file, int* error_code) {
     *error_code = S21_FILE;
   }
   if (!(*error_code)) {
+      result_mesh.count_of_points = points_count;
       result_mesh.count_of_polygons = polygons_count;
       free(tmp_array_of_points);
-      return result_mesh;
   }
+  return result_mesh;
 }

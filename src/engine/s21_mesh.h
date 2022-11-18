@@ -16,6 +16,7 @@ typedef struct Mesh_s {
   polygons_t* polygons;
   polygons_t* polygons_copy;
   int count_of_polygons;
+  int count_of_points;
   vector scale;
   vector rotation;
   vector location;

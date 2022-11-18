@@ -1,7 +1,7 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("materials/raw/building.obj");
+  mesh_init("../materials/raw/building.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
 
@@ -69,7 +69,8 @@ void rendering_mesh(mesh_t mesh) {
 }
 
 void mesh_init(char *path_to_file) {
-  render_mesh = parse_obj_file(path_to_file);
+  int error = 0;
+  render_mesh = parse_obj_file(path_to_file, &error);
   s21_scale(&render_mesh, 1.0f, 1.0f, 1.0f);
   s21_rotate_x(&render_mesh, 0.0f);
   s21_rotate_y(&render_mesh, 0.0f);
