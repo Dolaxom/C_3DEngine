@@ -5,7 +5,7 @@ mesh_t mesh;
 GLdouble fov = 90.0;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
-GLdouble range = 2.0;
+GLdouble range = 1.0;
 GLdouble near_dist = 0.5;
 GLdouble far_dist = 500.0;
 int projection = 0;
@@ -159,4 +159,12 @@ void OpenGLWidget::setErrcode(int new_code) {
 
 int OpenGLWidget::getErrcode() {
     return errcode;
+}
+
+int OpenGLWidget::getPolygonsCount() {
+    return mesh.count_of_polygons;
+}
+
+int OpenGLWidget::getPointsCount() {
+    return mesh.count_of_points;
 }

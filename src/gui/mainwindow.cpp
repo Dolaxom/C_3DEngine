@@ -70,10 +70,15 @@ void MainWindow::on_redrawb_clicked() {
 
   if (!error) {
     update_openglwidget();
+
     if (view->getErrcode() != 0) {
-        display_error("error when parsing mesh.", false);
+        display_error("error when parsing mesh: " + ui->meshpathedit->text(), false);
+        update_info_labels(get_filename(ui->meshpathedit->text()), "0", "0");
     } else {
         display_error("", true);
+        update_info_labels(get_filename(ui->meshpathedit->text()),
+                           QString::number(view->getPointsCount()),
+                           QString::number(view->getPolygonsCount()));
     }
   } else {
     display_error("incorrect meshpath or input value(s); unable to proceed", false);
@@ -98,10 +103,9 @@ void MainWindow::on_meshpathb_clicked() {
     QString fileName = QFileDialog::getOpenFileName(NULL, "open:", last_dirpath, "OBJ files (*.obj)");
 
     if (!fileName.isNull()) {
-        QFileInfo fileInfo;
-        fileInfo.setFile(fileName);
-        last_dirpath = fileInfo.absolutePath();
+        last_dirpath = get_filedir(fileName);
         ui->meshpathedit->setText(fileName);
+        on_redrawb_clicked();
     }
 }
 
@@ -219,9 +223,8 @@ void MainWindow::create_info_labels() {
 
 void MainWindow::update_info_labels(QString filename, QString n_vertices,
                                     QString n_edges) {
-  filenamel_value->setAlignment(Qt::AlignRight);
-  verticesl_value->setAlignment(Qt::AlignRight);
-  edgesl_value->setAlignment(Qt::AlignRight);
+  filenamel_value->setMinimumWidth(filename.length() * 10 + 10);
+  filenamel_value->setMaximumWidth(filename.length() * 10 + 10);
 
   filenamel_value->setText(filename);
   verticesl_value->setText(n_vertices);
@@ -324,6 +327,27 @@ void MainWindow::display_error(QString message, bool noerror) {
       ui->resultl->setText("ERROR");
   }
   ui->errl->setText(message);
+}
+
+QString MainWindow::get_filedir(QString fullpath) {
+    QFileInfo fileInfo;
+    fileInfo.setFile(fullpath);
+    return fileInfo.absolutePath();
+}
+
+QString MainWindow::get_filename(QString fullpath) {
+    QString fileName;
+    QFileInfo fileInfo;
+
+    fileInfo.setFile(fullpath);
+
+    if (fileInfo.completeSuffix().isEmpty()) {
+        fileName = fileInfo.completeBaseName();
+    } else {
+        fileName = fileInfo.completeBaseName() + "." + fileInfo.completeSuffix();
+        qDebug() << fileInfo.completeSuffix();
+    }
+    return fileName;
 }
 
 bool MainWindow::process_altkey() {

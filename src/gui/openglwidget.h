@@ -24,6 +24,8 @@ class OpenGLWidget : public QOpenGLWidget {
   void setStyles(QString new_vertstyle, QString new_edgestyle);
   void setErrcode(int new_code);
   int getErrcode();
+  int getPolygonsCount();
+  int getPointsCount();
 
  private:
   void updateProjection();

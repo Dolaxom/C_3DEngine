@@ -59,6 +59,8 @@ private:
   bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
   void display_error(QString message, bool noerror);
+  QString get_filedir(QString fullpath);
+  QString get_filename(QString fullpath);
   bool process_altkey();
   bool process_fkey();
   bool process_enterkey();
