@@ -1,7 +1,7 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("../materials/raw/building.obj");
+  mesh_init("../materials/raw/monkey_million_polygons.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
 
@@ -22,11 +22,11 @@ void display() {
   camera_init();
 
   copy_polygons(render_mesh);
-  s21_location(0.0f, 0.0f, -150.5f);
+  s21_location(0.0f, 0.0f, -5.5f);
   s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
   s21_rotate_y(&render_mesh, s21_degree_to_radian(deg));
   s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
-  s21_scale(&render_mesh, 1, 1, 1);
+  s21_scale(&render_mesh, 2, 2, 2);
   rendering_mesh(render_mesh);
   glutSwapBuffers();
   printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
@@ -54,17 +54,12 @@ void camera_init() {
 }
 
 void rendering_mesh(mesh_t mesh) {
-  for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
     glLineWidth(0.01);
-    glBegin(GL_POLYGON);
-    for (int point = 0; point < mesh.polygons[polygon].count_of_points;
-         point++) {
-      glColor3f(1, 1, 1);
-      glVertex3f(mesh.polygons_copy[polygon].points[point].x,
-                 mesh.polygons_copy[polygon].points[point].y,
-                 mesh.polygons_copy[polygon].points[point].z);
-    }
-    glEnd();
+    for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
+      glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
+      glDisableClientState(GL_VERTEX_ARRAY);
   }
 }
 
