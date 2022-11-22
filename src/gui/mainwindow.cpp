@@ -1,25 +1,12 @@
 #include "mainwindow.h"
 
-QStringList projections = {"perspective", "orthogonal"};
-QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "pink"};
-QStringList vert_styles = {"solid", "dashed"};
-QStringList edge_styles = {"none", "circle", "square"};
-
-QString def_dirpath = "../../materials/raw";
-QString last_dirpath = NULL;
-
-QLabel *filenamel = NULL;
-QLabel *filenamel_value = NULL;
-QLabel *verticesl = NULL;
-QLabel *verticesl_value = NULL;
-QLabel *edgesl = NULL;
-QLabel *edgesl_value = NULL;
-OpenGLWidget *view = NULL;
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+  start();
+
   qApp->installEventFilter(this);
+  connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)), this, SLOT(focusChanged(QWidget*,QWidget*)), Qt::QueuedConnection);
   connect(ui->projections, SIGNAL(valueChanged(int)), this, SLOT(on_projections_valueChanged()), Qt::QueuedConnection);
   connect(ui->bgcolors, SIGNAL(valueChanged(int)), this, SLOT(on_bgcolors_valueChanged()), Qt::QueuedConnection);
   connect(ui->vertcolors, SIGNAL(valueChanged(int)), this, SLOT(on_vertcolors_valueChanged()), Qt::QueuedConnection);
@@ -30,31 +17,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::start() {
-  view = new OpenGLWidget(ui->camera);
-
-  ui->errl->setStyleSheet("color: grey;");
-  ui->errl->setText("");
-  ui->resultl->setText("");
-
-  init_meshpath();
-  init_spinboxes();
-  create_info_labels();
-
-  ui->camera->setFocus();
-}
 
 void MainWindow::focusChanged(QWidget *old, QWidget *now) {
-  QCheckBox *check_old = qobject_cast<QCheckBox *>(old);
-  QCheckBox *check_now = qobject_cast<QCheckBox *>(now);
+  QSpinBox *check_now = qobject_cast<QSpinBox *>(now);
 
-  if (check_old) {
-    check_old->setStyleSheet(
-        "QCheckBox {border: 0px solid royalblue; border-radius: 2px;}");
-  }
   if (check_now) {
-    check_now->setStyleSheet(
-        "QCheckBox {border: 1px solid royalblue; border-radius: 2px;}");
+    QLineEdit *spinedit = check_now->findChild<QLineEdit*>();
+
+    if (spinedit) {
+        spinedit->setReadOnly(true);
+        spinedit->deselect();
+    }
   }
 }
 
@@ -68,20 +41,20 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
-      process_enterkey();
-      result = true;
+      result = process_enterkey();
     } else if (keyEvent->key() == Qt::Key_Alt) {
       ui->camera->setFocus();
     } else if (keyEvent->key() == Qt::Key_Escape) {
       close();
       result = true;
-    } else if (keyEvent->key() == Qt::Key_Control) {
-      cycle_focus();
-      result = true;
-    } else if (keyEvent->key() == Qt::Key_Tab) {
-      set_fullscreen();
-      result = true;
     }
+//    else if (keyEvent->key() == Qt::Key_Control) {
+//      cycle_focus();
+//      result = true;
+//    }
+//    else if (keyEvent->key() == Qt::Key_Tab) {
+//      result = process_tabkey();
+//    }
   } else if (event->type() == QEvent::Resize) {
     view->resizeGL(ui->camera->width(), ui->camera->height());
   }
@@ -90,80 +63,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   return result;
 }
 
-void MainWindow::cycle_focus() {
-  // this is horrible and needs a rewrite
-
-  if (ui->meshpathedit->hasFocus()) {
-      //ui->meshd->setFocus();
-  }
-  //else if (ui->meshd->hasFocus()) {
-      //ui->projectiond->setFocus();
-  //} else if (ui->projectiond->hasFocus()) {
-  //    ui->sxedit->setFocus();
-  //}
-  else if (ui->sxedit->hasFocus()) {
-    ui->syedit->setFocus();
-  } else if (ui->syedit->hasFocus()) {
-    ui->szedit->setFocus();
-  } else if (ui->szedit->hasFocus()) {
-    ui->pxedit->setFocus();
-  } else if (ui->pxedit->hasFocus()) {
-    ui->pyedit->setFocus();
-  } else if (ui->pyedit->hasFocus()) {
-    ui->pzedit->setFocus();
-  } else if (ui->pzedit->hasFocus()) {
-    ui->rxedit->setFocus();
-  } else if (ui->rxedit->hasFocus()) {
-    ui->autorotationc->setFocus();
-  } else if (ui->autorotationc->hasFocus()) {
-    ui->ryedit->setFocus();
-  } else if (ui->ryedit->hasFocus()) {
-    ui->rzedit->setFocus();
-  } else if (ui->rzedit->hasFocus()) {
-    ui->camera->setFocus();
-    //
-  } else {
-    ui->meshpathedit->setFocus();
-  }
-}
-
-
-void MainWindow::set_fullscreen() {
-  if (this->isFullScreen()) {
-    showNormal();
-  } else {
-    showFullScreen();
-  }
-}
-
-void MainWindow::process_enterkey() {
-  if (ui->autorotationc->hasFocus()) {
-    on_autorotationc_clicked(!ui->autorotationc->checkState());
-  } else if (ui->meshpathedit->hasFocus()) {
-    //on_meshpathedit_editingFinished();
-  //} else if (ui->meshd->hasFocus()) {
-      //
-  } else if (ui->projections->hasFocus()) {
-      //
-  } else if (ui->bgcolors->hasFocus()) {
-      //
-  } else if (ui->edgecolors->hasFocus()) {
-      //
-  } else if (ui->vertcolors->hasFocus()) {
-      //
-  } else if (ui->edgestyles->hasFocus()) {
-      //
-  } else if (ui->vertstyles->hasFocus()) {
-      //
-  } else if (ui->edgesizes->hasFocus()) {
-      //
-  } else if (ui->vertsizes->hasFocus()) {
-      //
-  }
-  else {
-    on_redrawb_clicked();
-  }
-}
+// PRIVATE SLOTS
 
 void MainWindow::on_redrawb_clicked() {
   bool error = false;
@@ -185,10 +85,12 @@ void MainWindow::on_redrawb_clicked() {
 
 void MainWindow::on_screenb_clicked() {
   // take a screenshot
+  qDebug() << "screen";
 }
 
 void MainWindow::on_gifb_clicked() {
   // record a gif
+  qDebug() << "gif";
 }
 
 void MainWindow::on_autorotationc_clicked(bool checked) {
@@ -240,6 +142,22 @@ void MainWindow::on_edgestyles_valueChanged()
 {
     ui->edgestyles->findChild<QLineEdit*>()->deselect();
     update_spinbox(ui->edgestyles, "", "_" + edge_styles.at(ui->edgestyles->value()));
+}
+
+// PRIVATE
+
+void MainWindow::start() {
+  view = new OpenGLWidget(ui->camera);
+
+  ui->errl->setStyleSheet("color: grey;");
+  ui->errl->setText("");
+  ui->resultl->setText("");
+
+  init_meshpath();
+  init_spinboxes();
+  create_info_labels();
+
+  ui->camera->setFocus();
 }
 
 void MainWindow::init_meshpath() {
@@ -411,3 +329,26 @@ void MainWindow::display_error(QString message, bool noerror) {
   ui->errl->setText(message);
 }
 
+bool MainWindow::process_tabkey() {
+    if (this->isFullScreen()) {
+      showNormal();
+    } else {
+      showFullScreen();
+    }
+    return true;
+}
+
+bool MainWindow::process_enterkey() {
+  if (ui->autorotationc->hasFocus()) {
+    on_autorotationc_clicked(!ui->autorotationc->checkState());
+  } else if (ui->gifb->hasFocus()) {
+    on_gifb_clicked();
+  } else if (ui->screenb->hasFocus()) {
+    on_screenb_clicked();
+  } else if (ui->meshpathb->hasFocus()) {
+    on_meshpathb_clicked();
+  } else {
+    on_redrawb_clicked();
+  }
+  return true;
+}

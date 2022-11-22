@@ -1312,6 +1312,32 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>redrawb</tabstop>
+  <tabstop>screenb</tabstop>
+  <tabstop>gifb</tabstop>
+  <tabstop>meshpathedit</tabstop>
+  <tabstop>meshpathb</tabstop>
+  <tabstop>projections</tabstop>
+  <tabstop>sxedit</tabstop>
+  <tabstop>syedit</tabstop>
+  <tabstop>szedit</tabstop>
+  <tabstop>pxedit</tabstop>
+  <tabstop>pyedit</tabstop>
+  <tabstop>pzedit</tabstop>
+  <tabstop>rxedit</tabstop>
+  <tabstop>ryedit</tabstop>
+  <tabstop>rzedit</tabstop>
+  <tabstop>autorotationc</tabstop>
+  <tabstop>bgcolors</tabstop>
+  <tabstop>vertcolors</tabstop>
+  <tabstop>vertstyles</tabstop>
+  <tabstop>vertsizes</tabstop>
+  <tabstop>edgecolors</tabstop>
+  <tabstop>edgestyles</tabstop>
+  <tabstop>edgesizes</tabstop>
+  <tabstop>camera</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

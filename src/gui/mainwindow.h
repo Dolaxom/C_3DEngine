@@ -23,7 +23,6 @@ class MainWindow : public QMainWindow {
  public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
-  void start();
 
  public slots:
   void focusChanged(QWidget *old, QWidget *now);
@@ -45,9 +44,7 @@ class MainWindow : public QMainWindow {
   void on_edgestyles_valueChanged();
 
 private:
-  void cycle_focus();
-  void set_fullscreen();
-  void process_enterkey();
+  void start();
   void init_meshpath();
   void init_spinboxes();
   void create_info_labels();
@@ -62,6 +59,23 @@ private:
   bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
   void display_error(QString message, bool noerror);
+  bool process_tabkey();
+  bool process_enterkey();
+
+  QStringList projections = {"perspective", "orthogonal"};
+  QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "pink"};
+  QStringList vert_styles = {"solid", "dashed"};
+  QStringList edge_styles = {"none", "circle", "square"};
+  QString def_dirpath = "../materials/raw";
+  QString last_dirpath = NULL;
+  QLabel *filenamel = NULL;
+  QLabel *filenamel_value = NULL;
+  QLabel *verticesl = NULL;
+  QLabel *verticesl_value = NULL;
+  QLabel *edgesl = NULL;
+  QLabel *edgesl_value = NULL;
+  OpenGLWidget *view = NULL;
+
   Ui::MainWindow *ui;
 };
 #endif  // MAINWINDOW_H
