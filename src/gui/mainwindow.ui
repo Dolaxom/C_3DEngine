@@ -98,7 +98,7 @@
          </size>
         </property>
         <property name="text">
-         <string>visualize</string>
+         <string>redraw</string>
         </property>
        </widget>
       </item>
@@ -864,6 +864,25 @@
         <property name="horizontalSpacing">
          <number>1</number>
         </property>
+        <item row="0" column="1">
+         <widget class="QLabel" name="bgcolorl">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>color</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="bgl">
           <property name="minimumSize">
@@ -884,40 +903,18 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QComboBox" name="bgcolord">
+         <widget class="QSpinBox" name="bgcolors">
           <property name="minimumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
            </size>
-          </property>
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="bgcolorl">
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>color</string>
           </property>
          </widget>
         </item>
@@ -927,6 +924,9 @@
        <layout class="QGridLayout" name="lay_vert">
         <property name="horizontalSpacing">
          <number>1</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>3</number>
         </property>
         <item row="2" column="1">
          <widget class="QLabel" name="vertstylel">
@@ -944,25 +944,6 @@
           </property>
           <property name="text">
            <string>style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QComboBox" name="vertstyled">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="editable">
-           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -1004,25 +985,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="vertcolord">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
          <widget class="QLabel" name="vertsizel">
           <property name="minimumSize">
@@ -1043,27 +1005,62 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QSlider" name="vertsizes">
+         <widget class="QDoubleSpinBox" name="vertsizes">
           <property name="minimumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="maximum">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="vertcolors">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QSpinBox" name="vertstyles">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
            </size>
           </property>
           <property name="maximum">
-           <number>5</number>
-          </property>
-          <property name="sliderPosition">
            <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -1074,25 +1071,9 @@
         <property name="horizontalSpacing">
          <number>1</number>
         </property>
-        <item row="0" column="2">
-         <widget class="QComboBox" name="edgecolord">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="editable">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
+        <property name="verticalSpacing">
+         <number>3</number>
+        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="edgel">
           <property name="minimumSize">
@@ -1150,25 +1131,6 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QComboBox" name="edgestyled">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
          <widget class="QLabel" name="edgesizel">
           <property name="minimumSize">
@@ -1189,27 +1151,62 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QSlider" name="edgesizes">
+         <widget class="QDoubleSpinBox" name="edgesizes">
           <property name="minimumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>100</width>
-            <height>20</height>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="maximum">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="edgecolors">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QSpinBox" name="edgestyles">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>24</height>
            </size>
           </property>
           <property name="maximum">
-           <number>5</number>
-          </property>
-          <property name="sliderPosition">
-           <number>1</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <number>2</number>
           </property>
          </widget>
         </item>

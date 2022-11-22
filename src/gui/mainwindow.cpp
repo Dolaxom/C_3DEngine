@@ -1,5 +1,9 @@
 #include "mainwindow.h"
 
+QStringList colors = {"black", "red", "green", "yellow", "pink", "magenta", "violet"};
+QStringList vert_styles = {"solid", "dashed"};
+QStringList edge_styles = {"none", "circle", "square"};
+
 QLabel *filenamel = NULL;
 QLabel *filenamel_value = NULL;
 QLabel *verticesl = NULL;
@@ -12,6 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   qApp->installEventFilter(this);
+  connect(ui->bgcolors, SIGNAL(valueChanged(int)), this, SLOT(on_bgcolors_valueChanged()), Qt::QueuedConnection);
+  connect(ui->vertcolors, SIGNAL(valueChanged(int)), this, SLOT(on_vertcolors_valueChanged()), Qt::QueuedConnection);
+  connect(ui->edgecolors, SIGNAL(valueChanged(int)), this, SLOT(on_edgecolors_valueChanged()), Qt::QueuedConnection);
+  connect(ui->vertstyles, SIGNAL(valueChanged(int)), this, SLOT(on_vertstyles_valueChanged()), Qt::QueuedConnection);
+  connect(ui->edgestyles, SIGNAL(valueChanged(int)), this, SLOT(on_edgestyles_valueChanged()), Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -19,12 +28,25 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::start() {
   view = new OpenGLWidget(ui->camera);
 
+  ui->bgcolors->setMaximum(colors.count() - 1);
+  ui->vertcolors->setMaximum(colors.count() - 1);
+  ui->edgecolors->setMaximum(colors.count() - 1);
+  ui->vertstyles->setMaximum(vert_styles.count() - 1);
+  ui->edgestyles->setMaximum(edge_styles.count() - 1);
+
+  on_bgcolors_valueChanged();
+  on_vertcolors_valueChanged();
+  on_edgecolors_valueChanged();
+  on_vertstyles_valueChanged();
+  on_edgestyles_valueChanged();
+
   ui->errl->setStyleSheet("color: grey;");
   ui->errl->setText("");
   ui->resultl->setText("");
 
+  ui->projectiond->addItems({"perspective", "orthogonal"});
+
   init_meshpath();
-  init_dropdowns();
   create_info_labels();
 
   ui->camera->setFocus();
@@ -137,15 +159,15 @@ void MainWindow::process_enterkey() {
       //
   } else if (ui->projectiond->hasFocus()) {
       //
-  } else if (ui->bgcolord->hasFocus()) {
+  } else if (ui->bgcolors->hasFocus()) {
       //
-  } else if (ui->edgecolord->hasFocus()) {
+  } else if (ui->edgecolors->hasFocus()) {
       //
-  } else if (ui->vertcolord->hasFocus()) {
+  } else if (ui->vertcolors->hasFocus()) {
       //
-  } else if (ui->edgestyled->hasFocus()) {
+  } else if (ui->edgestyles->hasFocus()) {
       //
-  } else if (ui->vertstyled->hasFocus()) {
+  } else if (ui->vertstyles->hasFocus()) {
       //
   } else if (ui->edgesizes->hasFocus()) {
       //
@@ -175,6 +197,36 @@ void MainWindow::on_visualizeb_clicked() {
   }
 }
 
+void MainWindow::on_bgcolors_valueChanged()
+{
+    ui->bgcolors->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->bgcolors, "", "_" + colors.at(ui->bgcolors->value()));
+}
+
+void MainWindow::on_vertcolors_valueChanged()
+{
+    ui->vertcolors->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->vertcolors, "", "_" + colors.at(ui->vertcolors->value()));
+}
+
+void MainWindow::on_edgecolors_valueChanged()
+{
+    ui->edgecolors->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->edgecolors, "", "_" + colors.at(ui->edgecolors->value()));
+}
+
+void MainWindow::on_vertstyles_valueChanged()
+{
+    ui->vertstyles->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->vertstyles, "", "_" + vert_styles.at(ui->vertstyles->value()));
+}
+
+void MainWindow::on_edgestyles_valueChanged()
+{
+    ui->edgestyles->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->edgestyles, "", "_" + edge_styles.at(ui->edgestyles->value()));
+}
+
 void MainWindow::on_screenb_clicked() {
   // take a screenshot
 }
@@ -202,22 +254,6 @@ void MainWindow::init_meshpath() {
         ui->meshpathedit->setPlaceholderText("(none)");
         display_error("failure when trying to load the default path variable; set meshpath field manually.", false);
     }
-}
-
-void MainWindow::init_dropdowns() {
-  QStringList colors = {"black", "white",  "red", "blue",
-                        "green", "yellow", "pink"};
-
-//  qDebug() << colors << colors.count();
-
-  ui->projectiond->addItems({"perspective", "orthogonal"});
-  ui->bgcolord->addItems(colors);
-  ui->vertcolord->addItems(colors);
-  ui->edgecolord->addItems(colors);
-  ui->vertstyled->addItems({"none", "circle", "square"});
-  ui->edgestyled->addItems({"solid", "dashed"});
-
-  // switching between dropdown items crashes the entire program why?
 }
 
 void MainWindow::create_info_labels() {
@@ -257,6 +293,11 @@ void MainWindow::update_info_labels(QString filename, QString n_vertices,
   filenamel_value->setText(filename);
   verticesl_value->setText(n_vertices);
   edgesl_value->setText(n_edges);
+}
+
+void MainWindow::update_spinbox(QSpinBox *spinbox, QString prefix, QString suffix) {
+    spinbox->setPrefix(prefix);
+    spinbox->setSuffix(suffix);
 }
 
 void MainWindow::update_meshfields(QDir meshpath) {
