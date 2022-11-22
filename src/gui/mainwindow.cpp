@@ -5,6 +5,9 @@ QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow"
 QStringList vert_styles = {"solid", "dashed"};
 QStringList edge_styles = {"none", "circle", "square"};
 
+QString def_dirpath = "../../materials/raw";
+QString last_dirpath = NULL;
+
 QLabel *filenamel = NULL;
 QLabel *filenamel_value = NULL;
 QLabel *verticesl = NULL;
@@ -17,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   qApp->installEventFilter(this);
+  connect(ui->projections, SIGNAL(valueChanged(int)), this, SLOT(on_projections_valueChanged()), Qt::QueuedConnection);
   connect(ui->bgcolors, SIGNAL(valueChanged(int)), this, SLOT(on_bgcolors_valueChanged()), Qt::QueuedConnection);
   connect(ui->vertcolors, SIGNAL(valueChanged(int)), this, SLOT(on_vertcolors_valueChanged()), Qt::QueuedConnection);
   connect(ui->edgecolors, SIGNAL(valueChanged(int)), this, SLOT(on_edgecolors_valueChanged()), Qt::QueuedConnection);
@@ -33,10 +37,8 @@ void MainWindow::start() {
   ui->errl->setText("");
   ui->resultl->setText("");
 
-  //ui->projectiond->addItems({"perspective", "orthogonal"});
-
   init_meshpath();
-  init_meshstyle();
+  init_spinboxes();
   create_info_labels();
 
   ui->camera->setFocus();
@@ -138,10 +140,10 @@ void MainWindow::process_enterkey() {
   if (ui->autorotationc->hasFocus()) {
     on_autorotationc_clicked(!ui->autorotationc->checkState());
   } else if (ui->meshpathedit->hasFocus()) {
-    on_meshpathedit_editingFinished();
+    //on_meshpathedit_editingFinished();
   //} else if (ui->meshd->hasFocus()) {
       //
-  //} else if (ui->projectiond->hasFocus()) {
+  } else if (ui->projections->hasFocus()) {
       //
   } else if (ui->bgcolors->hasFocus()) {
       //
@@ -177,8 +179,37 @@ void MainWindow::on_redrawb_clicked() {
         display_error("", true);
     }
   } else {
-    display_error("incorrect input value(s); unable to proceed", false);
+    display_error("incorrect meshpath or input value(s); unable to proceed", false);
   }
+}
+
+void MainWindow::on_screenb_clicked() {
+  // take a screenshot
+}
+
+void MainWindow::on_gifb_clicked() {
+  // record a gif
+}
+
+void MainWindow::on_autorotationc_clicked(bool checked) {
+  ui->autorotationc->setChecked(checked);
+}
+
+void MainWindow::on_meshpathb_clicked() {
+    QString fileName = QFileDialog::getOpenFileName(NULL, "open:", last_dirpath, "OBJ files (*.obj)");
+
+    if (!fileName.isNull()) {
+        QFileInfo fileInfo;
+        fileInfo.setFile(fileName);
+        last_dirpath = fileInfo.absolutePath();
+        ui->meshpathedit->setText(fileName);
+    }
+}
+
+void MainWindow::on_projections_valueChanged()
+{
+    ui->projections->findChild<QLineEdit*>()->deselect();
+    update_spinbox(ui->projections, "", "_" + projections.at(ui->projections->value()));
 }
 
 void MainWindow::on_bgcolors_valueChanged()
@@ -211,36 +242,21 @@ void MainWindow::on_edgestyles_valueChanged()
     update_spinbox(ui->edgestyles, "", "_" + edge_styles.at(ui->edgestyles->value()));
 }
 
-void MainWindow::on_screenb_clicked() {
-  // take a screenshot
-}
-
-void MainWindow::on_gifb_clicked() {
-  // record a gif
-}
-
-void MainWindow::on_autorotationc_clicked(bool checked) {
-  ui->autorotationc->setChecked(checked);
-}
-
-void MainWindow::on_meshpathedit_editingFinished()
-{
-    QDir newpath(ui->meshpathedit->text());
-    update_meshfields(newpath);
-}
-
 void MainWindow::init_meshpath() {
-    QDir def("../../materials/raw");
-    update_meshfields(def);
+    QDir def(def_dirpath);
+    ui->meshpathedit->setPlaceholderText("(none)");
 
     if (!def.exists()) {
-        ui->meshpathedit->setText("");
-        ui->meshpathedit->setPlaceholderText("(none)");
-        display_error("failure when trying to load the default path variable; set meshpath field manually.", false);
+        last_dirpath = ".";
+        display_error("failure when trying to navigate to the default location of the materials folder; "
+                      "meshpath has been reset to point to the application directory.", false);
+    } else {
+        last_dirpath = def_dirpath;
     }
 }
 
-void MainWindow::init_meshstyle() {
+void MainWindow::init_spinboxes() {
+    ui->projections->setMaximum(projections.count() - 1);
     ui->bgcolors->setMaximum(colors.count() - 1);
     ui->vertcolors->setMaximum(colors.count() - 1);
     ui->edgecolors->setMaximum(colors.count() - 1);
@@ -250,6 +266,7 @@ void MainWindow::init_meshstyle() {
     ui->vertcolors->setValue(1);
     ui->edgecolors->setValue(1);
 
+    on_projections_valueChanged();
     on_bgcolors_valueChanged();
     on_vertcolors_valueChanged();
     on_edgecolors_valueChanged();
@@ -301,26 +318,14 @@ void MainWindow::update_spinbox(QSpinBox *spinbox, QString prefix, QString suffi
     spinbox->setSuffix(suffix);
 }
 
-void MainWindow::update_meshfields(QDir meshpath) {
-    if (meshpath.exists()) {
-        ui->meshpathedit->setText(meshpath.absolutePath());
-        //ui->meshd->clear();
-        //ui->meshd->addItems(meshpath.entryList(QDir::Files));
-    } else {
-        //ui->meshd->clear();
-        //ui->meshd->addItem("(none)");
-    }
-}
-
 void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
   widget->setText(widget->text() + add);
   widget->setAlignment(Qt::AlignRight);
 }
 
 void MainWindow::update_openglwidget() {
-    //view->setProjection(ui->projectiond->currentIndex());
-    //view->setMeshpath(ui->meshpathedit->text() + "/" + ui->meshd->currentText());
-    //
+    view->setProjection(ui->projections->value());
+    view->setMeshpath(ui->meshpathedit->text());
     view->update();
 }
 
@@ -367,13 +372,11 @@ bool MainWindow::check_values() {
 
 bool MainWindow::is_valid_mesh() {
     bool result = false;
+    QFile finmesh(ui->meshpathedit->text());
 
-//    QString finpath = ui->meshpathedit->text() + "/" + ui->meshd->currentText();
-//    QFile finmesh(finpath);
-
-//    if (finmesh.exists()) {
-//        result = true;
-//    }
+    if (finmesh.exists()) {
+        result = true;
+    }
     return result;
 }
 

@@ -36,7 +36,8 @@ class MainWindow : public QMainWindow {
   void on_screenb_clicked();
   void on_gifb_clicked();
   void on_autorotationc_clicked(bool checked);
-  void on_meshpathedit_editingFinished();
+  void on_meshpathb_clicked();
+  void on_projections_valueChanged();
   void on_bgcolors_valueChanged();
   void on_vertcolors_valueChanged();
   void on_edgecolors_valueChanged();
@@ -48,12 +49,11 @@ private:
   void set_fullscreen();
   void process_enterkey();
   void init_meshpath();
-  void init_meshstyle();
+  void init_spinboxes();
   void create_info_labels();
   void update_info_labels(QString filename, QString n_vertices,
                           QString n_edges);
   void update_spinbox(QSpinBox *spinbox, QString prefix, QString suffix);
-  void update_meshfields(QDir meshpath);
   void update_lineedit(QLineEdit *widget, QString add);
   void update_openglwidget();
   void finalize_input_fields();
