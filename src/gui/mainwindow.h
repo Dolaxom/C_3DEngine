@@ -60,7 +60,7 @@ private:
   bool is_valid_textvalue(QString text);
   void display_error(QString message, bool noerror);
   bool process_altkey();
-  bool process_controlkey();
+  bool process_fkey();
   bool process_enterkey();
   bool process_escapekey();
 

@@ -49,8 +49,8 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
       result = process_altkey();
     } else if (keyEvent->key() == Qt::Key_Escape) {
       result = process_escapekey();
-    } else if (keyEvent->key() == Qt::Key_Control) {
-      result = process_controlkey();
+    } else if (keyEvent->key() == Qt::Key_F11) {
+      result = process_fkey();
     }
   } else if (event->type() == QEvent::Resize) {
     view->resizeGL(ui->camera->width(), ui->camera->height());
@@ -331,7 +331,7 @@ bool MainWindow::process_altkey() {
     return true;
 }
 
-bool MainWindow::process_controlkey() {
+bool MainWindow::process_fkey() {
     if (this->isFullScreen()) {
       showNormal();
     } else {
