@@ -1,11 +1,12 @@
 #include "openglwidget.h"
+#include "GL/glu.h"
 
 int errcode = 0;
 mesh_t mesh;
 GLdouble fov = 90.0;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
-GLdouble range = 1.0;
+GLdouble range = 2.0;
 GLdouble near_dist = 0.5;
 GLdouble far_dist = 500.0;
 int projection = 0;
@@ -49,23 +50,20 @@ void OpenGLWidget::paintGL() {
 
 void OpenGLWidget::updateProjection() {
   if (projection == 0) {
-    if (this->width() >= this->height()) {
-      glFrustum(-range * aspect_w, range * aspect_w, -range, range, -near_dist,
-                far_dist);
-    } else {
-      glFrustum(-range, range, -range * aspect_h, range * aspect_h, -near_dist,
-                far_dist);
-    }
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    float left_value = -((float)this->width() / 1000) / 2; //-0.369
+    float right_value = ((float)this->width() / 1000) / 2;
+    float top_value = -((float)this->height() / 1000) / 2; // -393500
+    float down_value = ((float)this->height() / 1000) / 2;
+    glFrustum(left_value, right_value, top_value, down_value, 0.5, 500.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-    //        const GLdouble pi = 3.1415926535897932384626433832795;
-    //        GLdouble fw, fh;
-
-    //        fh = tan( fov / 360 * pi ) * near_dist;
-    //        fw = fh * aspect_w;
-
-    //        glFrustum(-fw * aspect_w, fw * aspect_w, -fh * aspect_h, fh *
-    //        aspect_h, -near_dist, far_dist);
+    glTranslatef(0.0f, 0.0f, -5.0f); // TODO REMOVE LATER
   } else {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
     if (this->width() >= this->height()) {
       glOrtho(-range * aspect_w, range * aspect_w, -range, range, near_dist,
               far_dist);
@@ -73,6 +71,8 @@ void OpenGLWidget::updateProjection() {
       glOrtho(-range, range, -range * aspect_h, range * aspect_h, near_dist,
               far_dist);
     }
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
   }
 }
 
