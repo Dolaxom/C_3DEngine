@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() { delete ui; }
 
+// PUBLIC SLOTS
 
 void MainWindow::focusChanged(QWidget *old, QWidget *now) {
   QSpinBox *check_now = qobject_cast<QSpinBox *>(now);
@@ -31,6 +32,8 @@ void MainWindow::focusChanged(QWidget *old, QWidget *now) {
   }
 }
 
+// PROTECTED
+
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   bool result = false;
 
@@ -43,18 +46,12 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
       result = process_enterkey();
     } else if (keyEvent->key() == Qt::Key_Alt) {
-      ui->camera->setFocus();
+      result = process_altkey();
     } else if (keyEvent->key() == Qt::Key_Escape) {
-      close();
-      result = true;
+      result = process_escapekey();
+    } else if (keyEvent->key() == Qt::Key_Control) {
+      result = process_controlkey();
     }
-//    else if (keyEvent->key() == Qt::Key_Control) {
-//      cycle_focus();
-//      result = true;
-//    }
-//    else if (keyEvent->key() == Qt::Key_Tab) {
-//      result = process_tabkey();
-//    }
   } else if (event->type() == QEvent::Resize) {
     view->resizeGL(ui->camera->width(), ui->camera->height());
   }
@@ -329,7 +326,12 @@ void MainWindow::display_error(QString message, bool noerror) {
   ui->errl->setText(message);
 }
 
-bool MainWindow::process_tabkey() {
+bool MainWindow::process_altkey() {
+    ui->camera->setFocus();
+    return true;
+}
+
+bool MainWindow::process_controlkey() {
     if (this->isFullScreen()) {
       showNormal();
     } else {
@@ -351,4 +353,9 @@ bool MainWindow::process_enterkey() {
     on_redrawb_clicked();
   }
   return true;
+}
+
+bool MainWindow::process_escapekey() {
+    close();
+    return true;
 }

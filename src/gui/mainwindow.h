@@ -59,14 +59,16 @@ private:
   bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
   void display_error(QString message, bool noerror);
-  bool process_tabkey();
+  bool process_altkey();
+  bool process_controlkey();
   bool process_enterkey();
+  bool process_escapekey();
 
   QStringList projections = {"perspective", "orthogonal"};
   QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "pink"};
   QStringList vert_styles = {"solid", "dashed"};
   QStringList edge_styles = {"none", "circle", "square"};
-  QString def_dirpath = "../materials/raw";
+  QString def_dirpath = "../../materials/raw";
   QString last_dirpath = NULL;
   QLabel *filenamel = NULL;
   QLabel *filenamel_value = NULL;
