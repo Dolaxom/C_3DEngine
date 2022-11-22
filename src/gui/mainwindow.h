@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow {
   bool eventFilter(QObject *watched, QEvent *event);
 
  private slots:
-  void on_visualizeb_clicked();
+  void on_redrawb_clicked();
   void on_screenb_clicked();
   void on_gifb_clicked();
   void on_autorotationc_clicked(bool checked);
@@ -48,6 +48,7 @@ private:
   void set_fullscreen();
   void process_enterkey();
   void init_meshpath();
+  void init_meshstyle();
   void create_info_labels();
   void update_info_labels(QString filename, QString n_vertices,
                           QString n_edges);

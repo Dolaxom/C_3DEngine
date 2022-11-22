@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
-QStringList colors = {"black", "red", "green", "yellow", "pink", "magenta", "violet"};
+QStringList projections = {"perspective", "orthogonal"};
+QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "pink"};
 QStringList vert_styles = {"solid", "dashed"};
 QStringList edge_styles = {"none", "circle", "square"};
 
@@ -28,25 +29,14 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::start() {
   view = new OpenGLWidget(ui->camera);
 
-  ui->bgcolors->setMaximum(colors.count() - 1);
-  ui->vertcolors->setMaximum(colors.count() - 1);
-  ui->edgecolors->setMaximum(colors.count() - 1);
-  ui->vertstyles->setMaximum(vert_styles.count() - 1);
-  ui->edgestyles->setMaximum(edge_styles.count() - 1);
-
-  on_bgcolors_valueChanged();
-  on_vertcolors_valueChanged();
-  on_edgecolors_valueChanged();
-  on_vertstyles_valueChanged();
-  on_edgestyles_valueChanged();
-
   ui->errl->setStyleSheet("color: grey;");
   ui->errl->setText("");
   ui->resultl->setText("");
 
-  ui->projectiond->addItems({"perspective", "orthogonal"});
+  //ui->projectiond->addItems({"perspective", "orthogonal"});
 
   init_meshpath();
+  init_meshstyle();
   create_info_labels();
 
   ui->camera->setFocus();
@@ -69,10 +59,11 @@ void MainWindow::focusChanged(QWidget *old, QWidget *now) {
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   bool result = false;
 
-  if (event->type() == QEvent::MouseMove) {
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-    mouseMoveEvent(mouseEvent);
-  } else if (event->type() == QEvent::KeyPress) {
+//  if (event->type() == QEvent::MouseMove) {
+//    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+//    mouseMoveEvent(mouseEvent);
+//  } else
+  if (event->type() == QEvent::KeyPress) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
       process_enterkey();
@@ -88,14 +79,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     } else if (keyEvent->key() == Qt::Key_Tab) {
       set_fullscreen();
       result = true;
-    } else if (keyEvent->key() == Qt::Key_Space) {
-      if (ui->projectiond->currentIndex() == 0) {
-          ui->projectiond->setCurrentIndex(1);
-      } else {
-          ui->projectiond->setCurrentIndex(0);
-      }
-      on_visualizeb_clicked();
-      result = true;
     }
   } else if (event->type() == QEvent::Resize) {
     view->resizeGL(ui->camera->width(), ui->camera->height());
@@ -109,12 +92,13 @@ void MainWindow::cycle_focus() {
   // this is horrible and needs a rewrite
 
   if (ui->meshpathedit->hasFocus()) {
-      ui->meshd->setFocus();
-  } else if (ui->meshd->hasFocus()) {
-      ui->projectiond->setFocus();
-  } else if (ui->projectiond->hasFocus()) {
-      ui->sxedit->setFocus();
+      //ui->meshd->setFocus();
   }
+  //else if (ui->meshd->hasFocus()) {
+      //ui->projectiond->setFocus();
+  //} else if (ui->projectiond->hasFocus()) {
+  //    ui->sxedit->setFocus();
+  //}
   else if (ui->sxedit->hasFocus()) {
     ui->syedit->setFocus();
   } else if (ui->syedit->hasFocus()) {
@@ -155,9 +139,9 @@ void MainWindow::process_enterkey() {
     on_autorotationc_clicked(!ui->autorotationc->checkState());
   } else if (ui->meshpathedit->hasFocus()) {
     on_meshpathedit_editingFinished();
-  } else if (ui->meshd->hasFocus()) {
+  //} else if (ui->meshd->hasFocus()) {
       //
-  } else if (ui->projectiond->hasFocus()) {
+  //} else if (ui->projectiond->hasFocus()) {
       //
   } else if (ui->bgcolors->hasFocus()) {
       //
@@ -175,11 +159,11 @@ void MainWindow::process_enterkey() {
       //
   }
   else {
-    on_visualizeb_clicked();
+    on_redrawb_clicked();
   }
 }
 
-void MainWindow::on_visualizeb_clicked() {
+void MainWindow::on_redrawb_clicked() {
   bool error = false;
 
   finalize_input_fields();
@@ -256,6 +240,23 @@ void MainWindow::init_meshpath() {
     }
 }
 
+void MainWindow::init_meshstyle() {
+    ui->bgcolors->setMaximum(colors.count() - 1);
+    ui->vertcolors->setMaximum(colors.count() - 1);
+    ui->edgecolors->setMaximum(colors.count() - 1);
+    ui->vertstyles->setMaximum(vert_styles.count() - 1);
+    ui->edgestyles->setMaximum(edge_styles.count() - 1);
+
+    ui->vertcolors->setValue(1);
+    ui->edgecolors->setValue(1);
+
+    on_bgcolors_valueChanged();
+    on_vertcolors_valueChanged();
+    on_edgecolors_valueChanged();
+    on_vertstyles_valueChanged();
+    on_edgestyles_valueChanged();
+}
+
 void MainWindow::create_info_labels() {
   filenamel = new QLabel(this);
   filenamel_value = new QLabel(this);
@@ -303,11 +304,11 @@ void MainWindow::update_spinbox(QSpinBox *spinbox, QString prefix, QString suffi
 void MainWindow::update_meshfields(QDir meshpath) {
     if (meshpath.exists()) {
         ui->meshpathedit->setText(meshpath.absolutePath());
-        ui->meshd->clear();
-        ui->meshd->addItems(meshpath.entryList(QDir::Files));
+        //ui->meshd->clear();
+        //ui->meshd->addItems(meshpath.entryList(QDir::Files));
     } else {
-        ui->meshd->clear();
-        ui->meshd->addItem("(none)");
+        //ui->meshd->clear();
+        //ui->meshd->addItem("(none)");
     }
 }
 
@@ -317,8 +318,8 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 }
 
 void MainWindow::update_openglwidget() {
-    view->setProjection(ui->projectiond->currentIndex());
-    view->setMeshpath(ui->meshpathedit->text() + "/" + ui->meshd->currentText());
+    //view->setProjection(ui->projectiond->currentIndex());
+    //view->setMeshpath(ui->meshpathedit->text() + "/" + ui->meshd->currentText());
     //
     view->update();
 }
@@ -367,12 +368,12 @@ bool MainWindow::check_values() {
 bool MainWindow::is_valid_mesh() {
     bool result = false;
 
-    QString finpath = ui->meshpathedit->text() + "/" + ui->meshd->currentText();
-    QFile finmesh(finpath);
+//    QString finpath = ui->meshpathedit->text() + "/" + ui->meshd->currentText();
+//    QFile finmesh(finpath);
 
-    if (finmesh.exists()) {
-        result = true;
-    }
+//    if (finmesh.exists()) {
+//        result = true;
+//    }
     return result;
 }
 
