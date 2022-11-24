@@ -184,6 +184,7 @@ void MainWindow::init_spinboxes() {
 
     ui->vertcolors->setValue(1);
     ui->edgecolors->setValue(1);
+    ui->vertsizes->setValue(0.01);
 
     on_projections_valueChanged();
     on_bgcolors_valueChanged();
@@ -242,10 +243,20 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 }
 
 void MainWindow::update_openglwidget() {
+    float bg_rgb[3] = {0, 0, 0};
+    float vert_rgb[3] = {0, 0, 0};
+    float edge_rgb[3] = {0, 0, 0};
+
+    convert_to_rgb(ui->bgcolors->value(), bg_rgb);
+    convert_to_rgb(ui->vertcolors->value(), vert_rgb);
+    convert_to_rgb(ui->edgecolors->value(), edge_rgb);
+
     view->setPosition(ui->pxedit->text().toFloat(), ui->pyedit->text().toFloat(), ui->pzedit->text().toFloat());
     view->setRotation(ui->rxedit->text().toFloat(), ui->ryedit->text().toFloat(), ui->rzedit->text().toFloat());
     view->setScale(ui->sxedit->text().toFloat(), ui->syedit->text().toFloat(), ui->szedit->text().toFloat());
     view->setProjection(ui->projections->value());
+    view->setColors(bg_rgb, vert_rgb, edge_rgb);
+    view->setSizes(ui->vertsizes->value(), ui->edgesizes->value());
     view->setMeshpath(ui->meshpathedit->text());
     view->update();
 }
@@ -348,9 +359,41 @@ QString MainWindow::get_filename(QString fullpath) {
         fileName = fileInfo.completeBaseName();
     } else {
         fileName = fileInfo.completeBaseName() + "." + fileInfo.completeSuffix();
-        qDebug() << fileInfo.completeSuffix();
     }
     return fileName;
+}
+
+void MainWindow::convert_to_rgb(int index, float *rgb) {
+    if (rgb) {
+        switch (index) {
+        case 0:     // black
+            rgb[0] = 0, rgb[1] = 0, rgb[2] = 0;
+            break;
+        case 1:     // white
+            rgb[0] = 1, rgb[1] = 1, rgb[2] = 1;
+            break;
+        case 2:     // grey
+            rgb[0] = 0.5, rgb[1] = 0.5, rgb[2] = 0.5;
+            break;
+        case 3:     // red
+            rgb[0] = 1, rgb[1] = 0, rgb[2] = 0;
+            break;
+        case 4:     // blue
+            rgb[0] = 0, rgb[1] = 0, rgb[2] = 1;
+            break;
+        case 5:     // green
+            rgb[0] = 0, rgb[1] = 1, rgb[2] = 0;
+            break;
+        case 6:     // yellow
+            rgb[0] = 1, rgb[1] = 1, rgb[2] = 0;
+            break;
+        case 7:     // purple
+            rgb[0] = 1, rgb[1] = 0, rgb[2] = 1;
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 bool MainWindow::process_altkey() {

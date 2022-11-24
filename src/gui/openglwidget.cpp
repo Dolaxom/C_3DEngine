@@ -1,11 +1,11 @@
 #include "openglwidget.h"
-#include "GL/glu.h"
 
 int errcode = 0;
 mesh_t mesh;
-int projection = 0;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
+
+int projection = 0;
 float pos_x = 0;
 float pos_y = 0;
 float pos_z = 0;
@@ -15,7 +15,11 @@ float rot_z = 0;
 float scale_x = 0;
 float scale_y = 0;
 float scale_z = 0;
-
+GLclampf rgb_bg[3] = {0, 0, 0};
+GLclampf rgb_vert[3] = {1, 1, 1};
+GLclampf rgb_edge[3] = {1, 1, 1};
+GLfloat vertsize = 0.01f;
+GLfloat edgesize = 0;
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
@@ -42,12 +46,11 @@ void OpenGLWidget::resizeGL(int w, int h) {
 }
 
 void OpenGLWidget::paintGL() {
-  glClearColor(0, 0, 0, 1);
+  glClearColor(rgb_bg[0], rgb_bg[1], rgb_bg[2], 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   updateProjection();
-
   displayMesh();
 }
 
@@ -88,17 +91,15 @@ void OpenGLWidget::initMesh(char *path_to_mesh) {
     s21_rotate_x(&mesh, 0.0f);
     s21_rotate_y(&mesh, 0.0f);
     s21_rotate_z(&mesh, 0.0f);
-
-    qDebug() << "initmesh errcode = " << errcode;
 }
 
 void OpenGLWidget::renderMesh() {
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
-    glLineWidth(0.01);
+    glLineWidth(vertsize);
     glBegin(GL_POLYGON);
     for (int point = 0; point < mesh.polygons[polygon].count_of_points;
          point++) {
-      glColor3f(1, 1, 1);
+      glColor3f(rgb_vert[0], rgb_vert[1], rgb_vert[2]);
       glVertex3f(mesh.polygons_copy[polygon].points[point].x,
                  mesh.polygons_copy[polygon].points[point].y,
                  mesh.polygons_copy[polygon].points[point].z);
@@ -122,10 +123,6 @@ void OpenGLWidget::displayMesh() {
   }
 }
 
-void OpenGLWidget::setProjection(int new_projection) {
-    projection = new_projection;
-}
-
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
     char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
 
@@ -137,9 +134,10 @@ void OpenGLWidget::setMeshpath(QString new_meshpath) {
     } else {
         errcode = -100;
     }
+}
 
-    qDebug() << new_meshpath;
-    qDebug() << "setmeshpath errcode = " << errcode;
+void OpenGLWidget::setProjection(int new_projection) {
+    projection = new_projection;
 }
 
 void OpenGLWidget::setPosition(float x, float y, float z) {
@@ -160,20 +158,27 @@ void OpenGLWidget::setScale(float x, float y, float z) {
     scale_z = z;
 }
 
-void OpenGLWidget::setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor) {
+void OpenGLWidget::setColors(float *bgcolor, float *vertcolor, float *edgecolor) {
+    setColor(rgb_bg, bgcolor);
+    setColor(rgb_vert, vertcolor);
+    setColor(rgb_edge, edgecolor);
+}
 
+void OpenGLWidget::setColor(float *color, float *sourcecolor) {
+    if (color && sourcecolor) {
+        for (int i = 0; i < 3; i++) {
+            color[i] = sourcecolor[i];
+        }
+    }
 }
 
 void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
-
+    vertsize = new_vertsize;
+    edgesize = new_edgesize;
 }
 
-void OpenGLWidget::setStyles(QString new_vertstyle, QString new_edgestyle) {
+void OpenGLWidget::setStyles(int vertstyle_index, int edgestyle_index) {
 
-}
-
-void OpenGLWidget::setErrcode(int new_code) {
-    errcode = new_code;
 }
 
 int OpenGLWidget::getErrcode() {
@@ -187,3 +192,6 @@ int OpenGLWidget::getPolygonsCount() {
 int OpenGLWidget::getPointsCount() {
     return mesh.count_of_points;
 }
+
+// PRIVATE
+

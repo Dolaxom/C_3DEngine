@@ -61,13 +61,14 @@ private:
   void display_error(QString message, bool noerror);
   QString get_filedir(QString fullpath);
   QString get_filename(QString fullpath);
+  void convert_to_rgb(int index, float *rgb);
   bool process_altkey();
   bool process_fkey();
   bool process_enterkey();
   bool process_escapekey();
 
   QStringList projections = {"perspective", "orthogonal"};
-  QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "pink"};
+  QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "purple"};
   QStringList vert_styles = {"solid", "dashed"};
   QStringList edge_styles = {"none", "circle", "square"};
   QString def_dirpath = "../../materials/raw";
