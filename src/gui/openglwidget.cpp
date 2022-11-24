@@ -23,6 +23,8 @@ GLfloat edgesize = 0;
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
+// PUBLIC
+
 void OpenGLWidget::initializeGL() {
   glEnable(GL_DEPTH_TEST);
   qDebug() << "init";
@@ -52,6 +54,86 @@ void OpenGLWidget::paintGL() {
 
   updateProjection();
   displayMesh();
+}
+
+//void OpenGLWidget::screen() {
+
+//}
+
+//void OpenGLWidget::record() {
+
+//}
+
+void OpenGLWidget::setMeshpath(QString new_meshpath) {
+    char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
+
+    if (meshpath) {
+        strncpy(meshpath, new_meshpath.toStdString().c_str(), (new_meshpath.length() + 1));
+        initMesh(meshpath);
+        update();
+        free(meshpath);
+    } else {
+        errcode = -100;
+    }
+}
+
+void OpenGLWidget::setProjection(int new_projection) {
+    projection = new_projection;
+}
+
+void OpenGLWidget::setPosition(float x, float y, float z) {
+    pos_x = x;
+    pos_y = y;
+    pos_z = z;
+}
+
+void OpenGLWidget::setRotation(float x, float y, float z) {
+    rot_x = x;
+    rot_y = y;
+    rot_z = z;
+}
+
+void OpenGLWidget::setScale(float x, float y, float z) {
+    scale_x = x;
+    scale_y = y;
+    scale_z = z;
+}
+
+void OpenGLWidget::setColors(float *bgcolor, float *vertcolor, float *edgecolor) {
+    updateColor(rgb_bg, bgcolor);
+    updateColor(rgb_vert, vertcolor);
+    updateColor(rgb_edge, edgecolor);
+}
+
+void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
+    vertsize = new_vertsize;
+    edgesize = new_edgesize;
+}
+
+void OpenGLWidget::setStyles(int vertstyle_index, int edgestyle_index) {
+
+}
+
+int OpenGLWidget::getErrcode() {
+    return errcode;
+}
+
+int OpenGLWidget::getPolygonsCount() {
+    return mesh.count_of_polygons;
+}
+
+int OpenGLWidget::getPointsCount() {
+    return mesh.count_of_points;
+}
+
+// PRIVATE
+
+void OpenGLWidget::updateColor(float *color, float *sourcecolor) {
+    if (color && sourcecolor) {
+        for (int i = 0; i < 3; i++) {
+            color[i] = sourcecolor[i];
+        }
+    }
 }
 
 void OpenGLWidget::updateProjection() {
@@ -122,76 +204,3 @@ void OpenGLWidget::displayMesh() {
       renderMesh();
   }
 }
-
-void OpenGLWidget::setMeshpath(QString new_meshpath) {
-    char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
-
-    if (meshpath) {
-        strncpy(meshpath, new_meshpath.toStdString().c_str(), (new_meshpath.length() + 1));
-        initMesh(meshpath);
-        update();
-        free(meshpath);
-    } else {
-        errcode = -100;
-    }
-}
-
-void OpenGLWidget::setProjection(int new_projection) {
-    projection = new_projection;
-}
-
-void OpenGLWidget::setPosition(float x, float y, float z) {
-    pos_x = x;
-    pos_y = y;
-    pos_z = z;
-}
-
-void OpenGLWidget::setRotation(float x, float y, float z) {
-    rot_x = x;
-    rot_y = y;
-    rot_z = z;
-}
-
-void OpenGLWidget::setScale(float x, float y, float z) {
-    scale_x = x;
-    scale_y = y;
-    scale_z = z;
-}
-
-void OpenGLWidget::setColors(float *bgcolor, float *vertcolor, float *edgecolor) {
-    setColor(rgb_bg, bgcolor);
-    setColor(rgb_vert, vertcolor);
-    setColor(rgb_edge, edgecolor);
-}
-
-void OpenGLWidget::setColor(float *color, float *sourcecolor) {
-    if (color && sourcecolor) {
-        for (int i = 0; i < 3; i++) {
-            color[i] = sourcecolor[i];
-        }
-    }
-}
-
-void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
-    vertsize = new_vertsize;
-    edgesize = new_edgesize;
-}
-
-void OpenGLWidget::setStyles(int vertstyle_index, int edgestyle_index) {
-
-}
-
-int OpenGLWidget::getErrcode() {
-    return errcode;
-}
-
-int OpenGLWidget::getPolygonsCount() {
-    return mesh.count_of_polygons;
-}
-
-int OpenGLWidget::getPointsCount() {
-    return mesh.count_of_points;
-}
-
-// PRIVATE
-

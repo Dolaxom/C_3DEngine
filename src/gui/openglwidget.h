@@ -23,7 +23,6 @@ class OpenGLWidget : public QOpenGLWidget {
   void setRotation(float x, float y, float z);
   void setScale(float x, float y, float z);
   void setColors(float *bgcolor, float *vertcolor, float *edgecolor);
-  void setColor(float *color, float *sourcecolor);
   void setSizes(double new_vertsize, double new_edgesize);
   void setStyles(int vertstyle_index, int edgestyle_index);
   //void setErrcode(int new_code);
@@ -32,6 +31,7 @@ class OpenGLWidget : public QOpenGLWidget {
   int getPointsCount();
 
  private:
+  void updateColor(float *color, float *sourcecolor);
   void updateProjection();
   void initMesh(char *path_to_mesh);
   void renderMesh();

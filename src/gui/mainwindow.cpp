@@ -243,10 +243,6 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 }
 
 void MainWindow::update_openglwidget() {
-    float bg_rgb[3] = {0, 0, 0};
-    float vert_rgb[3] = {0, 0, 0};
-    float edge_rgb[3] = {0, 0, 0};
-
     convert_to_rgb(ui->bgcolors->value(), bg_rgb);
     convert_to_rgb(ui->vertcolors->value(), vert_rgb);
     convert_to_rgb(ui->edgecolors->value(), edge_rgb);
@@ -256,6 +252,7 @@ void MainWindow::update_openglwidget() {
     view->setScale(ui->sxedit->text().toFloat(), ui->syedit->text().toFloat(), ui->szedit->text().toFloat());
     view->setProjection(ui->projections->value());
     view->setColors(bg_rgb, vert_rgb, edge_rgb);
+    view->setStyles(ui->vertstyles->value(), ui->edgestyles->value());
     view->setSizes(ui->vertsizes->value(), ui->edgesizes->value());
     view->setMeshpath(ui->meshpathedit->text());
     view->update();
@@ -431,4 +428,35 @@ bool MainWindow::process_enterkey() {
 bool MainWindow::process_escapekey() {
     close();
     return true;
+}
+
+void MainWindow::read_settings() {
+    QSettings settings("C_3DEngine");
+}
+
+void MainWindow::write_settings() {
+    QSettings settings("C_3DEngine");
+
+    settings.setValue("windowsize", this->geometry());
+    settings.setValue("fullscreen", this->isFullScreen());
+
+    settings.setValue("meshpath", ui->meshpathedit->text());
+    settings.setValue("last_dirpath", last_dirpath);
+    settings.setValue("projection", ui->projections->value());
+    settings.setValue("pos_x", ui->pxedit->text());
+    settings.setValue("pos_y", ui->pyedit->text());
+    settings.setValue("pos_z", ui->pzedit->text());
+    settings.setValue("rot_x", ui->rxedit->text());
+    settings.setValue("rot_y", ui->ryedit->text());
+    settings.setValue("rot_z", ui->rzedit->text());
+    settings.setValue("scale_x", ui->sxedit->text());
+    settings.setValue("scale_y", ui->syedit->text());
+    settings.setValue("scale_z", ui->szedit->text());
+    settings.setValue("bg_color", ui->bgcolors->value());
+    settings.setValue("vert_color", ui->vertcolors->value());
+    settings.setValue("edge_color", ui->edgecolors->value());
+    settings.setValue("vert_style", ui->vertstyles->value());
+    settings.setValue("edge_style", ui->edgestyles->value());
+    settings.setValue("vert_size", ui->vertsizes->value());
+    settings.setValue("edge_size", ui->edgesizes->value());
 }

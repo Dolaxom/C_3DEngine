@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSettings>
 #include <QDir>
 #include <QFileDialog>
 #include <QLineEdit>
@@ -66,7 +67,12 @@ private:
   bool process_fkey();
   bool process_enterkey();
   bool process_escapekey();
+  void read_settings();
+  void write_settings();
 
+  float bg_rgb[3] = {0, 0, 0};
+  float vert_rgb[3] = {0, 0, 0};
+  float edge_rgb[3] = {0, 0, 0};
   QStringList projections = {"perspective", "orthogonal"};
   QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "purple"};
   QStringList vert_styles = {"none", "circle", "square"};
