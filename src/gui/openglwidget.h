@@ -17,6 +17,9 @@ class OpenGLWidget : public QOpenGLWidget {
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;
+  void setPosition(float x, float y, float z);
+  void setRotation(float x, float y, float z);
+  void setScale(float x, float y, float z);
   void setProjection(int new_projection);
   void setMeshpath(QString new_meshpath);
   void setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor);
@@ -32,6 +35,10 @@ class OpenGLWidget : public QOpenGLWidget {
   void initMesh(char *path_to_mesh);
   void renderMesh();
   void displayMesh();
+
+  GLdouble range = 1.0;
+  GLdouble near_dist = 0.5;
+  GLdouble far_dist = 500.0;
 };
 
 #endif  // OPENGLWIDGET_H

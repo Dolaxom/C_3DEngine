@@ -3,13 +3,19 @@
 
 int errcode = 0;
 mesh_t mesh;
-GLdouble fov = 90.0;
+int projection = 0;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
-GLdouble range = 2.0;
-GLdouble near_dist = 0.5;
-GLdouble far_dist = 500.0;
-int projection = 0;
+float pos_x = 0;
+float pos_y = 0;
+float pos_z = 0;
+float rot_x = 0;
+float rot_y = 0;
+float rot_z = 0;
+float scale_x = 0;
+float scale_y = 0;
+float scale_z = 0;
+
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
@@ -30,9 +36,6 @@ void OpenGLWidget::resizeGL(int w, int h) {
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-
-  // qDebug() << projection << w << "&" << h << " | " << aspect_w << aspect_h <<
-  // " | resizeGL";
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -56,11 +59,11 @@ void OpenGLWidget::updateProjection() {
     float right_value = ((float)this->width() / 1000) / 2;
     float top_value = -((float)this->height() / 1000) / 2; // -393500
     float down_value = ((float)this->height() / 1000) / 2;
-    glFrustum(left_value, right_value, top_value, down_value, 0.5, 500.0);
+    glFrustum(left_value, right_value, top_value, down_value, near_dist, far_dist);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    glTranslatef(0.0f, 0.0f, -5.0f); // TODO REMOVE LATER
+     glTranslatef(0.0f, 0.0f, -5.0f); // TODO REMOVE LATER
   } else {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -108,14 +111,12 @@ void OpenGLWidget::displayMesh() {
   if (errcode == 0) {
       copy_polygons(mesh);
 
-        //  if (projection == 1) {
-        //    glTranslatef(0.0f, 0.0f, -150.5f);
-        //  }
+      glTranslatef(pos_x, pos_y, pos_z);
 
-      s21_rotate_x(&mesh, s21_degree_to_radian(0));
-      s21_rotate_y(&mesh, s21_degree_to_radian(0));
-      s21_rotate_z(&mesh, s21_degree_to_radian(0));
-      s21_scale(&mesh, 1, 1, 1);
+      s21_rotate_x(&mesh, s21_degree_to_radian(rot_x));
+      s21_rotate_y(&mesh, s21_degree_to_radian(rot_y));
+      s21_rotate_z(&mesh, s21_degree_to_radian(rot_z));
+      s21_scale(&mesh, scale_x, scale_y, scale_z);
 
       renderMesh();
   }
@@ -139,6 +140,24 @@ void OpenGLWidget::setMeshpath(QString new_meshpath) {
 
     qDebug() << new_meshpath;
     qDebug() << "setmeshpath errcode = " << errcode;
+}
+
+void OpenGLWidget::setPosition(float x, float y, float z) {
+    pos_x = x;
+    pos_y = y;
+    pos_z = z;
+}
+
+void OpenGLWidget::setRotation(float x, float y, float z) {
+    rot_x = x;
+    rot_y = y;
+    rot_z = z;
+}
+
+void OpenGLWidget::setScale(float x, float y, float z) {
+    scale_x = x;
+    scale_y = y;
+    scale_z = z;
 }
 
 void OpenGLWidget::setColors(QString new_bgcolor, QString new_vertcolor, QString new_edgecolor) {

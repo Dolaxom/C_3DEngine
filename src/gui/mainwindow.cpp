@@ -242,6 +242,9 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 }
 
 void MainWindow::update_openglwidget() {
+    view->setPosition(ui->pxedit->text().toFloat(), ui->pyedit->text().toFloat(), ui->pzedit->text().toFloat());
+    view->setRotation(ui->rxedit->text().toFloat(), ui->ryedit->text().toFloat(), ui->rzedit->text().toFloat());
+    view->setScale(ui->sxedit->text().toFloat(), ui->syedit->text().toFloat(), ui->szedit->text().toFloat());
     view->setProjection(ui->projections->value());
     view->setMeshpath(ui->meshpathedit->text());
     view->update();
