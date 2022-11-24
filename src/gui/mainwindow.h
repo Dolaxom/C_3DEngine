@@ -69,8 +69,8 @@ private:
 
   QStringList projections = {"perspective", "orthogonal"};
   QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "purple"};
-  QStringList vert_styles = {"solid", "dashed"};
-  QStringList edge_styles = {"none", "circle", "square"};
+  QStringList vert_styles = {"none", "circle", "square"};
+  QStringList edge_styles = {"solid", "dashed"};
   QString def_dirpath = "../../materials/raw";
   QString last_dirpath = NULL;
   QLabel *filenamel = NULL;
