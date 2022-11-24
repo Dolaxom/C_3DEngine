@@ -95,11 +95,11 @@ void OpenGLWidget::initMesh(char *path_to_mesh) {
 
 void OpenGLWidget::renderMesh() {
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
-    glLineWidth(vertsize);
+    glLineWidth(edgesize);
     glBegin(GL_POLYGON);
     for (int point = 0; point < mesh.polygons[polygon].count_of_points;
          point++) {
-      glColor3f(rgb_vert[0], rgb_vert[1], rgb_vert[2]);
+      glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
       glVertex3f(mesh.polygons_copy[polygon].points[point].x,
                  mesh.polygons_copy[polygon].points[point].y,
                  mesh.polygons_copy[polygon].points[point].z);

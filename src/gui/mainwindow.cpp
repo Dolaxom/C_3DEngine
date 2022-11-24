@@ -63,7 +63,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 // PRIVATE SLOTS
 
 void MainWindow::on_redrawb_clicked() {
-  bool error = false;
+  bool error = true;
 
   finalize_input_fields();
   error = check_values();
@@ -72,16 +72,16 @@ void MainWindow::on_redrawb_clicked() {
     update_openglwidget();
 
     if (view->getErrcode() != 0) {
-        display_error("error when parsing mesh: " + ui->meshpathedit->text(), false);
+        display_error("error when parsing mesh: " + ui->meshpathedit->text(), -2);
         update_info_labels(get_filename(ui->meshpathedit->text()), "0", "0");
     } else {
-        display_error("", true);
+        display_error("", 0);
         update_info_labels(get_filename(ui->meshpathedit->text()),
                            QString::number(view->getPointsCount()),
                            QString::number(view->getPolygonsCount()));
     }
   } else {
-    display_error("incorrect meshpath or input value(s); unable to proceed", false);
+    display_error("incorrect meshpath or input value(s); unable to proceed", -2);
   }
 }
 
@@ -168,7 +168,7 @@ void MainWindow::init_meshpath() {
     if (!def.exists()) {
         last_dirpath = ".";
         display_error("failure when trying to navigate to the default location of the materials folder; "
-                      "meshpath has been reset to point to the application directory.", false);
+                      "meshpath has been reset to point to the application directory.", 1);
     } else {
         last_dirpath = def_dirpath;
     }
@@ -184,7 +184,7 @@ void MainWindow::init_spinboxes() {
 
     ui->vertcolors->setValue(1);
     ui->edgecolors->setValue(1);
-    ui->vertsizes->setValue(0.01);
+    ui->edgesizes->setValue(0.01);
 
     on_projections_valueChanged();
     on_bgcolors_valueChanged();
@@ -332,10 +332,13 @@ bool MainWindow::is_valid_textvalue(QString text) {
   return result;
 }
 
-void MainWindow::display_error(QString message, bool noerror) {
-  if (noerror) {
+void MainWindow::display_error(QString message, int errtype) {
+  if (errtype == 0) {
       ui->resultl->setStyleSheet("color: green;");
       ui->resultl->setText("SUCCESS");
+  } else if (errtype == 1) {
+      ui->resultl->setStyleSheet("color: yellow;");
+      ui->resultl->setText("WARNING");
   } else {
       ui->resultl->setStyleSheet("color: red;");
       ui->resultl->setText("ERROR");

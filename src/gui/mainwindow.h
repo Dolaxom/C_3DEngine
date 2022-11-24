@@ -58,7 +58,7 @@ private:
   bool check_values();
   bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
-  void display_error(QString message, bool noerror);
+  void display_error(QString message, int errtype);
   QString get_filedir(QString fullpath);
   QString get_filename(QString fullpath);
   void convert_to_rgb(int index, float *rgb);
