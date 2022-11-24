@@ -1,10 +1,10 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("../materials/raw/monkey_million_polygons.obj");
+  mesh_init("../materials/raw/monkey.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
-
+  // TODO: free()
   return S21_OK;
 }
 
@@ -20,13 +20,14 @@ float deg = 0.0f;
 void display() {
   display_init();
   camera_init();
-
   copy_polygons(render_mesh);
-  s21_location(0.0f, 0.0f, -5.5f);
+
+  s21_location(0.0f, 0.0f, -3.5f);
   s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
   s21_rotate_y(&render_mesh, s21_degree_to_radian(deg));
   s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
-  s21_scale(&render_mesh, 2, 2, 2);
+  s21_scale(&render_mesh, 1, 1, 1);
+
   rendering_mesh(render_mesh);
   glutSwapBuffers();
   printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
@@ -53,23 +54,26 @@ void camera_init() {
   glLoadIdentity();
 }
 
-void rendering_mesh(mesh_t mesh) {
-    glLineWidth(0.01);
-    for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
-      glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
-      glEnableClientState(GL_VERTEX_ARRAY);
-      glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
-      glDisableClientState(GL_VERTEX_ARRAY);
-  }
+void rendering_mesh() {
+  //   glLineWidth(0.01);
+  //   for (int polygon = 0; polygon < render_mesh.count_of_polygons; polygon++) {
+  //     glVertexPointer(4, GL_FLOAT, 0, render_mesh.polygons_copy[polygon].points);
+  //     glEnableClientState(GL_VERTEX_ARRAY);
+  //     glDrawArrays(GL_POLYGON, 0, render_mesh.polygons_copy[polygon].count_of_points);
+  //     glDisableClientState(GL_VERTEX_ARRAY);
+  // }
+
+  glVertexPointer(4, GL_FLOAT, 0, render_mesh.v_points);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glColor3f(1, 1, 1);
+  glPointSize(4);
+  glDrawElements(GL_TRIANGLES, render_mesh.size_of_queue, GL_UNSIGNED_INT, render_mesh.queue);
+  glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void mesh_init(char *path_to_file) {
   int error = 0;
   render_mesh = parse_obj_file(path_to_file, &error);
-  s21_scale(&render_mesh, 1.0f, 1.0f, 1.0f);
-  s21_rotate_x(&render_mesh, 0.0f);
-  s21_rotate_y(&render_mesh, 0.0f);
-  s21_rotate_z(&render_mesh, 0.0f);
 }
 
 void s21_location(float x, float y, float z) {
