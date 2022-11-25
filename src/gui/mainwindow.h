@@ -30,6 +30,7 @@ class MainWindow : public QMainWindow {
 
  protected:
   bool eventFilter(QObject *watched, QEvent *event);
+  void closeEvent(QCloseEvent *event);
 
  private slots:
   void on_redrawb_clicked();

@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   start();
+  read_settings();
 
   qApp->installEventFilter(this);
   connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)), this, SLOT(focusChanged(QWidget*,QWidget*)), Qt::QueuedConnection);
@@ -58,6 +59,11 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
 
   QObject::eventFilter(watched, event);
   return result;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+     write_settings();
+     event->accept();
 }
 
 // PRIVATE SLOTS
@@ -432,13 +438,42 @@ bool MainWindow::process_escapekey() {
 
 void MainWindow::read_settings() {
     QSettings settings("C_3DEngine");
+
+    const auto saved_state = settings.value("saved_state", QByteArray()).toByteArray();
+    if (!saved_state.isEmpty()) {
+        this->setGeometry(settings.value("windowsize").toRect());
+        last_dirpath = settings.value("last_dirpath").toString();
+
+        ui->meshpathedit->setText(settings.value("meshpath").toString());
+        ui->projections->setValue(settings.value("projection").toInt());
+        ui->pxedit->setText(settings.value("pos_x").toString());
+        ui->pyedit->setText(settings.value("pos_y").toString());
+        ui->pzedit->setText(settings.value("pos_z").toString());
+        ui->rxedit->setText(settings.value("rot_x").toString());
+        ui->ryedit->setText(settings.value("rot_y").toString());
+        ui->rxedit->setText(settings.value("rot_z").toString());
+        ui->sxedit->setText(settings.value("scale_x").toString());
+        ui->syedit->setText(settings.value("scale_y").toString());
+        ui->szedit->setText(settings.value("scale_z").toString());
+        ui->bgcolors->setValue(settings.value("bg_color").toInt());
+        ui->vertcolors->setValue(settings.value("vert_color").toInt());
+        ui->edgecolors->setValue(settings.value("edge_color").toInt());
+        ui->vertstyles->setValue(settings.value("vert_style").toInt());
+        ui->edgestyles->setValue(settings.value("edge_style").toInt());
+        ui->vertsizes->setValue(settings.value("vert_size").toFloat());
+        ui->edgesizes->setValue(settings.value("edge_size").toFloat());
+
+        on_redrawb_clicked();
+    } else {
+        qDebug() << "first start of the application, no settings to load";
+    }
 }
 
 void MainWindow::write_settings() {
     QSettings settings("C_3DEngine");
 
+    settings.setValue("saved_state", true);
     settings.setValue("windowsize", this->geometry());
-    settings.setValue("fullscreen", this->isFullScreen());
 
     settings.setValue("meshpath", ui->meshpathedit->text());
     settings.setValue("last_dirpath", last_dirpath);

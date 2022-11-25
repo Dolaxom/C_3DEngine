@@ -27,7 +27,6 @@ OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 void OpenGLWidget::initializeGL() {
   glEnable(GL_DEPTH_TEST);
-  qDebug() << "init";
 }
 
 void OpenGLWidget::resizeGL(int w, int h) {
