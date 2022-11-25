@@ -78,22 +78,27 @@ void MainWindow::on_redrawb_clicked() {
     update_openglwidget();
 
     if (view->getErrcode() != 0) {
-        display_error("error when parsing mesh: " + ui->meshpathedit->text(), -2);
+        display_error("error when parsing mesh: " + ui->meshpathedit->text(), false, false, true);
         update_info_labels(get_filename(ui->meshpathedit->text()), "0", "0");
     } else {
-        display_error("", 0);
+        display_error("", true, false, false);
         update_info_labels(get_filename(ui->meshpathedit->text()),
                            QString::number(view->getPointsCount()),
                            QString::number(view->getPolygonsCount()));
     }
   } else {
-    display_error("incorrect meshpath or input value(s); unable to proceed", -2);
+    display_error("incorrect meshpath or input value(s); unable to proceed", false, false, true);
   }
 }
 
 void MainWindow::on_screenb_clicked() {
-  // take a screenshot
-  qDebug() << "screen";
+  QString filter = "jpg;; bmp";
+  QString fileName = QFileDialog::getSaveFileName(NULL, "save screenshot:", last_dirpath_record, filter, &filter);
+
+  if (!fileName.isNull()) {
+      last_dirpath_record = get_filedir(fileName);
+      view->screen(fileName + "." + filter, filter);
+  }
 }
 
 void MainWindow::on_gifb_clicked() {
@@ -106,10 +111,10 @@ void MainWindow::on_autorotationc_clicked(bool checked) {
 }
 
 void MainWindow::on_meshpathb_clicked() {
-    QString fileName = QFileDialog::getOpenFileName(NULL, "open:", last_dirpath, "OBJ files (*.obj)");
+    QString fileName = QFileDialog::getOpenFileName(NULL, "open:", last_dirpath_mesh, "OBJ files (*.obj)");
 
     if (!fileName.isNull()) {
-        last_dirpath = get_filedir(fileName);
+        last_dirpath_mesh = get_filedir(fileName);
         ui->meshpathedit->setText(fileName);
         on_redrawb_clicked();
     }
@@ -160,23 +165,41 @@ void MainWindow::start() {
   ui->errl->setText("");
   ui->resultl->setText("");
 
-  init_meshpath();
+  init_paths();
   init_spinboxes();
   create_info_labels();
 
   ui->camera->setFocus();
 }
 
-void MainWindow::init_meshpath() {
-    QDir def(def_dirpath);
+void MainWindow::init_paths() {
+    QDir def_mesh(def_dirpath_mesh);
+    QDir def_record(def_dirpath_record);
+
     ui->meshpathedit->setPlaceholderText("(none)");
 
-    if (!def.exists()) {
-        last_dirpath = ".";
-        display_error("failure when trying to navigate to the default location of the materials folder; "
-                      "meshpath has been reset to point to the application directory.", 1);
+    if (!def_mesh.exists() && !def_record.exists()) {
+        display_error("failure when trying to set the default paths; "
+                      "mall paths have been reset to point to the application directory.", false, true, false);
+    } else if (!def_mesh.exists()) {
+        display_error("failure when trying to navigate to the default location of the materials/raw folder; "
+                      "mesh path has been reset to point to the application directory.", false, true, false);
+    } else if (!def_record.exists()) {
+
+        display_error("failure when trying to navigate to the default location of the misc/img folder; "
+                      "record path has been reset to point to the application directory.", false, true, false);
+    }
+
+    if (!def_mesh.exists()) {
+        last_dirpath_mesh = ".";
     } else {
-        last_dirpath = def_dirpath;
+        last_dirpath_mesh = def_dirpath_mesh;
+    }
+
+    if (!def_record.exists()) {
+        last_dirpath_record = ".";
+    } else {
+        last_dirpath_record = def_dirpath_record;
     }
 }
 
@@ -335,14 +358,14 @@ bool MainWindow::is_valid_textvalue(QString text) {
   return result;
 }
 
-void MainWindow::display_error(QString message, int errtype) {
-  if (errtype == 0) {
+void MainWindow::display_error(QString message, bool success, bool warning, bool error) {
+  if (success) {
       ui->resultl->setStyleSheet("color: green;");
       ui->resultl->setText("SUCCESS");
-  } else if (errtype == 1) {
+  } else if (warning) {
       ui->resultl->setStyleSheet("color: yellow;");
       ui->resultl->setText("WARNING");
-  } else {
+  } else if (error) {
       ui->resultl->setStyleSheet("color: red;");
       ui->resultl->setText("ERROR");
   }
@@ -367,6 +390,12 @@ QString MainWindow::get_filename(QString fullpath) {
         fileName = fileInfo.completeBaseName() + "." + fileInfo.completeSuffix();
     }
     return fileName;
+}
+
+QString MainWindow::get_fileext(QString fullpath) {
+    QFileInfo fileInfo;
+    fileInfo.setFile(fullpath);
+    return fileInfo.completeSuffix();
 }
 
 void MainWindow::convert_to_rgb(int index, float *rgb) {
@@ -442,7 +471,8 @@ void MainWindow::read_settings() {
     const auto saved_state = settings.value("saved_state", QByteArray()).toByteArray();
     if (!saved_state.isEmpty()) {
         this->setGeometry(settings.value("windowsize").toRect());
-        last_dirpath = settings.value("last_dirpath").toString();
+        last_dirpath_mesh = settings.value("last_dirpath_mesh").toString();
+        last_dirpath_record = settings.value("last_dirpath_record").toString();
 
         ui->meshpathedit->setText(settings.value("meshpath").toString());
         ui->projections->setValue(settings.value("projection").toInt());
@@ -476,7 +506,8 @@ void MainWindow::write_settings() {
     settings.setValue("windowsize", this->geometry());
 
     settings.setValue("meshpath", ui->meshpathedit->text());
-    settings.setValue("last_dirpath", last_dirpath);
+    settings.setValue("last_dirpath_mesh", last_dirpath_mesh);
+    settings.setValue("last_dirpath_record", last_dirpath_record);
     settings.setValue("projection", ui->projections->value());
     settings.setValue("pos_x", ui->pxedit->text());
     settings.setValue("pos_y", ui->pyedit->text());

@@ -47,7 +47,7 @@ class MainWindow : public QMainWindow {
 
 private:
   void start();
-  void init_meshpath();
+  void init_paths();
   void init_spinboxes();
   void create_info_labels();
   void update_info_labels(QString filename, QString n_vertices,
@@ -60,9 +60,10 @@ private:
   bool check_values();
   bool is_valid_mesh();
   bool is_valid_textvalue(QString text);
-  void display_error(QString message, int errtype);
+  void display_error(QString message, bool success, bool warning, bool error);
   QString get_filedir(QString fullpath);
   QString get_filename(QString fullpath);
+  QString get_fileext(QString fullpath);
   void convert_to_rgb(int index, float *rgb);
   bool process_altkey();
   bool process_fkey();
@@ -78,8 +79,10 @@ private:
   QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "purple"};
   QStringList vert_styles = {"none", "circle", "square"};
   QStringList edge_styles = {"solid", "dashed"};
-  QString def_dirpath = "../../materials/raw";
-  QString last_dirpath = NULL;
+  QString def_dirpath_mesh = "../../materials/raw";
+  QString def_dirpath_record = "../../misc/img";
+  QString last_dirpath_mesh = NULL;
+  QString last_dirpath_record = NULL;
   QLabel *filenamel = NULL;
   QLabel *filenamel_value = NULL;
   QLabel *verticesl = NULL;

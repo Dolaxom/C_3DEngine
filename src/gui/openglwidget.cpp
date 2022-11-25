@@ -55,9 +55,9 @@ void OpenGLWidget::paintGL() {
   displayMesh();
 }
 
-//void OpenGLWidget::screen() {
-
-//}
+void OpenGLWidget::screen(QString filename, QString fileext) {
+    this->grabFramebuffer().save(filename, fileext.toStdString().c_str());
+}
 
 //void OpenGLWidget::record() {
 
