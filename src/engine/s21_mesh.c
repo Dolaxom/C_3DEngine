@@ -9,18 +9,15 @@ void copy_polygons(mesh_t original_mesh) {
 }
 
 void copy_points(mesh_t original_mesh) {
-  int k = 0;
-  for (int i = 0; i < original_mesh.count_of_polygons; i++) {
-    for (int j = 0; j < original_mesh.polygons[i].count_of_points; j++) {
-      original_mesh.v_points[k] = original_mesh.polygons_copy[i].points[j];
-      k++;
-    }
+  for (int i = 0; i < original_mesh.count_of_points; i++) {
+    original_mesh.v_points_copy[i] = original_mesh.v_points[i];
   }
 }
 
 mesh_t parse_obj_file(char* path_to_file, int* error_code) {
-  *error_code = S21_OK;
   mesh_t result_mesh;
+  *error_code = S21_OK;
+  result_mesh.legacy_render = 0;
   result_mesh.polygons = malloc(sizeof(polygons_t));
   result_mesh.polygons_copy = malloc(sizeof(polygons_t) * 2);
   result_mesh.queue = malloc(0);
@@ -33,7 +30,8 @@ mesh_t parse_obj_file(char* path_to_file, int* error_code) {
   FILE* file;
   char str_from_file[64];
 
-  result_mesh.v_points = NULL;
+  result_mesh.v_points = malloc(1);
+  result_mesh.v_points_copy = malloc(2);
   char coordinate_x[12];
   char coordinate_y[12];
   char coordinate_z[12];
@@ -91,7 +89,9 @@ mesh_t parse_obj_file(char* path_to_file, int* error_code) {
         float tmp_z = atof(coordinate_z);
         
         result_mesh.v_points = realloc(result_mesh.v_points, points_count * sizeof(vector));
-        if (result_mesh.v_points == NULL) {
+        result_mesh.v_points_copy = realloc(result_mesh.v_points_copy, points_count * sizeof(vector));
+        if (result_mesh.v_points == NULL ||
+            result_mesh.v_points_copy == NULL ) {
             exit(S21_REALLOC);
         }
 
@@ -100,6 +100,7 @@ mesh_t parse_obj_file(char* path_to_file, int* error_code) {
         result_mesh.v_points[points_count - offset_array].y = tmp_y;
         result_mesh.v_points[points_count - offset_array].z = tmp_z;
         result_mesh.v_points[points_count - offset_array].w = 1;
+
       } else if (str_from_file[0] == 'f') {
         polygons_count++;
         int *points_tmp = NULL;
@@ -151,6 +152,10 @@ mesh_t parse_obj_file(char* path_to_file, int* error_code) {
         }
         result_mesh.polygons[polygons_count - offset_array].count_of_points = current_points_count;
         result_mesh.polygons_copy[polygons_count - offset_array].count_of_points = current_points_count;
+
+        if (current_points_count > 3) {
+          result_mesh.legacy_render = 1;
+        }
         free(points_tmp);
       }
     }

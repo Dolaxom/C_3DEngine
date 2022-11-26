@@ -1,7 +1,7 @@
 #include "s21_camera.h"
 
 int main(int argc, char **argv) {
-  mesh_init("../materials/raw/monkey.obj");
+  mesh_init("../materials/raw/monkey_million_polygons.obj");
   fleeglut_init(argc, argv);
   glutMainLoop();
   // TODO: free()
@@ -16,18 +16,18 @@ void fleeglut_init(int argc, char **argv) {
   glutDisplayFunc(display);
 }
 
-float deg = 0.0f;
+float deg = 1.0f;
 void display() {
   display_init();
   camera_init();
   copy_polygons(render_mesh);
+  copy_points(render_mesh);
 
   s21_location(0.0f, 0.0f, -3.5f);
   s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
-  s21_rotate_y(&render_mesh, s21_degree_to_radian(deg));
+  s21_rotate_y(&render_mesh, s21_degree_to_radian(0));
   s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
-  s21_scale(&render_mesh, 1, 1, 1);
-
+  s21_fast_scale(&render_mesh, deg, deg, deg);
   rendering_mesh(render_mesh);
   glutSwapBuffers();
   printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
@@ -55,20 +55,22 @@ void camera_init() {
 }
 
 void rendering_mesh() {
-  //   glLineWidth(0.01);
-  //   for (int polygon = 0; polygon < render_mesh.count_of_polygons; polygon++) {
-  //     glVertexPointer(4, GL_FLOAT, 0, render_mesh.polygons_copy[polygon].points);
-  //     glEnableClientState(GL_VERTEX_ARRAY);
-  //     glDrawArrays(GL_POLYGON, 0, render_mesh.polygons_copy[polygon].count_of_points);
-  //     glDisableClientState(GL_VERTEX_ARRAY);
-  // }
-
-  glVertexPointer(4, GL_FLOAT, 0, render_mesh.v_points);
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glColor3f(1, 1, 1);
-  glPointSize(4);
-  glDrawElements(GL_TRIANGLES, render_mesh.size_of_queue, GL_UNSIGNED_INT, render_mesh.queue);
-  glDisableClientState(GL_VERTEX_ARRAY);
+  if (render_mesh.legacy_render) {
+    glLineWidth(0.01);
+    for (int polygon = 0; polygon < render_mesh.count_of_polygons; polygon++) {
+      glVertexPointer(4, GL_FLOAT, 0, render_mesh.polygons_copy[polygon].points);
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glDrawArrays(GL_POLYGON, 0, render_mesh.polygons_copy[polygon].count_of_points);
+      glDisableClientState(GL_VERTEX_ARRAY);
+    }
+  } else {
+    glVertexPointer(4, GL_FLOAT, 0, render_mesh.v_points_copy);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glColor3f(1, 1, 1);
+    glPointSize(4);
+    glDrawElements(GL_TRIANGLES, render_mesh.size_of_queue, GL_UNSIGNED_INT, render_mesh.queue);
+    glDisableClientState(GL_VERTEX_ARRAY);
+  }
 }
 
 void mesh_init(char *path_to_file) {
