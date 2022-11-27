@@ -70,9 +70,9 @@ void OpenGLWidget::record() {
 
 void OpenGLWidget::recordStart() {
     gif = new QGifImage();
-    gif->setDefaultDelay(1000/10);
-
     timer = new QTimer(this);
+
+    gif->setDefaultDelay(1000/10);
 
     connect(timer, SIGNAL(timeout()), this, SLOT(record()));
     timer->start(100);
