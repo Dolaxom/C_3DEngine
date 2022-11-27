@@ -2,6 +2,7 @@
 
 int errcode = 0;
 mesh_t mesh;
+QString current_meshpath = NULL;
 GLdouble aspect_w = 0.0;
 GLdouble aspect_h = 0.0;
 
@@ -64,15 +65,18 @@ void OpenGLWidget::screen(QString filename, QString fileext) {
 //}
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
-    char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
+    if (new_meshpath != current_meshpath) {
+        char *meshpath = (char*)malloc(sizeof(char) * (new_meshpath.length() + 1));
 
-    if (meshpath) {
-        strncpy(meshpath, new_meshpath.toStdString().c_str(), (new_meshpath.length() + 1));
-        initMesh(meshpath);
-        update();
-        free(meshpath);
-    } else {
-        errcode = -100;
+        if (meshpath) {
+            current_meshpath = new_meshpath;
+            strncpy(meshpath, new_meshpath.toStdString().c_str(), (new_meshpath.length() + 1));
+            initMesh(meshpath);
+            update();
+            free(meshpath);
+        } else {
+            errcode = -100;
+        }
     }
 }
 
