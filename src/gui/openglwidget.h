@@ -4,6 +4,10 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
+
+
+#include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
+#include <QTimer>
 //#include <QOpenGLVertexArrayObject>
 //#include <QOpenGLShaderProgram>
 

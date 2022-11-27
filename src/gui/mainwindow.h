@@ -35,7 +35,8 @@ class MainWindow : public QMainWindow {
  private slots:
   void on_redrawb_clicked();
   void on_screenb_clicked();
-  void on_gifb_clicked();
+  //void on_gifb_clicked();
+  void on_gifb_clicked(bool checked);
   void on_autorotationc_clicked(bool checked);
   void on_meshpathb_clicked();
   void on_projections_valueChanged();
@@ -52,6 +53,7 @@ private:
   void create_info_labels();
   void update_info_labels(QString filename, QString n_vertices,
                           QString n_edges);
+  //void update_record_label(bool is_recording);
   void update_spinbox(QSpinBox *spinbox, QString prefix, QString suffix);
   void update_lineedit(QLineEdit *widget, QString add);
   void update_openglwidget();
@@ -89,6 +91,7 @@ private:
   QLabel *verticesl_value = NULL;
   QLabel *edgesl = NULL;
   QLabel *edgesl_value = NULL;
+  QLabel *recordl = NULL;
   OpenGLWidget *view = NULL;
 
   Ui::MainWindow *ui;

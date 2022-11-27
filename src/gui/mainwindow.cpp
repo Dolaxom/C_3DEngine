@@ -101,9 +101,28 @@ void MainWindow::on_screenb_clicked() {
   }
 }
 
-void MainWindow::on_gifb_clicked() {
-  // record a gif
-  qDebug() << "gif";
+//void MainWindow::on_gifb_clicked() {
+//  // record a gif
+//  qDebug() << "gif";
+
+//  // temp label to show that it's recording
+//  // destroy the label
+//}
+
+void MainWindow::on_gifb_clicked(bool checked) {
+    ui->gifb->setChecked(checked);
+
+    if (checked) {
+        ui->gifb->setText("stop recording");
+        recordl->setText("● recording in progress");
+        // set timer
+        // show label
+
+    } else {
+        ui->gifb->setText("● record");
+        recordl->setText("");
+        // save
+    }
 }
 
 void MainWindow::on_autorotationc_clicked(bool checked) {
@@ -230,6 +249,7 @@ void MainWindow::create_info_labels() {
   verticesl_value = new QLabel(this);
   edgesl = new QLabel(this);
   edgesl_value = new QLabel(this);
+  recordl = new QLabel(this);
 
   int pos_x = 15;
   int pos_y = 15;
@@ -244,6 +264,7 @@ void MainWindow::create_info_labels() {
   edgesl->setGeometry(pos_x, pos_y + upd_y + upd_y, width, height);
   edgesl_value->setGeometry(pos_x + width, pos_y + upd_y + upd_y, width,
                             height);
+  recordl->setGeometry(pos_x, pos_y + upd_y * 4, width * 3, height);
 
   filenamel->setText("filename: ");
   verticesl->setText("vertices: ");
@@ -449,7 +470,7 @@ bool MainWindow::process_enterkey() {
   if (ui->autorotationc->hasFocus()) {
     on_autorotationc_clicked(!ui->autorotationc->checkState());
   } else if (ui->gifb->hasFocus()) {
-    on_gifb_clicked();
+    on_gifb_clicked(!ui->gifb->isChecked());
   } else if (ui->screenb->hasFocus()) {
     on_screenb_clicked();
   } else if (ui->meshpathb->hasFocus()) {
@@ -526,3 +547,4 @@ void MainWindow::write_settings() {
     settings.setValue("vert_size", ui->vertsizes->value());
     settings.setValue("edge_size", ui->edgesizes->value());
 }
+
