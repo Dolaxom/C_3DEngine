@@ -38,6 +38,16 @@ void s21_rotate_x(mesh_t *mesh, float degree) {
   }
 }
 
+void s21_fast_rotate_x(mesh_t *mesh, float degree) {
+  if (mesh->rotation.x == 0 && degree == 0) {
+    return;
+  }
+  mesh->rotation.x = degree;
+  for (int i = 0; i < mesh->count_of_points; i++) {
+    s21_fast_calculate_rotation_y_matrix(mesh->rotation.x, &mesh->v_points_copy[i]);
+  }
+}
+
 void s21_rotate_y(mesh_t *mesh, float degree) {
   if (mesh->rotation.y == 0 && degree == 0) {
     return;
@@ -48,6 +58,16 @@ void s21_rotate_y(mesh_t *mesh, float degree) {
   }
 }
 
+void s21_fast_rotate_y(mesh_t *mesh, float degree) {
+  if (mesh->rotation.y == 0 && degree == 0) {
+    return;
+  }
+  mesh->rotation.y = degree;
+  for (int i = 0; i < mesh->count_of_points; i++) {
+    s21_fast_calculate_rotation_y_matrix(mesh->rotation.y, &mesh->v_points_copy[i]);
+  }
+}
+
 void s21_rotate_z(mesh_t *mesh, float degree) {
   if (mesh->rotation.z == 0 && degree == 0) {
     return;
@@ -55,5 +75,15 @@ void s21_rotate_z(mesh_t *mesh, float degree) {
   mesh->rotation.z = degree;
   for (int polygon = 0; polygon < mesh->count_of_polygons; polygon++) {
     s21_calculate_rotation_z_matrix(mesh->rotation.z, mesh->polygons_copy[polygon]);
+  }
+}
+
+void s21_fast_rotate_z(mesh_t *mesh, float degree) {
+  if (mesh->rotation.z == 0 && degree == 0) {
+    return;
+  }
+  mesh->rotation.y = degree;
+  for (int i = 0; i < mesh->count_of_points; i++) {
+    s21_fast_calculate_rotation_z_matrix(mesh->rotation.z, &mesh->v_points_copy[i]);
   }
 }

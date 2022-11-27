@@ -60,6 +60,15 @@ void s21_calculate_rotation_y_matrix(float degree, polygons_t polygon) {
   }
 }
 
+void s21_fast_calculate_rotation_y_matrix(float degree, vector* vec) {
+  matrix4x4 rotation_matrix = s21_rotation_y_matrix_reference(degree);
+  vector result;
+  s21_mult_matrix_on_vector(&rotation_matrix, vec, &result);
+  vec->x = result.x;
+  vec->y = result.y;
+  vec->z = result.z;
+}
+
 matrix4x4 s21_rotation_x_matrix_reference(float degree) {
   matrix4x4 result = {{{1, 0, 0, 0},
                        {0, cos(degree), -sin(degree), 0},
@@ -80,6 +89,15 @@ void s21_calculate_rotation_x_matrix(float degree, polygons_t polygon) {
   }
 }
 
+void s21_fast_calculate_rotation_x_matrix(float degree, vector* vec) {
+  matrix4x4 rotation_matrix = s21_rotation_x_matrix_reference(degree);
+  vector result;
+  s21_mult_matrix_on_vector(&rotation_matrix, vec, &result);
+  vec->x = result.x;
+  vec->y = result.y;
+  vec->z = result.z;
+}
+
 matrix4x4 s21_rotation_z_matrix_reference(float degree) {
   matrix4x4 result = {{{cos(degree), -sin(degree), 0, 0},
                        {sin(degree), cos(degree), 0, 0},
@@ -98,4 +116,13 @@ void s21_calculate_rotation_z_matrix(float degree, polygons_t polygon) {
     polygon.points[i].y = result.y;
     polygon.points[i].z = result.z;
   }
+}
+
+void s21_fast_calculate_rotation_z_matrix(float degree, vector* vec) {
+  matrix4x4 rotation_matrix = s21_rotation_z_matrix_reference(degree);
+  vector result;
+  s21_mult_matrix_on_vector(&rotation_matrix, vec, &result);
+  vec->x = result.x;
+  vec->y = result.y;
+  vec->z = result.z;
 }

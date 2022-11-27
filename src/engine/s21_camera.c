@@ -22,13 +22,22 @@ void display() {
   camera_init();
   copy_polygons(render_mesh);
   copy_points(render_mesh);
+  if (render_mesh.legacy_render) {
+    s21_location(0.0f, 0.0f, -3.5f);
+    s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
+    s21_rotate_y(&render_mesh, s21_degree_to_radian(deg));
+    s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
+    s21_scale(&render_mesh, 1, 1, 1);
+    rendering_mesh(render_mesh);
+  } else {
+    s21_location(0.0f, 0.0f, -3.5f);
+    s21_fast_rotate_x(&render_mesh, s21_degree_to_radian(0));
+    s21_fast_rotate_y(&render_mesh, s21_degree_to_radian(deg));
+    s21_fast_rotate_z(&render_mesh, s21_degree_to_radian(0));
+    s21_fast_scale(&render_mesh, 1, 1, 1);
+    rendering_mesh(render_mesh);
+  }
 
-  s21_location(0.0f, 0.0f, -3.5f);
-  s21_rotate_x(&render_mesh, s21_degree_to_radian(0));
-  s21_rotate_y(&render_mesh, s21_degree_to_radian(0));
-  s21_rotate_z(&render_mesh, s21_degree_to_radian(0));
-  s21_fast_scale(&render_mesh, deg, deg, deg);
-  rendering_mesh(render_mesh);
   glutSwapBuffers();
   printf("DEBUG: Input degrees to y rotation:"); // TODO remove it later
   scanf("%f", &deg);

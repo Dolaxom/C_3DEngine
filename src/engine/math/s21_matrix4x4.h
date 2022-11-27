@@ -19,15 +19,15 @@ void s21_fast_calculate_scale_matrix(vector new_size_vector, vector* vec); // fa
 
 matrix4x4 s21_rotation_y_matrix_reference(float degree);
 void s21_calculate_rotation_y_matrix(float degree, polygons_t polygon); // legacy
-void s21_fast_calculate_rotation_y_matrix(float degree, mesh_t* mesh); // fast
+void s21_fast_calculate_rotation_y_matrix(float degree, vector* vec); // fast
 
 matrix4x4 s21_rotation_x_matrix_reference(float degree);
 void s21_calculate_rotation_x_matrix(float degree, polygons_t polygon); // legacy
-void s21_fast_calculate_rotation_x_matrix(float degree, mesh_t* mesh); // fast
+void s21_fast_calculate_rotation_x_matrix(float degree, vector* vec); // fast
 
 matrix4x4 s21_rotation_z_matrix_reference(float degree);
 void s21_calculate_rotation_z_matrix(float degree, polygons_t polygon); // legacy
-void s21_fast_calculate_rotation_z_matrix(float degree, mesh_t* mesh); // fast
+void s21_fast_calculate_rotation_z_matrix(float degree, vector* vec); // fast
 
 #ifdef __cplusplus
 }
