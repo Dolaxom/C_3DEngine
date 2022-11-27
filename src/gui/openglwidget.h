@@ -22,7 +22,8 @@ class OpenGLWidget : public QOpenGLWidget {
   void resizeGL(int w, int h) override;
   void paintGL() override;
   void screen(QString filename, QString fileext);
-  void record();
+  void recordStart();
+  void recordFinish(QString filename);
   void setMeshpath(QString new_meshpath);
   void setProjection(int projection_index);
   void setPosition(float x, float y, float z);
@@ -35,6 +36,9 @@ class OpenGLWidget : public QOpenGLWidget {
   int getErrcode();
   int getPolygonsCount();
   int getPointsCount();
+
+private slots:
+    void record();
 
  private:
   void updateColor(float *color, float *sourcecolor);

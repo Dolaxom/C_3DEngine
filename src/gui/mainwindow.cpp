@@ -107,19 +107,16 @@ void MainWindow::on_gifb_clicked(bool checked) {
     if (checked) {
         ui->gifb->setText("stop recording");
         recordl->setText("● recording in progress");
-        // set timer
-        // show label
-
+        view->recordStart();
     } else {
         ui->gifb->setText("● record");
         recordl->setText("");
-        // save
 
         QString fileName = QFileDialog::getSaveFileName(NULL, "save screenshot:", last_dirpath_record, ".gif");
+        view->recordFinish(fileName);
 
         if (!fileName.isNull()) {
             last_dirpath_record = get_filedir(fileName);
-            view->record();
         }
     }
 }

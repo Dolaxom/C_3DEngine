@@ -35,6 +35,12 @@
         <height>0</height>
        </size>
       </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
      </widget>
     </item>
     <item>

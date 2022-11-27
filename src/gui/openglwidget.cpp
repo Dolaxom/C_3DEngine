@@ -22,6 +22,9 @@ GLclampf rgb_edge[3] = {1, 1, 1};
 GLfloat vertsize = 0.01f;
 GLfloat edgesize = 0;
 
+QGifImage *gif = NULL;
+QTimer *timer = NULL;
+
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 // PUBLIC
@@ -61,7 +64,31 @@ void OpenGLWidget::screen(QString filename, QString fileext) {
 }
 
 void OpenGLWidget::record() {
+    // recording slot
+    qDebug() << "record";
+}
 
+void OpenGLWidget::recordStart() {
+    gif = new QGifImage();
+    gif->setDefaultDelay(1000/10);
+
+    timer = new QTimer(this);
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(record()));
+    timer->start(100);
+}
+
+void OpenGLWidget::recordFinish(QString filename) {
+    // disconnect from slot, save gif
+
+    timer->stop();
+    disconnect(timer, SIGNAL(timeout()), this, SLOT(record()));
+    qDebug() << "disconnect";
+
+    // if filename != null, save gif
+
+    delete gif;
+    delete timer;
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
