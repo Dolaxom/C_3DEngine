@@ -31,6 +31,19 @@ set(PROJECT_SOURCES
     ../src/engine/math/s21_engine_math.h 
     ../src/engine/math/s21_matrix4x4.c 
     ../src/engine/math/s21_matrix4x4.h
+
+    ../libs/QtGifImage-master/src/3rdParty/giflib/dgif_lib.c
+    ../libs/QtGifImage-master/src/3rdParty/giflib/egif_lib.c
+    ../libs/QtGifImage-master/src/3rdParty/giflib/gif_err.c
+    ../libs/QtGifImage-master/src/3rdParty/giflib/gif_lib.h
+    ../libs/QtGifImage-master/src/3rdParty/giflib/gif_hash.c
+    ../libs/QtGifImage-master/src/3rdParty/giflib/gifalloc.c
+    ../libs/QtGifImage-master/src/3rdParty/giflib/quantize.c
+    ../libs/QtGifImage-master/src/gifimage/qgifglobal.h
+    ../libs/QtGifImage-master/src/gifimage/qgifimage.h
+    ../libs/QtGifImage-master/src/gifimage/qgifimage_p.h
+    ../libs/QtGifImage-master/src/gifimage/qgifimage.cpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
