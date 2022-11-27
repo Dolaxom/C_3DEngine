@@ -22,6 +22,7 @@ class OpenGLWidget : public QOpenGLWidget {
   void resizeGL(int w, int h) override;
   void paintGL() override;
   void screen(QString filename, QString fileext);
+  void record();
   void setMeshpath(QString new_meshpath);
   void setProjection(int projection_index);
   void setPosition(float x, float y, float z);

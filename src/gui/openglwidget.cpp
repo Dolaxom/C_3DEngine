@@ -60,9 +60,9 @@ void OpenGLWidget::screen(QString filename, QString fileext) {
     this->grabFramebuffer().save(filename, fileext.toStdString().c_str());
 }
 
-//void OpenGLWidget::record() {
+void OpenGLWidget::record() {
 
-//}
+}
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
     if (new_meshpath != current_meshpath) {

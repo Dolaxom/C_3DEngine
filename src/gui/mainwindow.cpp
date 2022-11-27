@@ -101,14 +101,6 @@ void MainWindow::on_screenb_clicked() {
   }
 }
 
-//void MainWindow::on_gifb_clicked() {
-//  // record a gif
-//  qDebug() << "gif";
-
-//  // temp label to show that it's recording
-//  // destroy the label
-//}
-
 void MainWindow::on_gifb_clicked(bool checked) {
     ui->gifb->setChecked(checked);
 
@@ -122,6 +114,13 @@ void MainWindow::on_gifb_clicked(bool checked) {
         ui->gifb->setText("● record");
         recordl->setText("");
         // save
+
+        QString fileName = QFileDialog::getSaveFileName(NULL, "save screenshot:", last_dirpath_record, ".gif");
+
+        if (!fileName.isNull()) {
+            last_dirpath_record = get_filedir(fileName);
+            view->record();
+        }
     }
 }
 
