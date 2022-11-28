@@ -112,8 +112,9 @@ void MainWindow::on_gifb_clicked(bool checked) {
         ui->gifb->setText("● record");
         recordl->setText("");
 
-        QString fileName = QFileDialog::getSaveFileName(NULL, "save screenshot:", last_dirpath_record, ".gif");
-        view->recordFinish(fileName);
+        QString filter = ".gif";
+        QString fileName = QFileDialog::getSaveFileName(NULL, "save screenshot:", last_dirpath_record, filter, &filter);
+        view->recordFinish(fileName, filter);
 
         if (!fileName.isNull()) {
             last_dirpath_record = get_filedir(fileName);

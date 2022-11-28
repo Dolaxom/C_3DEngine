@@ -66,14 +66,12 @@ void OpenGLWidget::screen(QString filename, QString fileext) {
 }
 
 void OpenGLWidget::record() {
-    // recording slot
     qDebug() << "record";
 
     QPixmap frame(this->size());
     this->render(&frame);
 
     QImage img = frame.toImage();
-
     gif->addFrame(img, gif_interval);
 
     gif_counter += gif_interval;
@@ -87,19 +85,15 @@ void OpenGLWidget::recordStart() {
 
     connect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
     gif_timer->start(gif_interval);
-
-
 }
 
-void OpenGLWidget::recordFinish(QString filename) {
-    // disconnect from slot, save gif
-
+void OpenGLWidget::recordFinish(QString filename, QString fileext) {
     gif_timer->stop();
     disconnect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
     qDebug() << "disconnect";
 
     if (!filename.isNull()) {
-     // save gif
+        gif->save(filename + fileext);
     }
 
     delete gif;
