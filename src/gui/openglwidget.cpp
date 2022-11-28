@@ -23,7 +23,9 @@ GLfloat vertsize = 0.01f;
 GLfloat edgesize = 0;
 
 QGifImage *gif = NULL;
-QTimer *timer = NULL;
+QTimer *gif_timer = NULL;
+int gif_interval = 100;
+int gif_counter = 0;
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
@@ -66,29 +68,42 @@ void OpenGLWidget::screen(QString filename, QString fileext) {
 void OpenGLWidget::record() {
     // recording slot
     qDebug() << "record";
+
+    QPixmap frame(this->size());
+    this->render(&frame);
+
+    QImage img = frame.toImage();
+
+    gif->addFrame(img, gif_interval);
+
+    gif_counter += gif_interval;
 }
 
 void OpenGLWidget::recordStart() {
     gif = new QGifImage();
-    timer = new QTimer(this);
+    gif_timer = new QTimer(this);
 
-    gif->setDefaultDelay(1000/10);
+    gif->setDefaultDelay(gif_interval);
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(record()));
-    timer->start(100);
+    connect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
+    gif_timer->start(gif_interval);
+
+
 }
 
 void OpenGLWidget::recordFinish(QString filename) {
     // disconnect from slot, save gif
 
-    timer->stop();
-    disconnect(timer, SIGNAL(timeout()), this, SLOT(record()));
+    gif_timer->stop();
+    disconnect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
     qDebug() << "disconnect";
 
-    // if filename != null, save gif
+    if (!filename.isNull()) {
+     // save gif
+    }
 
     delete gif;
-    delete timer;
+    delete gif_timer;
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
