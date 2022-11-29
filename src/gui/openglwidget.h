@@ -4,13 +4,11 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
-
-
-#include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
-#include <QTimer>
 //#include <QOpenGLVertexArrayObject>
 //#include <QOpenGLShaderProgram>
 
+#include <QTimer>
+#include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
 #include "../engine/math/s21_engine_math.h"
 
 class OpenGLWidget : public QOpenGLWidget {
@@ -36,6 +34,12 @@ class OpenGLWidget : public QOpenGLWidget {
   void recordStart();
   void recordFinish(QString filename, QString fileext);
 
+signals:
+  void poszValueChanged(float value);
+  //void posValueChanged(float newpos_x, float newpos_y, float newpos_z);
+  //void rotValueChanged(float newrot_x, float newrot_y, float newrot_z);
+  //void scaleValueChanged(float newscale_x, float newscale_y, float newscale_z);
+
 private slots:
   void record();
   void mousePressEvent(QMouseEvent *event) override;
@@ -54,6 +58,7 @@ private slots:
   void s21_location(float x, float y, float z);
 
   int errcode = 0;
+  bool is_dirty = false;
   mesh_t mesh;
   QString current_meshpath = NULL;
   GLdouble aspect_w = 0.0;

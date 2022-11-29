@@ -1,6 +1,8 @@
 #include "openglwidget.h"
 
-OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
+OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
+    this->setMouseTracking(true);
+}
 
 // PUBLIC
 
@@ -143,6 +145,11 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
     qDebug() << "wheel";
+    pos_z += 0.01f;
+    //emit valueChanged(pos_z);
+    emit poszValueChanged(pos_z);
+
+    update();
 }
 
 // PRIVATE

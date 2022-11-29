@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->edgecolors, SIGNAL(valueChanged(int)), this, SLOT(on_edgecolors_valueChanged()), Qt::QueuedConnection);
   connect(ui->vertstyles, SIGNAL(valueChanged(int)), this, SLOT(on_vertstyles_valueChanged()), Qt::QueuedConnection);
   connect(ui->edgestyles, SIGNAL(valueChanged(int)), this, SLOT(on_edgestyles_valueChanged()), Qt::QueuedConnection);
+
+  connect(view, SIGNAL(poszValueChanged(float)), this, SLOT(pos_valueChanged()));
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -170,6 +172,12 @@ void MainWindow::on_edgestyles_valueChanged()
 {
     ui->edgestyles->findChild<QLineEdit*>()->deselect();
     update_spinbox(ui->edgestyles, "", "_" + edge_styles.at(ui->edgestyles->value()));
+}
+
+void MainWindow::pos_valueChanged() {
+    //view->rot_x;
+    //ui->pxedit
+    qDebug() << "pos_changed";
 }
 
 // PRIVATE

@@ -44,6 +44,7 @@ class MainWindow : public QMainWindow {
   void on_edgecolors_valueChanged();
   void on_vertstyles_valueChanged();
   void on_edgestyles_valueChanged();
+  void pos_valueChanged();
 
 private:
   void start();
