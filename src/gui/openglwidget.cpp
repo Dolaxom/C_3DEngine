@@ -1,34 +1,5 @@
 #include "openglwidget.h"
 
-int errcode = 0;
-mesh_t mesh;
-QString current_meshpath = NULL;
-GLdouble aspect_w = 0.0;
-GLdouble aspect_h = 0.0;
-
-int projection = 0;
-float pos_x = 0;
-float pos_y = 0;
-float pos_z = 0;
-float rot_x = 0;
-float rot_y = 0;
-float rot_z = 0;
-float scale_x = 0;
-float scale_y = 0;
-float scale_z = 0;
-GLclampf rgb_bg[3] = {0, 0, 0};
-GLclampf rgb_vert[3] = {1, 1, 1};
-GLclampf rgb_edge[3] = {1, 1, 1};
-GLfloat vertsize = 0.0f;
-GLfloat edgesize = 0.01f;
-int vertstyle = 0;
-int edgestyle = 0;
-
-QGifImage *gif = NULL;
-QTimer *gif_timer = NULL;
-int gif_interval = 100;
-int gif_counter = 0;
-
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
 
 // PUBLIC
@@ -60,48 +31,7 @@ void OpenGLWidget::paintGL() {
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   updateProjection();
-  //displayMesh();
-  //setupMesh();
   renderMesh();
-}
-
-void OpenGLWidget::screen(QString filename, QString fileext) {
-    this->grabFramebuffer().save(filename, fileext.toStdString().c_str());
-}
-
-void OpenGLWidget::record() {
-    qDebug() << "record";
-
-    QPixmap frame(this->size());
-    this->render(&frame);
-
-    QImage img = frame.toImage();
-    gif->addFrame(img, gif_interval);
-
-    gif_counter += gif_interval;
-}
-
-void OpenGLWidget::recordStart() {
-    gif = new QGifImage();
-    gif_timer = new QTimer(this);
-
-    gif->setDefaultDelay(gif_interval);
-
-    connect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
-    gif_timer->start(gif_interval);
-}
-
-void OpenGLWidget::recordFinish(QString filename, QString fileext) {
-    gif_timer->stop();
-    disconnect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
-    qDebug() << "disconnect";
-
-    if (!filename.isNull()) {
-        gif->save(filename + fileext);
-    }
-
-    delete gif;
-    delete gif_timer;
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
@@ -170,6 +100,43 @@ int OpenGLWidget::getPointsCount() {
     return mesh.count_of_points;
 }
 
+void OpenGLWidget::screen(QString filename, QString fileext) {
+    this->grabFramebuffer().save(filename, fileext.toStdString().c_str());
+}
+
+void OpenGLWidget::recordStart() {
+    gif = new QGifImage();
+    gif_timer = new QTimer(this);
+
+    gif->setDefaultDelay(gif_interval);
+
+    connect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
+    gif_timer->start(gif_interval);
+}
+
+void OpenGLWidget::recordFinish(QString filename, QString fileext) {
+    gif_timer->stop();
+    disconnect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
+    qDebug() << "disconnect";
+
+    if (!filename.isNull()) {
+        gif->save(filename + fileext);
+    }
+
+    delete gif;
+    delete gif_timer;
+}
+
+// PRIVATE SLOTS
+
+void OpenGLWidget::record() {
+    QPixmap frame(this->size());
+    this->render(&frame);
+
+    QImage img = frame.toImage();
+    gif->addFrame(img, gif_interval);
+}
+
 // PRIVATE
 
 void OpenGLWidget::updateColor(float *color, float *sourcecolor) {
@@ -181,19 +148,17 @@ void OpenGLWidget::updateColor(float *color, float *sourcecolor) {
 }
 
 void OpenGLWidget::updateProjection() {
-  if (projection == 0) {
+  if (projection == 0) {    // perspective
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    float left_value = -((float)this->width() / 1000) / 2; //-0.369
+    float left_value = -((float)this->width() / 1000) / 2;
     float right_value = ((float)this->width() / 1000) / 2;
-    float top_value = -((float)this->height() / 1000) / 2; // -393500
+    float top_value = -((float)this->height() / 1000) / 2;
     float down_value = ((float)this->height() / 1000) / 2;
     glFrustum(left_value, right_value, top_value, down_value, near_dist, far_dist);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-     glTranslatef(0.0f, 0.0f, -5.0f); // TODO REMOVE LATER
-  } else {
+  } else {                  // orthogonal
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (this->width() >= this->height()) {
@@ -246,15 +211,15 @@ void OpenGLWidget::setupRender() {
   glLineWidth(edgesize);
   glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
 
-  if (edgestyle != 0) { // set dotter-line
+  if (edgestyle != 0) {
     glLineStipple(1, 0x00F0);
     glEnable(GL_LINE_STIPPLE);
   } else {
 
   }
 
-  if (vertstyle != 0) { // set points (1)
-    glPointSize(vertsize); // set size of points
+  if (vertstyle != 0) {
+    glPointSize(vertsize);
   }
 }
 
@@ -269,7 +234,11 @@ void OpenGLWidget::renderModeDefault() {
     glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
     glEnableClientState(GL_VERTEX_ARRAY);
     glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
-    if (0) { // set points (2)
+
+    if (vertstyle == 1) {           // circle
+      // should draw circle points
+      glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
+    } else if (vertstyle == 2) {    // square
       glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
     }
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -280,42 +249,15 @@ void OpenGLWidget::renderModeFast() {
   glVertexPointer(4, GL_FLOAT, 0, mesh.v_points_copy);
   glEnableClientState(GL_VERTEX_ARRAY);
   glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
-  if (0) { // set points (3)
+
+  if (vertstyle == 1) {             // circle
+    // should draw circle points
+    glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
+  } else if (vertstyle == 2) {      // square
     glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
   }
   glDisableClientState(GL_VERTEX_ARRAY);
 }
-
-
-//void OpenGLWidget::renderMesh() {
-//  for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
-//    glLineWidth(edgesize);
-//    glBegin(GL_POLYGON);
-//    for (int point = 0; point < mesh.polygons[polygon].count_of_points;
-//         point++) {
-//      glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
-//      glVertex3f(mesh.polygons_copy[polygon].points[point].x,
-//                 mesh.polygons_copy[polygon].points[point].y,
-//                 mesh.polygons_copy[polygon].points[point].z);
-//    }
-//    glEnd();
-//  }
-//}
-
-//void OpenGLWidget::displayMesh() {
-//  if (errcode == 0) {
-//      copy_polygons(mesh);
-
-//      glTranslatef(pos_x, pos_y, pos_z);
-
-//      s21_rotate_x(&mesh, s21_degree_to_radian(rot_x));
-//      s21_rotate_y(&mesh, s21_degree_to_radian(rot_y));
-//      s21_rotate_z(&mesh, s21_degree_to_radian(rot_z));
-//      s21_scale(&mesh, scale_x, scale_y, scale_z);
-
-//      renderMesh();
-//  }
-//}
 
 void OpenGLWidget::s21_location(float x, float y, float z) {
   glTranslatef(x, y, z);

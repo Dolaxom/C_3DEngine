@@ -220,15 +220,21 @@ void MainWindow::init_paths() {
 }
 
 void MainWindow::init_spinboxes() {
+    ui->vertsizes->setMinimum(0.01);
+    ui->edgesizes->setMinimum(0.01);
+
     ui->projections->setMaximum(projections.count() - 1);
     ui->bgcolors->setMaximum(colors.count() - 1);
     ui->vertcolors->setMaximum(colors.count() - 1);
     ui->edgecolors->setMaximum(colors.count() - 1);
     ui->vertstyles->setMaximum(vert_styles.count() - 1);
     ui->edgestyles->setMaximum(edge_styles.count() - 1);
+    ui->vertsizes->setMaximum(50.00);
+    ui->edgesizes->setMaximum(10.00);
 
     ui->vertcolors->setValue(1);
     ui->edgecolors->setValue(1);
+    ui->vertsizes->setValue(10.00);
     ui->edgesizes->setValue(0.01);
 
     on_projections_valueChanged();

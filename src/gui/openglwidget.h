@@ -21,9 +21,6 @@ class OpenGLWidget : public QOpenGLWidget {
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;
-  void screen(QString filename, QString fileext);
-  void recordStart();
-  void recordFinish(QString filename, QString fileext);
   void setMeshpath(QString new_meshpath);
   void setProjection(int projection_index);
   void setPosition(float x, float y, float z);
@@ -32,13 +29,15 @@ class OpenGLWidget : public QOpenGLWidget {
   void setColors(float *bgcolor, float *vertcolor, float *edgecolor);
   void setSizes(double new_vertsize, double new_edgesize);
   void setStyles(int vertstyle_index, int edgestyle_index);
-  //void setErrcode(int new_code);
   int getErrcode();
   int getPolygonsCount();
   int getPointsCount();
+  void screen(QString filename, QString fileext);
+  void recordStart();
+  void recordFinish(QString filename, QString fileext);
 
 private slots:
-    void record();
+  void record();
 
  private:
   void updateColor(float *color, float *sourcecolor);
@@ -52,9 +51,36 @@ private slots:
   void displayMesh();
   void s21_location(float x, float y, float z);
 
-  GLdouble range = 1.0;
-  GLdouble near_dist = 0.5;
-  GLdouble far_dist = 500.0;
+  int errcode = 0;
+  mesh_t mesh;
+  QString current_meshpath = NULL;
+  GLdouble aspect_w = 0.0;
+  GLdouble aspect_h = 0.0;
+  const GLdouble range = 1.0;
+  const GLdouble near_dist = 0.5;
+  const GLdouble far_dist = 500.0;
+
+  QGifImage *gif = NULL;
+  QTimer *gif_timer = NULL;
+  const int gif_interval = 1000/10;
+
+  int projection = 0;
+  float pos_x = 0;
+  float pos_y = 0;
+  float pos_z = 0;
+  float rot_x = 0;
+  float rot_y = 0;
+  float rot_z = 0;
+  float scale_x = 0;
+  float scale_y = 0;
+  float scale_z = 0;
+  GLclampf rgb_bg[3] = {0, 0, 0};
+  GLclampf rgb_vert[3] = {1, 1, 1};
+  GLclampf rgb_edge[3] = {1, 1, 1};
+  GLfloat vertsize = 0.0f;
+  GLfloat edgesize = 5.00f;
+  int vertstyle = 0;
+  int edgestyle = 0;
 };
 
 #endif  // OPENGLWIDGET_H
