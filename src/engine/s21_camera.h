@@ -12,6 +12,7 @@ void s21_location(float x, float y, float z);
 static void init_fleeglut(int argc, char **argv);
 static void init_mesh(char *path_to_file);
 static void init_display();
+static void setup_render();
 static void render_mesh();
 static void init_camera();
 static void fast_render();

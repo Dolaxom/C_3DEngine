@@ -49,7 +49,7 @@ static void init_camera() {
 }
 
 static void render_mesh() {
-  glLineWidth(0.01);
+  setup_render();
 
   main_mesh.legacy_render ? render() : fast_render();
 }
@@ -86,6 +86,9 @@ static void render() {
     glVertexPointer(4, GL_FLOAT, 0, main_mesh.polygons_copy[polygon].points);
     glEnableClientState(GL_VERTEX_ARRAY);
     glDrawArrays(GL_POLYGON, 0, main_mesh.polygons_copy[polygon].count_of_points);
+    if (0) { // set points (2)
+      glDrawArrays(GL_POINTS, 0, main_mesh.polygons_copy[polygon].count_of_points);
+    }
     glDisableClientState(GL_VERTEX_ARRAY);
   }
 }
@@ -93,8 +96,23 @@ static void render() {
 static void fast_render() {
   glVertexPointer(4, GL_FLOAT, 0, main_mesh.v_points_copy);
   glEnableClientState(GL_VERTEX_ARRAY);
-  glColor3f(1, 1, 1);
-  glPointSize(4);
   glDrawElements(GL_TRIANGLES, main_mesh.size_of_queue, GL_UNSIGNED_INT, main_mesh.queue);
+  if (0) { // set points (3)
+    glDrawElements(GL_POINTS, main_mesh.size_of_queue, GL_UNSIGNED_INT, main_mesh.queue);    
+  }
   glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+static void setup_render() {
+  glLineWidth(0.01); // set line width
+  glColor3f(1, 1, 1); // set color of lines
+
+  if (0) { // set dotter-line
+    glLineStipple(1, 0x00F0);
+    glEnable(GL_LINE_STIPPLE);
+  }
+
+  if (0) { // set points (1)
+    glPointSize(5); // set size of points
+  }
 }
