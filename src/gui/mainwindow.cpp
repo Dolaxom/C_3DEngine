@@ -505,7 +505,7 @@ void MainWindow::read_settings() {
         ui->pzedit->setText(settings.value("pos_z").toString());
         ui->rxedit->setText(settings.value("rot_x").toString());
         ui->ryedit->setText(settings.value("rot_y").toString());
-        ui->rxedit->setText(settings.value("rot_z").toString());
+        ui->rzedit->setText(settings.value("rot_z").toString());
         ui->sxedit->setText(settings.value("scale_x").toString());
         ui->syedit->setText(settings.value("scale_y").toString());
         ui->szedit->setText(settings.value("scale_z").toString());

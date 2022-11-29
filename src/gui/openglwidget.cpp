@@ -137,6 +137,14 @@ void OpenGLWidget::record() {
     gif->addFrame(img, gif_interval);
 }
 
+void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
+    qDebug() << "mouse press";
+}
+
+void OpenGLWidget::wheelEvent(QWheelEvent *event) {
+    qDebug() << "wheel";
+}
+
 // PRIVATE
 
 void OpenGLWidget::updateColor(float *color, float *sourcecolor) {

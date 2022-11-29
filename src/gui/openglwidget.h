@@ -38,6 +38,8 @@ class OpenGLWidget : public QOpenGLWidget {
 
 private slots:
   void record();
+  void mousePressEvent(QMouseEvent *event) override;
+  void wheelEvent(QWheelEvent *event) override;
 
  private:
   void updateColor(float *color, float *sourcecolor);
