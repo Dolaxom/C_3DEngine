@@ -35,10 +35,9 @@ class OpenGLWidget : public QOpenGLWidget {
   void recordFinish(QString filename, QString fileext);
 
 signals:
-  void poszValueChanged(float value);
-  //void posValueChanged(float newpos_x, float newpos_y, float newpos_z);
-  //void rotValueChanged(float newrot_x, float newrot_y, float newrot_z);
-  //void scaleValueChanged(float newscale_x, float newscale_y, float newscale_z);
+  void posValueChanged(float newpos_x, float newpos_y, float newpos_z);
+  void rotValueChanged(float newrot_x, float newrot_y, float newrot_z);
+  void scaleValueChanged(float newscale_x, float newscale_y, float newscale_z);
 
 private slots:
   void record();

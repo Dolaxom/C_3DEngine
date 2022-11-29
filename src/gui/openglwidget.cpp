@@ -146,8 +146,8 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
     qDebug() << "wheel";
     pos_z += 0.01f;
-    //emit valueChanged(pos_z);
-    emit poszValueChanged(pos_z);
+
+    emit posValueChanged(pos_x, pos_y, pos_z);
 
     update();
 }

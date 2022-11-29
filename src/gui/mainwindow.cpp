@@ -15,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->vertstyles, SIGNAL(valueChanged(int)), this, SLOT(on_vertstyles_valueChanged()), Qt::QueuedConnection);
   connect(ui->edgestyles, SIGNAL(valueChanged(int)), this, SLOT(on_edgestyles_valueChanged()), Qt::QueuedConnection);
 
-  connect(view, SIGNAL(poszValueChanged(float)), this, SLOT(pos_valueChanged()));
+  connect(view, SIGNAL(posValueChanged(float,float,float)), this, SLOT(pos_valueChanged(float,float,float)), Qt::QueuedConnection);
+  connect(view, SIGNAL(rotValueChanged(float,float,float)), this, SLOT(rot_valueChanged(float,float,float)), Qt::QueuedConnection);
+  connect(view, SIGNAL(scaleValueChanged(float,float,float)), this, SLOT(scale_valueChanged(float,float,float)), Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -174,10 +176,25 @@ void MainWindow::on_edgestyles_valueChanged()
     update_spinbox(ui->edgestyles, "", "_" + edge_styles.at(ui->edgestyles->value()));
 }
 
-void MainWindow::pos_valueChanged() {
-    //view->rot_x;
-    //ui->pxedit
+void MainWindow::pos_valueChanged(float newpos_x, float newpos_y, float newpos_z) {
     qDebug() << "pos_changed";
+    ui->pxedit->setText(QString::number(newpos_x));
+    ui->pyedit->setText(QString::number(newpos_y));
+    ui->pzedit->setText(QString::number(newpos_z));
+}
+
+void MainWindow::rot_valueChanged(float newrot_x, float newrot_y, float newrot_z) {
+    qDebug() << "rot_changed";
+    ui->rxedit->setText(QString::number(newrot_x));
+    ui->ryedit->setText(QString::number(newrot_y));
+    ui->rzedit->setText(QString::number(newrot_z));
+}
+
+void MainWindow::scale_valueChanged(float newscale_x, float newscale_y, float newscale_z) {
+    qDebug() << "scale_changed";
+    ui->sxedit->setText(QString::number(newscale_x));
+    ui->syedit->setText(QString::number(newscale_y));
+    ui->szedit->setText(QString::number(newscale_z));
 }
 
 // PRIVATE
