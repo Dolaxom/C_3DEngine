@@ -19,8 +19,10 @@ float scale_z = 0;
 GLclampf rgb_bg[3] = {0, 0, 0};
 GLclampf rgb_vert[3] = {1, 1, 1};
 GLclampf rgb_edge[3] = {1, 1, 1};
-GLfloat vertsize = 0.01f;
-GLfloat edgesize = 0;
+GLfloat vertsize = 0.0f;
+GLfloat edgesize = 0.01f;
+int vertstyle = 0;
+int edgestyle = 0;
 
 QGifImage *gif = NULL;
 QTimer *gif_timer = NULL;
@@ -152,7 +154,8 @@ void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
 }
 
 void OpenGLWidget::setStyles(int vertstyle_index, int edgestyle_index) {
-
+    vertstyle = vertstyle_index;
+    edgestyle = edgestyle_index;
 }
 
 int OpenGLWidget::getErrcode() {
@@ -224,32 +227,34 @@ void OpenGLWidget::initMesh(char *path_to_mesh) {
 void OpenGLWidget::setupMesh() {
   if (mesh.legacy_render) {
     copy_polygons(mesh);
-    s21_location(0.0f, 0.0f, 0.0f);
-    s21_rotate_x(&mesh, s21_degree_to_radian(0));
-    s21_rotate_y(&mesh, s21_degree_to_radian(0));
-    s21_rotate_z(&mesh, s21_degree_to_radian(0));
-    s21_scale(&mesh, 1, 1, 1);
+    s21_location(pos_x, pos_y, pos_z);
+    s21_rotate_x(&mesh, s21_degree_to_radian(rot_x));
+    s21_rotate_y(&mesh, s21_degree_to_radian(rot_y));
+    s21_rotate_z(&mesh, s21_degree_to_radian(rot_z));
+    s21_scale(&mesh, scale_x, scale_y, scale_z);
   } else {
     copy_points(mesh);
-    s21_location(0.0f, 0.0f, 0.0f);
-    s21_fast_rotate_x(&mesh, s21_degree_to_radian(0));
-    s21_fast_rotate_y(&mesh, s21_degree_to_radian(0));
-    s21_fast_rotate_z(&mesh, s21_degree_to_radian(0));
-    s21_fast_scale(&mesh, 1, 1, 1);
+    s21_location(pos_x, pos_y, pos_z);
+    s21_fast_rotate_x(&mesh, s21_degree_to_radian(rot_x));
+    s21_fast_rotate_y(&mesh, s21_degree_to_radian(rot_y));
+    s21_fast_rotate_z(&mesh, s21_degree_to_radian(rot_z));
+    s21_fast_scale(&mesh, scale_x, scale_y, scale_z);
   }
 }
 
 void OpenGLWidget::setupRender() {
-  glLineWidth(0.01); // set line width
-  glColor3f(1, 1, 1); // set color of lines
+  glLineWidth(edgesize);
+  glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
 
-  if (0) { // set dotter-line
+  if (edgestyle != 0) { // set dotter-line
     glLineStipple(1, 0x00F0);
     glEnable(GL_LINE_STIPPLE);
+  } else {
+
   }
 
-  if (0) { // set points (1)
-    glPointSize(5); // set size of points
+  if (vertstyle != 0) { // set points (1)
+    glPointSize(vertsize); // set size of points
   }
 }
 

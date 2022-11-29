@@ -35,7 +35,6 @@ class MainWindow : public QMainWindow {
  private slots:
   void on_redrawb_clicked();
   void on_screenb_clicked();
-  //void on_gifb_clicked();
   void on_gifb_clicked(bool checked);
   void on_autorotationc_clicked(bool checked);
   void on_meshpathb_clicked();
