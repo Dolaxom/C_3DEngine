@@ -1,5 +1,7 @@
 #include "openglwidget.h"
 
+#include <QtEvents>
+
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
     this->setMouseTracking(true);
 }
@@ -140,15 +142,16 @@ void OpenGLWidget::record() {
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
-    qDebug() << "mouse press";
+    // restrict to openglwindow
 }
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
-    qDebug() << "wheel";
-    pos_z += 0.01f;
-
+    if (event->angleDelta().y() > 0) {
+        pos_z -= 0.05f;
+    } else if (event->angleDelta().y() < 0) {
+        pos_z += 0.05f;
+    }
     emit posValueChanged(pos_x, pos_y, pos_z);
-
     update();
 }
 

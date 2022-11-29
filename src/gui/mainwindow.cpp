@@ -177,21 +177,21 @@ void MainWindow::on_edgestyles_valueChanged()
 }
 
 void MainWindow::pos_valueChanged(float newpos_x, float newpos_y, float newpos_z) {
-    qDebug() << "pos_changed";
+    //qDebug() << "pos_changed";
     ui->pxedit->setText(QString::number(newpos_x));
     ui->pyedit->setText(QString::number(newpos_y));
     ui->pzedit->setText(QString::number(newpos_z));
 }
 
 void MainWindow::rot_valueChanged(float newrot_x, float newrot_y, float newrot_z) {
-    qDebug() << "rot_changed";
+    //qDebug() << "rot_changed";
     ui->rxedit->setText(QString::number(newrot_x));
     ui->ryedit->setText(QString::number(newrot_y));
     ui->rzedit->setText(QString::number(newrot_z));
 }
 
 void MainWindow::scale_valueChanged(float newscale_x, float newscale_y, float newscale_z) {
-    qDebug() << "scale_changed";
+    //qDebug() << "scale_changed";
     ui->sxedit->setText(QString::number(newscale_x));
     ui->syedit->setText(QString::number(newscale_y));
     ui->szedit->setText(QString::number(newscale_z));

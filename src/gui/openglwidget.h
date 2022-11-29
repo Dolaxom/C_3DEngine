@@ -57,7 +57,6 @@ private slots:
   void s21_location(float x, float y, float z);
 
   int errcode = 0;
-  bool is_dirty = false;
   mesh_t mesh;
   QString current_meshpath = NULL;
   GLdouble aspect_w = 0.0;
