@@ -7,6 +7,7 @@
 //#include <QOpenGLVertexArrayObject>
 //#include <QOpenGLShaderProgram>
 
+#include <QtEvents>
 #include <QTimer>
 #include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
 #include "../engine/math/s21_engine_math.h"

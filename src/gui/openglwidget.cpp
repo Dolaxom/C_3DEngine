@@ -1,7 +1,5 @@
 #include "openglwidget.h"
 
-#include <QtEvents>
-
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
     this->setMouseTracking(true);
 }
@@ -142,7 +140,15 @@ void OpenGLWidget::record() {
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
-    // restrict to openglwindow
+    if (event->pos().x() < this->width() && event->pos().y() < this->height()) {
+        Qt::MouseButton mbutton = event->button();
+
+        if (mbutton == Qt::LeftButton) {            // position
+            qDebug() << "left mouse" << event->pos() << event->position().x() << event->position().y();
+        } else if (mbutton == Qt::RightButton) {    // rotation
+            qDebug() << "right mouse";
+        }
+    }
 }
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
@@ -233,7 +239,7 @@ void OpenGLWidget::setupRender() {
     glLineStipple(1, 0x00F0);
     glEnable(GL_LINE_STIPPLE);
   } else {
-
+    // should return to solid line mode here
   }
 
   if (vertstyle != 0) {
@@ -254,7 +260,7 @@ void OpenGLWidget::renderModeDefault() {
     glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
 
     if (vertstyle == 1) {           // circle
-      // should draw circle points
+      // should draw circle points here
       glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
     } else if (vertstyle == 2) {    // square
       glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
@@ -269,7 +275,7 @@ void OpenGLWidget::renderModeFast() {
   glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
 
   if (vertstyle == 1) {             // circle
-    // should draw circle points
+    // should draw circle points here
     glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
   } else if (vertstyle == 2) {      // square
     glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
