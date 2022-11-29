@@ -44,8 +44,13 @@ private slots:
   void updateColor(float *color, float *sourcecolor);
   void updateProjection();
   void initMesh(char *path_to_mesh);
+  void setupMesh();
+  void setupRender();
   void renderMesh();
+  void renderModeDefault();
+  void renderModeFast();
   void displayMesh();
+  void s21_location(float x, float y, float z);
 
   GLdouble range = 1.0;
   GLdouble near_dist = 0.5;

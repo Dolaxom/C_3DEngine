@@ -58,7 +58,9 @@ void OpenGLWidget::paintGL() {
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   updateProjection();
-  displayMesh();
+  //displayMesh();
+  //setupMesh();
+  renderMesh();
 }
 
 void OpenGLWidget::screen(QString filename, QString fileext) {
@@ -205,41 +207,111 @@ void OpenGLWidget::updateProjection() {
 
 void OpenGLWidget::initMesh(char *path_to_mesh) {
     errcode = 0;
+    mesh_t old_mesh = mesh;
     mesh = parse_obj_file(path_to_mesh, &errcode);
 
-    // glTranslatef(0.0f, 0.0f, -150.5f);
-    s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
-    s21_rotate_x(&mesh, 0.0f);
-    s21_rotate_y(&mesh, 0.0f);
-    s21_rotate_z(&mesh, 0.0f);
+    if (errcode == 0) {
+        s21_location(0.0f, 0.0f, 0.0f);
+        s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
+        s21_rotate_x(&mesh, 0.0f);
+        s21_rotate_y(&mesh, 0.0f);
+        s21_rotate_z(&mesh, 0.0f);
+    } else {
+        mesh = old_mesh;
+    }
+}
+
+void OpenGLWidget::setupMesh() {
+  if (mesh.legacy_render) {
+    copy_polygons(mesh);
+    s21_location(0.0f, 0.0f, 0.0f);
+    s21_rotate_x(&mesh, s21_degree_to_radian(0));
+    s21_rotate_y(&mesh, s21_degree_to_radian(0));
+    s21_rotate_z(&mesh, s21_degree_to_radian(0));
+    s21_scale(&mesh, 1, 1, 1);
+  } else {
+    copy_points(mesh);
+    s21_location(0.0f, 0.0f, 0.0f);
+    s21_fast_rotate_x(&mesh, s21_degree_to_radian(0));
+    s21_fast_rotate_y(&mesh, s21_degree_to_radian(0));
+    s21_fast_rotate_z(&mesh, s21_degree_to_radian(0));
+    s21_fast_scale(&mesh, 1, 1, 1);
+  }
+}
+
+void OpenGLWidget::setupRender() {
+  glLineWidth(0.01); // set line width
+  glColor3f(1, 1, 1); // set color of lines
+
+  if (0) { // set dotter-line
+    glLineStipple(1, 0x00F0);
+    glEnable(GL_LINE_STIPPLE);
+  }
+
+  if (0) { // set points (1)
+    glPointSize(5); // set size of points
+  }
 }
 
 void OpenGLWidget::renderMesh() {
+      setupMesh();
+      setupRender();
+      mesh.legacy_render ? renderModeDefault() : renderModeFast();
+}
+
+void OpenGLWidget::renderModeDefault() {
   for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
-    glLineWidth(edgesize);
-    glBegin(GL_POLYGON);
-    for (int point = 0; point < mesh.polygons[polygon].count_of_points;
-         point++) {
-      glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
-      glVertex3f(mesh.polygons_copy[polygon].points[point].x,
-                 mesh.polygons_copy[polygon].points[point].y,
-                 mesh.polygons_copy[polygon].points[point].z);
+    glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
+    if (0) { // set points (2)
+      glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
     }
-    glEnd();
+    glDisableClientState(GL_VERTEX_ARRAY);
   }
 }
 
-void OpenGLWidget::displayMesh() {
-  if (errcode == 0) {
-      copy_polygons(mesh);
-
-      glTranslatef(pos_x, pos_y, pos_z);
-
-      s21_rotate_x(&mesh, s21_degree_to_radian(rot_x));
-      s21_rotate_y(&mesh, s21_degree_to_radian(rot_y));
-      s21_rotate_z(&mesh, s21_degree_to_radian(rot_z));
-      s21_scale(&mesh, scale_x, scale_y, scale_z);
-
-      renderMesh();
+void OpenGLWidget::renderModeFast() {
+  glVertexPointer(4, GL_FLOAT, 0, mesh.v_points_copy);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
+  if (0) { // set points (3)
+    glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
   }
+  glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+
+//void OpenGLWidget::renderMesh() {
+//  for (int polygon = 0; polygon < mesh.count_of_polygons; polygon++) {
+//    glLineWidth(edgesize);
+//    glBegin(GL_POLYGON);
+//    for (int point = 0; point < mesh.polygons[polygon].count_of_points;
+//         point++) {
+//      glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
+//      glVertex3f(mesh.polygons_copy[polygon].points[point].x,
+//                 mesh.polygons_copy[polygon].points[point].y,
+//                 mesh.polygons_copy[polygon].points[point].z);
+//    }
+//    glEnd();
+//  }
+//}
+
+//void OpenGLWidget::displayMesh() {
+//  if (errcode == 0) {
+//      copy_polygons(mesh);
+
+//      glTranslatef(pos_x, pos_y, pos_z);
+
+//      s21_rotate_x(&mesh, s21_degree_to_radian(rot_x));
+//      s21_rotate_y(&mesh, s21_degree_to_radian(rot_y));
+//      s21_rotate_z(&mesh, s21_degree_to_radian(rot_z));
+//      s21_scale(&mesh, scale_x, scale_y, scale_z);
+
+//      renderMesh();
+//  }
+//}
+
+void OpenGLWidget::s21_location(float x, float y, float z) {
+  glTranslatef(x, y, z);
 }
