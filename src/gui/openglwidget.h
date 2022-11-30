@@ -48,6 +48,7 @@ private slots:
   void wheelEvent(QWheelEvent *event) override;
 
  private:
+  void processMouseMovement(QMouseEvent *event);
   void updateProjection();
   void initMesh(char *path_to_mesh);
   void setupMesh();
@@ -75,6 +76,7 @@ private slots:
   bool is_rbutton_down = false;
   int prev_mousepos_x = 0;
   int prev_mousepos_y = 0;
+  const float speed = 0.05f;
 
   int projection = 0;
   float pos_x = 0;

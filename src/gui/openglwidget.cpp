@@ -74,7 +74,6 @@ void OpenGLWidget::setRotation(float new_x, float new_y, float new_z) {
     //qDebug() << new_x << new_y << new_z;
     //qDebug() << rot_x << rot_y << rot_z;
     //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "setRotation()";
-    //update();
 }
 
 void OpenGLWidget::setScale(float new_x, float new_y, float new_z) {
@@ -128,7 +127,6 @@ void OpenGLWidget::recordStart() {
 void OpenGLWidget::recordFinish(QString filename, QString fileext) {
     gif_timer->stop();
     disconnect(gif_timer, SIGNAL(timeout()), this, SLOT(record()));
-    qDebug() << "disconnect";
 
     if (!filename.isNull()) {
         gif->save(filename + fileext);
@@ -155,36 +153,19 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
         if (mbutton == Qt::LeftButton) {            // position
             is_lbutton_down = true;
-            prev_mousepos_x = event->pos().x();
-            prev_mousepos_y = event->pos().y();
         } else if (mbutton == Qt::RightButton) {    // rotation
             is_rbutton_down = true;
         }
+
+        prev_mousepos_x = event->pos().x();
+        prev_mousepos_y = event->pos().y();
         this->setMouseTracking(true);
     }
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     if (is_lbutton_down) {
-        int dir_x = event->pos().x() - prev_mousepos_x;
-        int dir_y = event->pos().y() - prev_mousepos_y;
-        prev_mousepos_x = event->pos().x();
-        prev_mousepos_y = event->pos().y();
-
-        qDebug() << dir_x << "direction";
-
-        if (dir_x > 0) {
-            pos_x += 0.05;
-        } else if (dir_x < 0) {
-            pos_x -= 0.05;
-        }
-
-        if (dir_y > 0) {
-            pos_y -= 0.05;
-        } else if (dir_y < 0) {
-            pos_y += 0.05;
-        }
-
+        processMouseMovement(event);
         emit posValueChanged(pos_x, pos_y, pos_z);
         update();
     } else if (is_rbutton_down) {
@@ -206,15 +187,34 @@ void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
     if (event->angleDelta().y() > 0) {
-        pos_z -= 0.05f;
+        pos_z -= speed;
     } else if (event->angleDelta().y() < 0) {
-        pos_z += 0.05f;
+        pos_z += speed;
     }
     emit posValueChanged(pos_x, pos_y, pos_z);
     update();
 }
 
 // PRIVATE
+
+void OpenGLWidget::processMouseMovement(QMouseEvent *event) {
+    int dir_x = event->pos().x() - prev_mousepos_x;
+    int dir_y = event->pos().y() - prev_mousepos_y;
+    prev_mousepos_x = event->pos().x();
+    prev_mousepos_y = event->pos().y();
+
+    if (dir_x > 0) {
+        pos_x += speed;
+    } else if (dir_x < 0) {
+        pos_x -= speed;
+    }
+
+    if (dir_y > 0) {
+        pos_y -= speed;
+    } else if (dir_y < 0) {
+        pos_y += speed;
+    }
+}
 
 void OpenGLWidget::updateProjection() {
   if (projection == 0) {    // perspective
