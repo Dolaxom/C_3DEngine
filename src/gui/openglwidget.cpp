@@ -36,6 +36,8 @@ void OpenGLWidget::paintGL() {
 
   updateProjection();
   renderMesh();
+
+  qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "paintGL()";
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
@@ -68,6 +70,11 @@ void OpenGLWidget::setRotation(float new_x, float new_y, float new_z) {
     rot_x = new_x;
     rot_y = new_y;
     rot_z = new_z;
+
+    //qDebug() << new_x << new_y << new_z;
+    qDebug() << rot_x << rot_y << rot_z;
+    //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "setRotation()";
+    update();
 }
 
 void OpenGLWidget::setScale(float new_x, float new_y, float new_z) {
@@ -148,33 +155,34 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
         if (mbutton == Qt::LeftButton) {            // position
             is_lbutton_down = true;
-
-            //qDebug() << "left mouse" << event->pos() << event->position().x() << event->position().y();
         } else if (mbutton == Qt::RightButton) {    // rotation
             is_rbutton_down = true;
-
-            //qDebug() << "right mouse";
         }
-
-
         this->setMouseTracking(true);
     }
 }
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
-    qDebug() << event->pos();
+    if (is_lbutton_down) {
+        qDebug() << event->pos() << "left";
+
+
+        // emit signal position change
+    } else if (is_rbutton_down) {
+        qDebug() << event->pos() << "right";
+        // emit signal rotation change
+    }
 
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
-    //qDebug() << "release";
-
     if (is_lbutton_down) {
+        is_lbutton_down = false;
         qDebug() << "release_left" << event->pos();
     } else if (is_rbutton_down) {
+        is_rbutton_down = false;
         qDebug() << "release_right" << event->pos();
     }
-
     this->setMouseTracking(false);
 }
 

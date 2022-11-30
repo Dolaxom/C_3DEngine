@@ -548,7 +548,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="placeholderText">
-           <string>1.000000</string>
+           <string>0.000000</string>
           </property>
          </widget>
         </item>
@@ -570,7 +570,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="placeholderText">
-           <string>1.000000</string>
+           <string>0.000000</string>
           </property>
          </widget>
         </item>
@@ -617,7 +617,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="placeholderText">
-           <string>1.000000</string>
+           <string>0.000000</string>
           </property>
          </widget>
         </item>
