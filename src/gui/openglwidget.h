@@ -43,6 +43,8 @@ signals:
 private slots:
   void record();
   void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
   void wheelEvent(QWheelEvent *event) override;
 
  private:
@@ -68,6 +70,9 @@ private slots:
   QGifImage *gif = NULL;
   QTimer *gif_timer = NULL;
   const int gif_interval = 1000/10;
+
+  bool is_lbutton_down = false;
+  bool is_rbutton_down = false;
 
   int projection = 0;
   float pos_x = 0;

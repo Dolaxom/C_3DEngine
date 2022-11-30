@@ -4,7 +4,6 @@ OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
     color_bg = QColor(0, 0, 0);
     color_vert = QColor(1, 1, 1);
     color_edge = QColor(1, 1, 1);
-    this->setMouseTracking(true);
 }
 
 // PUBLIC
@@ -143,15 +142,40 @@ void OpenGLWidget::record() {
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
-    if (event->pos().x() < this->width() && event->pos().y() < this->height()) {
+    if (event->pos().x() < this->width() && event->pos().x() > this->pos().x() &&
+        event->pos().y() < this->height() && event->pos().y() > this->pos().y()) {
         Qt::MouseButton mbutton = event->button();
 
         if (mbutton == Qt::LeftButton) {            // position
-            qDebug() << "left mouse" << event->pos() << event->position().x() << event->position().y();
+            is_lbutton_down = true;
+
+            //qDebug() << "left mouse" << event->pos() << event->position().x() << event->position().y();
         } else if (mbutton == Qt::RightButton) {    // rotation
-            qDebug() << "right mouse";
+            is_rbutton_down = true;
+
+            //qDebug() << "right mouse";
         }
+
+
+        this->setMouseTracking(true);
     }
+}
+
+void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
+    qDebug() << event->pos();
+
+}
+
+void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
+    //qDebug() << "release";
+
+    if (is_lbutton_down) {
+        qDebug() << "release_left" << event->pos();
+    } else if (is_rbutton_down) {
+        qDebug() << "release_right" << event->pos();
+    }
+
+    this->setMouseTracking(false);
 }
 
 void OpenGLWidget::wheelEvent(QWheelEvent *event) {
