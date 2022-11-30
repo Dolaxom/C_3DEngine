@@ -16,3 +16,4 @@ build/C_3DEngine-build-release-v1.tar.gz
 *.so.*
 build/build-debug
 build/build-release
+manual.html
