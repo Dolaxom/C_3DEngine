@@ -321,15 +321,13 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 }
 
 void MainWindow::update_openglwidget() {
-    convert_to_rgb(ui->bgcolors->value(), bg_rgb);
-    convert_to_rgb(ui->vertcolors->value(), vert_rgb);
-    convert_to_rgb(ui->edgecolors->value(), edge_rgb);
-
     view->setPosition(ui->pxedit->text().toFloat(), ui->pyedit->text().toFloat(), ui->pzedit->text().toFloat());
     view->setRotation(ui->rxedit->text().toFloat(), ui->ryedit->text().toFloat(), ui->rzedit->text().toFloat());
     view->setScale(ui->sxedit->text().toFloat(), ui->syedit->text().toFloat(), ui->szedit->text().toFloat());
     view->setProjection(ui->projections->value());
-    view->setColors(bg_rgb, vert_rgb, edge_rgb);
+    view->setColors(get_color_from_index(ui->bgcolors->value()),
+                    get_color_from_index(ui->vertcolors->value()),
+                    get_color_from_index(ui->edgecolors->value()));
     view->setStyles(ui->vertstyles->value(), ui->edgestyles->value());
     view->setSizes(ui->vertsizes->value(), ui->edgesizes->value());
     view->setMeshpath(ui->meshpathedit->text());
@@ -447,37 +445,49 @@ QString MainWindow::get_fileext(QString fullpath) {
     return fileInfo.completeSuffix();
 }
 
-void MainWindow::convert_to_rgb(int index, float *rgb) {
-    if (rgb) {
-        switch (index) {
-        case 0:     // black
-            rgb[0] = 0, rgb[1] = 0, rgb[2] = 0;
-            break;
-        case 1:     // white
-            rgb[0] = 1, rgb[1] = 1, rgb[2] = 1;
-            break;
-        case 2:     // grey
-            rgb[0] = 0.5, rgb[1] = 0.5, rgb[2] = 0.5;
-            break;
-        case 3:     // red
-            rgb[0] = 1, rgb[1] = 0, rgb[2] = 0;
-            break;
-        case 4:     // blue
-            rgb[0] = 0, rgb[1] = 0, rgb[2] = 1;
-            break;
-        case 5:     // green
-            rgb[0] = 0, rgb[1] = 1, rgb[2] = 0;
-            break;
-        case 6:     // yellow
-            rgb[0] = 1, rgb[1] = 1, rgb[2] = 0;
-            break;
-        case 7:     // purple
-            rgb[0] = 1, rgb[1] = 0, rgb[2] = 1;
-            break;
-        default:
-            break;
-        }
+QColor MainWindow::get_color_from_index(int index) {
+    QColor outcolor(0, 0, 0);
+
+    switch (index) {
+    case 1:     // white
+        outcolor.setRedF(1);
+        outcolor.setGreenF(1);
+        outcolor.setBlueF(1);
+        break;
+    case 2:     // grey
+        outcolor.setRedF(0.5);
+        outcolor.setGreenF(0.5);
+        outcolor.setBlueF(0.5);
+        break;
+    case 3:     // red
+        outcolor.setRedF(1);
+        outcolor.setGreenF(0);
+        outcolor.setBlueF(0);
+        break;
+    case 4:     // blue
+        outcolor.setRedF(0);
+        outcolor.setGreenF(0);
+        outcolor.setBlueF(1);
+        break;
+    case 5:     // green
+        outcolor.setRedF(0);
+        outcolor.setGreenF(1);
+        outcolor.setBlueF(0);
+        break;
+    case 6:     // yellow
+        outcolor.setRedF(1);
+        outcolor.setGreenF(1);
+        outcolor.setBlueF(0);
+        break;
+    case 7:     // purple
+        outcolor.setRedF(1);
+        outcolor.setGreenF(0);
+        outcolor.setBlueF(1);
+        break;
+    default:    // black
+        break;
     }
+    return outcolor;
 }
 
 bool MainWindow::process_altkey() {

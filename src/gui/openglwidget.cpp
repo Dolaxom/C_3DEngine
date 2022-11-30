@@ -1,6 +1,9 @@
 #include "openglwidget.h"
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
+    color_bg = QColor(0, 0, 0);
+    color_vert = QColor(1, 1, 1);
+    color_edge = QColor(1, 1, 1);
     this->setMouseTracking(true);
 }
 
@@ -28,7 +31,7 @@ void OpenGLWidget::resizeGL(int w, int h) {
 }
 
 void OpenGLWidget::paintGL() {
-  glClearColor(rgb_bg[0], rgb_bg[1], rgb_bg[2], 1);
+  glClearColor(color_bg.redF(), color_bg.greenF(), color_bg.blueF(), 1);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -56,28 +59,28 @@ void OpenGLWidget::setProjection(int new_projection) {
     projection = new_projection;
 }
 
-void OpenGLWidget::setPosition(float x, float y, float z) {
-    pos_x = x;
-    pos_y = y;
-    pos_z = z;
+void OpenGLWidget::setPosition(float new_x, float new_y, float new_z) {
+    pos_x = new_x;
+    pos_y = new_y;
+    pos_z = new_z;
 }
 
-void OpenGLWidget::setRotation(float x, float y, float z) {
-    rot_x = x;
-    rot_y = y;
-    rot_z = z;
+void OpenGLWidget::setRotation(float new_x, float new_y, float new_z) {
+    rot_x = new_x;
+    rot_y = new_y;
+    rot_z = new_z;
 }
 
-void OpenGLWidget::setScale(float x, float y, float z) {
-    scale_x = x;
-    scale_y = y;
-    scale_z = z;
+void OpenGLWidget::setScale(float new_x, float new_y, float new_z) {
+    scale_x = new_x;
+    scale_y = new_y;
+    scale_z = new_z;
 }
 
-void OpenGLWidget::setColors(float *bgcolor, float *vertcolor, float *edgecolor) {
-    updateColor(rgb_bg, bgcolor);
-    updateColor(rgb_vert, vertcolor);
-    updateColor(rgb_edge, edgecolor);
+void OpenGLWidget::setColors(QColor new_bgcolor, QColor new_vertcolor, QColor new_edgecolor) {
+    color_bg = new_bgcolor;
+    color_vert = new_vertcolor;
+    color_edge = new_edgecolor;
 }
 
 void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
@@ -85,9 +88,9 @@ void OpenGLWidget::setSizes(double new_vertsize, double new_edgesize) {
     edgesize = new_edgesize;
 }
 
-void OpenGLWidget::setStyles(int vertstyle_index, int edgestyle_index) {
-    vertstyle = vertstyle_index;
-    edgestyle = edgestyle_index;
+void OpenGLWidget::setStyles(int new_vertstyle, int new_edgestyle) {
+    vertstyle = new_vertstyle;
+    edgestyle = new_edgestyle;
 }
 
 int OpenGLWidget::getErrcode() {
@@ -163,14 +166,6 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event) {
 
 // PRIVATE
 
-void OpenGLWidget::updateColor(float *color, float *sourcecolor) {
-    if (color && sourcecolor) {
-        for (int i = 0; i < 3; i++) {
-            color[i] = sourcecolor[i];
-        }
-    }
-}
-
 void OpenGLWidget::updateProjection() {
   if (projection == 0) {    // perspective
     glMatrixMode(GL_PROJECTION);
@@ -233,7 +228,7 @@ void OpenGLWidget::setupMesh() {
 
 void OpenGLWidget::setupRender() {
   glLineWidth(edgesize);
-  glColor3f(rgb_edge[0], rgb_edge[1], rgb_edge[2]);
+  glColor3f(color_edge.redF(), color_edge.greenF(), color_edge.blueF());
 
   if (edgestyle != 0) {
     glLineStipple(1, 0x00F0);

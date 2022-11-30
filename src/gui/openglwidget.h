@@ -21,13 +21,13 @@ class OpenGLWidget : public QOpenGLWidget {
   void resizeGL(int w, int h) override;
   void paintGL() override;
   void setMeshpath(QString new_meshpath);
-  void setProjection(int projection_index);
-  void setPosition(float x, float y, float z);
-  void setRotation(float x, float y, float z);
-  void setScale(float x, float y, float z);
-  void setColors(float *bgcolor, float *vertcolor, float *edgecolor);
+  void setProjection(int new_projection);
+  void setPosition(float new_x, float new_y, float new_z);
+  void setRotation(float new_x, float new_y, float new_z);
+  void setScale(float new_x, float new_y, float new_z);
+  void setColors(QColor new_bgcolor, QColor new_vertcolor, QColor new_edgecolor);
   void setSizes(double new_vertsize, double new_edgesize);
-  void setStyles(int vertstyle_index, int edgestyle_index);
+  void setStyles(int new_vertstyle, int new_edgestyle);
   int getErrcode();
   int getPolygonsCount();
   int getPointsCount();
@@ -46,7 +46,6 @@ private slots:
   void wheelEvent(QWheelEvent *event) override;
 
  private:
-  void updateColor(float *color, float *sourcecolor);
   void updateProjection();
   void initMesh(char *path_to_mesh);
   void setupMesh();
@@ -80,9 +79,9 @@ private slots:
   float scale_x = 0;
   float scale_y = 0;
   float scale_z = 0;
-  GLclampf rgb_bg[3] = {0, 0, 0};
-  GLclampf rgb_vert[3] = {1, 1, 1};
-  GLclampf rgb_edge[3] = {1, 1, 1};
+  QColor color_bg;
+  QColor color_vert;
+  QColor color_edge;
   GLfloat vertsize = 0.0f;
   GLfloat edgesize = 5.00f;
   int vertstyle = 0;
