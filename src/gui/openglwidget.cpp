@@ -4,6 +4,8 @@ OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent) {
     color_bg = QColor(0, 0, 0);
     color_vert = QColor(1, 1, 1);
     color_edge = QColor(1, 1, 1);
+
+    connect(this, SIGNAL(autorotValueChanged(bool)), this, SLOT(autoRotateLaunch()));
 }
 
 // PUBLIC
@@ -66,10 +68,28 @@ void OpenGLWidget::setPosition(float new_x, float new_y, float new_z) {
     pos_z = new_z;
 }
 
-void OpenGLWidget::setRotation(float new_x, float new_y, float new_z) {
+void OpenGLWidget::setRotation(float new_x, float new_y, float new_z, bool new_auto) {
     rot_x = new_x;
     rot_y = new_y;
     rot_z = new_z;
+
+    if (auto_rotation != new_auto) {
+        auto_rotation = new_auto;
+        emit autorotValueChanged(auto_rotation);
+    }
+
+
+//    if (auto_rotation) {
+//        auto_timer = new QTimer(this);
+//        connect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
+//        auto_timer->start(10);
+//    } else {
+//        if (auto_timer) {
+//            auto_timer->stop();
+//            disconnect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
+//            delete auto_timer;
+//        }
+//    }
 
     //qDebug() << new_x << new_y << new_z;
     //qDebug() << rot_x << rot_y << rot_z;
@@ -144,6 +164,26 @@ void OpenGLWidget::record() {
 
     QImage img = frame.toImage();
     gif->addFrame(img, gif_interval);
+}
+
+void OpenGLWidget::autoRotateLaunch() {
+    if (auto_rotation) {
+        auto_timer = new QTimer(this);
+        connect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
+        auto_timer->start(auto_interval);
+    } else {
+        if (auto_timer) {
+            auto_timer->stop();
+            disconnect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
+            delete auto_timer;
+        }
+    }
+}
+
+void OpenGLWidget::autoRotate() {
+    rot_y += speed * 4;
+    emit rotValueChanged(rot_x, rot_y, rot_z);
+    update();
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent *event) {

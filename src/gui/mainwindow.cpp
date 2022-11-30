@@ -128,6 +128,7 @@ void MainWindow::on_gifb_clicked(bool checked) {
 
 void MainWindow::on_autorotationc_clicked(bool checked) {
   ui->autorotationc->setChecked(checked);
+  on_redrawb_clicked();
 }
 
 void MainWindow::on_meshpathb_clicked() {
@@ -322,7 +323,8 @@ void MainWindow::update_lineedit(QLineEdit *widget, QString add) {
 
 void MainWindow::update_openglwidget() {
     view->setPosition(ui->pxedit->text().toFloat(), ui->pyedit->text().toFloat(), ui->pzedit->text().toFloat());
-    view->setRotation(ui->rxedit->text().toFloat(), ui->ryedit->text().toFloat(), ui->rzedit->text().toFloat());
+    view->setRotation(ui->rxedit->text().toFloat(), ui->ryedit->text().toFloat(), ui->rzedit->text().toFloat(),
+                      ui->autorotationc->isChecked());
     view->setScale(ui->sxedit->text().toFloat(), ui->syedit->text().toFloat(), ui->szedit->text().toFloat());
     view->setProjection(ui->projections->value());
     view->setColors(get_color_from_index(ui->bgcolors->value()),

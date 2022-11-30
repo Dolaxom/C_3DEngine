@@ -23,7 +23,7 @@ class OpenGLWidget : public QOpenGLWidget {
   void setMeshpath(QString new_meshpath);
   void setProjection(int new_projection);
   void setPosition(float new_x, float new_y, float new_z);
-  void setRotation(float new_x, float new_y, float new_z);
+  void setRotation(float new_x, float new_y, float new_z, bool new_auto);
   void setScale(float new_x, float new_y, float new_z);
   void setColors(QColor new_bgcolor, QColor new_vertcolor, QColor new_edgecolor);
   void setSizes(double new_vertsize, double new_edgesize);
@@ -36,12 +36,15 @@ class OpenGLWidget : public QOpenGLWidget {
   void recordFinish(QString filename, QString fileext);
 
 signals:
+  void autorotValueChanged(bool newstate);
   void posValueChanged(float newpos_x, float newpos_y, float newpos_z);
   void rotValueChanged(float newrot_x, float newrot_y, float newrot_z);
   void scaleValueChanged(float newscale_x, float newscale_y, float newscale_z);
 
 private slots:
   void record();
+  void autoRotateLaunch();
+  void autoRotate();
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
@@ -71,6 +74,10 @@ private slots:
   QGifImage *gif = NULL;
   QTimer *gif_timer = NULL;
   const int gif_interval = 1000/10;
+
+  bool auto_rotation = false;
+  QTimer *auto_timer = NULL;
+  const int auto_interval = 50;
 
   bool is_lbutton_down = false;
   bool is_rbutton_down = false;
