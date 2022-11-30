@@ -1,0 +1,29 @@
+\input texinfo
+@setfilename manual
+@settitle C_3DEngine
+@documentencoding UTF-8
+@chapter C_3DEngine
+
+This is a School 21 educational project - an implementation of a program to view 3D wireframe models (3D Viewer) in the C programming language with the additional use of OpenGL, Qt and QtGifImage libraries.
+All the values inserted in C_3DEngine's input fields while running the application don't affect the actual model file in an way as C_3DEngine is a program made for the model viewing purposes only.
+
+@chapter C_3DEngine provides the ability to:
+- view any applicable .obj file in the filesystem that contains at least up to a 1,000,000 polygons;
+- parse .obj files with unconvential number of polygons;
+- acquire information on the amount of edges and vertices that the model contains;
+- change position, rotation and scale of the model;
+- switch the view between perspective and orthogonal projections;
+- apply several color and style settings to the display field;
+- take a screenshot of the display field and save it in .jpg or .bmp image formats;
+- record the display field as a .gif (10fps, any length).
+
+@chapter Controls:
+@strong{[left mouse button]} - change position of the model on the x, y axis
+@strong{[right mouse button]} - change rotation of the model on the x, y axis
+@strong{[mouse scroll wheel]} - change position of the model on the z axis
+@strong{[enter]} - apply settings and/or redraw
+@strong{[tab]} - switch focus between input fields
+@strong{[F11]} - window fullscreen mode
+@strong{[escape]} - exit
+
+@bye
