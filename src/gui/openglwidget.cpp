@@ -217,10 +217,8 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
     if (is_lbutton_down) {
         is_lbutton_down = false;
-        qDebug() << "release_left" << event->pos();
     } else if (is_rbutton_down) {
         is_rbutton_down = false;
-        qDebug() << "release_right" << event->pos();
     }
     this->setMouseTracking(false);
 }
@@ -244,15 +242,15 @@ void OpenGLWidget::processMouseMovement(QMouseEvent *event) {
     prev_mousepos_y = event->pos().y();
 
     if (dir_x > 0) {
-        pos_x += speed;
+        pos_x += speed / 2;
     } else if (dir_x < 0) {
-        pos_x -= speed;
+        pos_x -= speed / 2;
     }
 
     if (dir_y > 0) {
-        pos_y -= speed;
+        pos_y -= speed / 2;
     } else if (dir_y < 0) {
-        pos_y += speed;
+        pos_y += speed / 2;
     }
 }
 
