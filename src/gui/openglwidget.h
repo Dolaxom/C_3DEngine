@@ -73,6 +73,8 @@ private slots:
 
   bool is_lbutton_down = false;
   bool is_rbutton_down = false;
+  int prev_mousepos_x = 0;
+  int prev_mousepos_y = 0;
 
   int projection = 0;
   float pos_x = 0;

@@ -37,7 +37,7 @@ void OpenGLWidget::paintGL() {
   updateProjection();
   renderMesh();
 
-  qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "paintGL()";
+  //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "paintGL()";
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
@@ -72,9 +72,9 @@ void OpenGLWidget::setRotation(float new_x, float new_y, float new_z) {
     rot_z = new_z;
 
     //qDebug() << new_x << new_y << new_z;
-    qDebug() << rot_x << rot_y << rot_z;
+    //qDebug() << rot_x << rot_y << rot_z;
     //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "setRotation()";
-    update();
+    //update();
 }
 
 void OpenGLWidget::setScale(float new_x, float new_y, float new_z) {
@@ -155,6 +155,8 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
         if (mbutton == Qt::LeftButton) {            // position
             is_lbutton_down = true;
+            prev_mousepos_x = event->pos().x();
+            prev_mousepos_y = event->pos().y();
         } else if (mbutton == Qt::RightButton) {    // rotation
             is_rbutton_down = true;
         }
@@ -164,15 +166,31 @@ void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
 
 void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
     if (is_lbutton_down) {
-        qDebug() << event->pos() << "left";
+        int dir_x = event->pos().x() - prev_mousepos_x;
+        int dir_y = event->pos().y() - prev_mousepos_y;
+        prev_mousepos_x = event->pos().x();
+        prev_mousepos_y = event->pos().y();
 
+        qDebug() << dir_x << "direction";
 
-        // emit signal position change
+        if (dir_x > 0) {
+            pos_x += 0.05;
+        } else if (dir_x < 0) {
+            pos_x -= 0.05;
+        }
+
+        if (dir_y > 0) {
+            pos_y -= 0.05;
+        } else if (dir_y < 0) {
+            pos_y += 0.05;
+        }
+
+        emit posValueChanged(pos_x, pos_y, pos_z);
+        update();
     } else if (is_rbutton_down) {
         qDebug() << event->pos() << "right";
         // emit signal rotation change
     }
-
 }
 
 void OpenGLWidget::mouseReleaseEvent(QMouseEvent *event) {
