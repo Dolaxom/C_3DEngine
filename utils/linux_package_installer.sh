@@ -9,7 +9,7 @@ configcount=$(echo "$configfile" | wc -l)
 if [ -n "$configfile" ] && [ $configcount -eq 1 ]; then
     source $configfile
 else
-    echo "ERROR: unable to locate utils.congig file"
+    echo "ERROR: unable to locate utils.config file"
     exit 0
 fi
 
