@@ -44,7 +44,7 @@ void s21_fast_rotate_x(mesh_t *mesh, float degree) {
   }
   mesh->rotation.x = degree;
   for (int i = 0; i < mesh->count_of_points; i++) {
-    s21_fast_calculate_rotation_y_matrix(mesh->rotation.x, &mesh->v_points_copy[i]);
+    s21_fast_calculate_rotation_x_matrix(mesh->rotation.x, &mesh->v_points_copy[i]);
   }
 }
 
@@ -82,7 +82,7 @@ void s21_fast_rotate_z(mesh_t *mesh, float degree) {
   if (mesh->rotation.z == 0 && degree == 0) {
     return;
   }
-  mesh->rotation.y = degree;
+  mesh->rotation.z = degree;
   for (int i = 0; i < mesh->count_of_points; i++) {
     s21_fast_calculate_rotation_z_matrix(mesh->rotation.z, &mesh->v_points_copy[i]);
   }
