@@ -331,9 +331,9 @@ void OpenGLWidget::setupRender() {
 }
 
 void OpenGLWidget::renderMesh() {
-      setupMesh();
-      setupRender();
-      mesh.legacy_render ? renderModeDefault() : renderModeFast();
+  setupMesh();
+  setupRender();
+  mesh.legacy_render ? renderModeDefault() : renderModeFast();
 }
 
 void OpenGLWidget::renderModeDefault() {
@@ -341,12 +341,18 @@ void OpenGLWidget::renderModeDefault() {
     glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
     glEnableClientState(GL_VERTEX_ARRAY);
     glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
-
     if (vertstyle == 1) {           // circle
-      // should draw circle points here
+      glEnable(GL_POINT_SMOOTH);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
     } else if (vertstyle == 2) {    // square
       glDrawArrays(GL_POINTS, 0, mesh.polygons_copy[polygon].count_of_points);
+    }
+
+    if (vertstyle == 1) {
+      glDisable(GL_POINT_SMOOTH);
+      glDisable(GL_BLEND);
     }
     glDisableClientState(GL_VERTEX_ARRAY);
   }
@@ -355,15 +361,19 @@ void OpenGLWidget::renderModeDefault() {
 void OpenGLWidget::renderModeFast() {
   glVertexPointer(4, GL_FLOAT, 0, mesh.v_points_copy);
   glEnableClientState(GL_VERTEX_ARRAY);
+  if (vertstyle == 2) {
+    glDrawArrays(GL_POINTS, 0, mesh.count_of_points);
+  } else if (vertstyle == 1) {
+      glEnable(GL_POINT_SMOOTH);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      glDrawArrays(GL_POINTS, 0, mesh.count_of_points);
+      glDisable(GL_BLEND);
+      glDisable(GL_POINT_SMOOTH);
+  }
+
   glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
 
-  glColor3f(color_vert.redF(), color_vert.greenF(), color_vert.blueF());
-  if (vertstyle == 1) {             // circle
-    // should draw circle points here
-    glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
-  } else if (vertstyle == 2) {      // square
-    glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
-  }
   glDisableClientState(GL_VERTEX_ARRAY);
 }
 
