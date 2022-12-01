@@ -322,7 +322,7 @@ void OpenGLWidget::setupRender() {
     glLineStipple(1, 0x00F0);
     glEnable(GL_LINE_STIPPLE);
   } else {
-    // should return to solid line mode here
+    glDisable(GL_LINE_STIPPLE);
   }
 
   if (vertstyle != 0) {
@@ -357,6 +357,7 @@ void OpenGLWidget::renderModeFast() {
   glEnableClientState(GL_VERTEX_ARRAY);
   glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
 
+  glColor3f(color_vert.redF(), color_vert.greenF(), color_vert.blueF());
   if (vertstyle == 1) {             // circle
     // should draw circle points here
     glDrawElements(GL_POINTS, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
