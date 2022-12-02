@@ -341,6 +341,7 @@ void OpenGLWidget::renderModeDefault() {
     glVertexPointer(4, GL_FLOAT, 0, mesh.polygons_copy[polygon].points);
     glEnableClientState(GL_VERTEX_ARRAY);
     glDrawArrays(GL_POLYGON, 0, mesh.polygons_copy[polygon].count_of_points);
+    glColor3f(color_vert.redF(), color_vert.greenF(), color_vert.blueF());
     if (vertstyle == 1) {           // circle
       glEnable(GL_POINT_SMOOTH);
       glEnable(GL_BLEND);
@@ -361,6 +362,7 @@ void OpenGLWidget::renderModeDefault() {
 void OpenGLWidget::renderModeFast() {
   glVertexPointer(4, GL_FLOAT, 0, mesh.v_points_copy);
   glEnableClientState(GL_VERTEX_ARRAY);
+  glColor3f(color_vert.redF(), color_vert.greenF(), color_vert.blueF());
   if (vertstyle == 2) {
     glDrawArrays(GL_POINTS, 0, mesh.count_of_points);
   } else if (vertstyle == 1) {
@@ -371,7 +373,7 @@ void OpenGLWidget::renderModeFast() {
       glDisable(GL_BLEND);
       glDisable(GL_POINT_SMOOTH);
   }
-
+  glColor3f(color_edge.redF(), color_edge.greenF(), color_edge.blueF());
   glDrawElements(GL_TRIANGLES, mesh.size_of_queue, GL_UNSIGNED_INT, mesh.queue);
 
   glDisableClientState(GL_VERTEX_ARRAY);
