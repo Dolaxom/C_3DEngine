@@ -8,13 +8,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../src/s21_calc.h"
-#include "s21_testcases.h"
-
-#define COLOR_RED "\x1B[31m"
-#define COLOR_GREEN "\x1B[32m"
-#define COLOR_MAGENTA "\x1B[35m"
-#define COLOR_RESET "\x1B[0m"
+#define BLACK "\033[30m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN "\033[36m"
+#define WHITE "\033[37m"
+#define BOLDBLACK "\033[1m\033[30m"
+#define BOLDRED "\033[1m\033[31m"
+#define BOLDGREEN "\033[1m\033[32m"
+#define BOLDYELLOW "\033[1m\033[33m"
+#define BOLDBLUE "\033[1m\033[34m"
+#define BOLDMAGENTA "\033[1m\033[35m"
+#define BOLDCYAN "\033[1m\033[36m"
+#define BOLDWHITE "\033[1m\033[37m"
+#define RESET "\x1B[0m"
 
 #define NMAX_TEST 1000
 
