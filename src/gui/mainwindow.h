@@ -55,7 +55,6 @@ private:
   void create_info_labels();
   void update_info_labels(QString filename, QString n_vertices,
                           QString n_edges);
-  //void update_record_label(bool is_recording);
   void update_spinbox(QSpinBox *spinbox, QString prefix, QString suffix);
   void update_lineedit(QLineEdit *widget, QString add);
   void update_openglwidget();
@@ -69,7 +68,6 @@ private:
   QString get_filename(QString fullpath);
   QString get_fileext(QString fullpath);
   QColor get_color_from_index(int index);
-  //void convert_to_rgb(int index, float *rgb);
   bool process_altkey();
   bool process_fkey();
   bool process_enterkey();
@@ -77,9 +75,6 @@ private:
   void read_settings();
   void write_settings();
 
-//  float bg_rgb[3] = {0, 0, 0};
-//  float vert_rgb[3] = {0, 0, 0};
-//  float edge_rgb[3] = {0, 0, 0};
   QStringList projections = {"perspective", "orthogonal"};
   QStringList colors = {"black", "white", "grey", "red", "blue", "green", "yellow", "purple"};
   QStringList vert_styles = {"none", "circle", "square"};

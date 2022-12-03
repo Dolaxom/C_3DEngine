@@ -42,10 +42,6 @@ void MainWindow::focusChanged(QWidget *old, QWidget *now) {
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
   bool result = false;
 
-//  if (event->type() == QEvent::MouseMove) {
-//    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-//    mouseMoveEvent(mouseEvent);
-//  } else
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {

@@ -4,9 +4,6 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
-//#include <QOpenGLVertexArrayObject>
-//#include <QOpenGLShaderProgram>
-
 #include <QtEvents>
 #include <QTimer>
 #include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
@@ -52,6 +49,8 @@ private slots:
 
  private:
   void processMouseMovement(QMouseEvent *event);
+  void processMouseRotation(QMouseEvent *event);
+  QVector2D getMouseDirection(QMouseEvent *event);
   void updateProjection();
   void initMesh(char *path_to_mesh);
   void setupMesh();

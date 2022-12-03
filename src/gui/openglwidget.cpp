@@ -38,8 +38,6 @@ void OpenGLWidget::paintGL() {
 
   updateProjection();
   renderMesh();
-
-  //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "paintGL()";
 }
 
 void OpenGLWidget::setMeshpath(QString new_meshpath) {
@@ -77,23 +75,6 @@ void OpenGLWidget::setRotation(float new_x, float new_y, float new_z, bool new_a
         auto_rotation = new_auto;
         emit autorotValueChanged(auto_rotation);
     }
-
-
-//    if (auto_rotation) {
-//        auto_timer = new QTimer(this);
-//        connect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
-//        auto_timer->start(10);
-//    } else {
-//        if (auto_timer) {
-//            auto_timer->stop();
-//            disconnect(auto_timer, SIGNAL(timeout()), this, SLOT(autoRotate()));
-//            delete auto_timer;
-//        }
-//    }
-
-    //qDebug() << new_x << new_y << new_z;
-    //qDebug() << rot_x << rot_y << rot_z;
-    //qDebug() << mesh.rotation.x << mesh.rotation.y << mesh.rotation.z << "setRotation()";
 }
 
 void OpenGLWidget::setScale(float new_x, float new_y, float new_z) {
@@ -209,8 +190,9 @@ void OpenGLWidget::mouseMoveEvent(QMouseEvent *event) {
         emit posValueChanged(pos_x, pos_y, pos_z);
         update();
     } else if (is_rbutton_down) {
-        qDebug() << event->pos() << "right";
-        // emit signal rotation change
+        processMouseRotation(event);
+        emit rotValueChanged(rot_x, rot_y, rot_z);
+        update();
     }
 }
 
@@ -236,22 +218,46 @@ void OpenGLWidget::wheelEvent(QWheelEvent *event) {
 // PRIVATE
 
 void OpenGLWidget::processMouseMovement(QMouseEvent *event) {
-    int dir_x = event->pos().x() - prev_mousepos_x;
-    int dir_y = event->pos().y() - prev_mousepos_y;
+    QVector2D dir = getMouseDirection(event);
+    float pos_speed = speed / 2;
+
+    if ((int)dir.x() > 0) {
+        pos_x += pos_speed;
+    } else if ((int)dir.x() < 0) {
+        pos_x -= pos_speed;
+    }
+
+    if ((int)dir.y() > 0) {
+        pos_y -= pos_speed;
+    } else if ((int)dir.y() < 0) {
+        pos_y += pos_speed;
+    }
+}
+
+void OpenGLWidget::processMouseRotation(QMouseEvent *event) {
+    QVector2D dir = getMouseDirection(event);
+    float rot_speed = speed * 10;
+
+    if ((int)dir.x() > 0) {
+        rot_x += rot_speed;
+    } else if ((int)dir.x() < 0) {
+        rot_x -= rot_speed;
+    }
+
+    if ((int)dir.y() > 0) {
+        rot_y -= rot_speed;
+    } else if ((int)dir.y() < 0) {
+        rot_y += rot_speed;
+    }
+}
+
+QVector2D OpenGLWidget::getMouseDirection(QMouseEvent *event) {
+    QVector2D result;
+    result.setX(event->pos().x() - prev_mousepos_x);
+    result.setY(event->pos().y() - prev_mousepos_y);
     prev_mousepos_x = event->pos().x();
     prev_mousepos_y = event->pos().y();
-
-    if (dir_x > 0) {
-        pos_x += speed / 2;
-    } else if (dir_x < 0) {
-        pos_x -= speed / 2;
-    }
-
-    if (dir_y > 0) {
-        pos_y -= speed / 2;
-    } else if (dir_y < 0) {
-        pos_y += speed / 2;
-    }
+    return result;
 }
 
 void OpenGLWidget::updateProjection() {
