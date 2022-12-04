@@ -5,4 +5,7 @@ SOURCES_MATRIX = $(DIR_LIBS)/matrix-lib/s21_matrix.c  $(DIR_LIBS)/matrix-lib/s21
 SOURCES_ENGINE = $(DIR_ENGINE)/math/s21_matrix4x4.c $(DIR_ENGINE)/math/s21_matrix4x4.h $(DIR_ENGINE)/math/s21_engine_math.c $(DIR_ENGINE)/math/s21_engine_math.h $(DIR_ENGINE)/s21_engine.h $(DIR_ENGINE)/s21_mesh.c $(DIR_ENGINE)/s21_mesh.h
 
 all: $(SOURCES_TEST) $(SOURCES_MATRIX) $(SOURCES_ENGINE)
-	gcc $(SOURCES_TEST) $(SOURCES_MATRIX) $(SOURCES_ENGINE) -o a.out
+	gcc $(SOURCES_TEST) $(SOURCES_MATRIX) $(SOURCES_ENGINE) -lm -lcheck -lsubunit -lrt -lm -lpthread -fprofile-arcs -o a.out
+
+clear:
+	rm -rf *.gcda
