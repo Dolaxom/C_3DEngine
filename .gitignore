@@ -17,4 +17,5 @@ build/*build-release-v1.tar.gz
 build/*build-debug
 build/*build-release
 build/*-tests
+build/Makefile
 manual.html

@@ -1,7 +1,7 @@
 UNAME = $(shell uname -s)
+PROJECTNAME = C_3DEngine
 FLAGSS = "noflags"
 CC = gcc -Wall -Werror -Wextra -std=c11 -g
-PROJECTNAME = C_3DEngine
 LIBSDIR = libs
 TMPDIR = tmp
 TESTDIR = unit-tests
@@ -21,6 +21,7 @@ OUTNAME_MANUAL = "manual.html"
 
 ifeq ($(UNAME),Darwin)
 	FLAGSS = -lcheck -lm -lpthread -fprofile-arcs
+	OUTNAME = $(PROJECTNAME).app
 endif
 ifeq ($(UNAME),Linux)
 	FLAGSS = -lcheck -lsubunit -lrt -lm -lpthread -fprofile-arcs
@@ -30,7 +31,7 @@ all: cleanall install dist dvi launch
 .PHONY : all
 
 build: $(SOURCES_C) $(SOURCES_CPP) $(SOURCES_UI)
-	if [ ! -d "$(BUILDDIR_RELEASE)" ] && [ ! -f "build/$(OUTNAME)" ]; then cd build/ && make; fi
+	if [ ! -d "$(BUILDDIR_RELEASE)" ] && [ ! -f "build/$(OUTNAME)" ]; then cd build/ && cmake CMakeLists.txt && make; fi
 .PHONY : build
 
 rebuild: uninstall build
@@ -41,20 +42,25 @@ install: build
 	mv build/$(OUTNAME) $(BUILDDIR_RELEASE)/$(OUTNAME)
 .PHONY : install
 
-launch: $(BUILDDIR_RELEASE)/$(OUTNAME)
-	./$(BUILDDIR_RELEASE)/$(OUTNAME)
-.PHONY : launch
-
 dist: $(BUILDDIR_RELEASE)/$(OUTNAME)
 	tar -zcvf build/$(OUTNAME_TAR) $(BUILDDIR_RELEASE)
 .PHONY : dist
 
-dvi: misc/$(OUTNAME)_manual.texi
-	makeinfo misc/$(OUTNAME)_manual.texi --html
+dvi: dvi_clean misc/$(PROJECTNAME)_manual.texi
+	makeinfo misc/$(PROJECTNAME)_manual.texi --html
 	mv manual/index.html $(OUTNAME_MANUAL)
 	rm -rf manual
 	open $(OUTNAME_MANUAL)
 .PHONY : dvi
+
+launch: $(BUILDDIR_RELEASE)/$(OUTNAME)
+ifeq ($(UNAME),Darwin)
+	open $(BUILDDIR_RELEASE)/$(OUTNAME)
+endif
+ifeq ($(UNAME),Linux)
+	./$(BUILDDIR_RELEASE)/$(OUTNAME)
+endif
+.PHONY : launch
 
 tests: clean $(SOURCES_TESTS) $(SOURCES_LIBS) $(SOURCES_C)
 	if ! [ -d "$(TMPDIR)" ]; then mkdir $(TMPDIR); fi
@@ -99,15 +105,19 @@ uninstall:
 	rm -rf $(BUILDDIR_RELEASE)
 .PHONY : uninstall
 
+dvi_clean:
+	rm -rf manual $(OUTNAME_MANUAL)
+.PHONY : dvi_clean
+
 clean:
 	rm -rf *.o *.gcno *.gcda *.gcov *.dSYM a.out app src/app ".clang-format"
 	rm -rf $(TMPDIR)
 .PHONY : clean
 
-cleanall: clean uninstall
-	rm -rf .qt/ build/CMakeCache.txt build/cmake_install.cmake build/.qt/ build/CMakeFiles build/$(OUTNAME)_autogen/
-	rm -rf $(OUTNAME) build/$(OUTNAME) $(OUTNAME_TESTS) build/$(OUTNAME_TESTS) *.a *.so
-	rm -rf manual $(OUTNAME_MANUAL)
+cleanall: clean dvi_clean uninstall
+	rm -rf .qt/ build/CMakeCache.txt build/cmake_install.cmake build/.qt/ build/CMakeFiles build/Makefile
+	rm -rf build/build-release build/build-debug
+	rm -rf $(OUTNAME) build/$(OUTNAME) build/$(OUTNAME)_autogen/ $(OUTNAME_TESTS) build/$(OUTNAME_TESTS) *.a *.so
 	rm -rf build/$(OUTNAME_TAR)
 	rm -rf $(BUILDDIR_TESTS)
 	rm -rf $(COVDIR)
