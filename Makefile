@@ -58,13 +58,11 @@ dvi: misc/$(OUTNAME)_manual.texi
 
 tests: clean $(SOURCES_TESTS) $(SOURCES_LIBS) $(SOURCES_C)
 	if ! [ -d "$(TMPDIR)" ]; then mkdir $(TMPDIR); fi
-	rm -rf $(TMPDIR)/s21_tests*
+	rm -rf $(TMPDIR)/s21_tests* $(TMPDIR)/*.gcda $(TMPDIR)/*.gcno
 	if ! [ -d "$(BUILDDIR_TESTS)" ]; then mkdir $(BUILDDIR_TESTS); fi
 	$(CC) -c --coverage src/engine/math/s21_engine_math.c -o $(TMPDIR)/s21_tests_engine_math.o
 	$(CC) -c --coverage src/engine/s21_mesh.c -o $(TMPDIR)/s21_tests_mesh.o
 	$(CC) -c --coverage src/engine/math/s21_matrix4x4.c -o $(TMPDIR)/s21_tests_matrix4x4.o
-#	$(CC) -c src/s21_calc_other.c -o $(TMPDIR)/s21_tests_calc_other.o
-#	$(CC) -c src/s21_stack.c -o $(TMPDIR)/s21_tests_stack.o
 	gcc $(SOURCES_TESTS) $(SOURCES_LIBS) $(SOURCES_COMPILED) $(FLAGSS) -o $(BUILDDIR_TESTS)/$(OUTNAME_TESTS)
 	@echo "-------------------------------------------------"
 	./$(BUILDDIR_TESTS)/$(OUTNAME_TESTS)

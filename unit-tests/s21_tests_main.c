@@ -104,10 +104,6 @@ START_TEST(mesh_init) {
   if (errcode == 0) {
     failure++;
   }
-  testmesh = parse_obj_file(NULL, &errcode);
-  if (errcode == 0) {
-    failure++;
-  }
 
   if (failure > 0) {
     ck_abort();
