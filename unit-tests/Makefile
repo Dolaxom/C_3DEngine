@@ -9,3 +9,4 @@ all: $(SOURCES_TEST) $(SOURCES_MATRIX) $(SOURCES_ENGINE)
 
 clear:
 	rm -rf *.gcda
+	clear
