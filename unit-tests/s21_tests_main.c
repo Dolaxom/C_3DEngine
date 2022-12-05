@@ -60,11 +60,11 @@ START_TEST(rotation_x_matrix_reference) {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       matrix_1.matrix[i][j] = real_matrix.matrix[i][j];
-      printf("%f ", matrix_1.matrix[i][j]);
+      // printf("%f ", matrix_1.matrix[i][j]);
     }
-    printf("\n");
+    // printf("\n");
   }
-  printf("\n");
+  // printf("\n");
   double real_result;
   double expected_result = 1.0;
   s21_determinant(&matrix_1, &real_result);
@@ -116,6 +116,14 @@ START_TEST(mesh_init_values) {
   mesh_t testmesh = parse_obj_file(testpath, &errcode);
 
   if (errcode == 0) {
+    testmesh.scale.x = 1.0f;
+    testmesh.scale.y = 1.0f;
+    testmesh.scale.z = 1.0f;
+    testmesh.scale.w = 1.0f;
+    testmesh.rotation.x = 0.0f;
+    testmesh.rotation.y = 0.0f;
+    testmesh.rotation.z = 0.0f;
+    testmesh.rotation.w = 1.0f;
     s21_scale(&testmesh, 1.0f, 1.0f, 1.0f);
     s21_rotate_x(&testmesh, 0.0f);
     s21_rotate_y(&testmesh, 0.0f);
@@ -137,18 +145,26 @@ START_TEST(mesh_rotation) {
   int errcode = 0;
   char testpath[300] = "materials/raw/monkey.obj";
   mesh_t testmesh = parse_obj_file(testpath, &errcode);
-  float expected_x = 0.0f;
-  float expected_y = 0.0f;
-  float expected_z = 0.0f;
-  float rot_x = 0.0f;
-  float rot_y = 0.0f;
-  float rot_z = 0.0f;
+  float expected_x = 5.0f;
+  float expected_y = 5.0f;
+  float expected_z = 5.0f;
+  float rot_x = 5.0f;
+  float rot_y = 5.0f;
+  float rot_z = 5.0f;
 
   if (errcode == 0) {
+    testmesh.scale.x = 1.0f;
+    testmesh.scale.y = 1.0f;
+    testmesh.scale.z = 1.0f;
+    testmesh.scale.w = 1.0f;
+    testmesh.rotation.x = 0.0f;
+    testmesh.rotation.y = 0.0f;
+    testmesh.rotation.z = 0.0f;
+    testmesh.rotation.w = 1.0f;
     s21_scale(&testmesh, 1.0f, 1.0f, 1.0f);
-    s21_rotate_x(&testmesh, 0.0f);
-    s21_rotate_y(&testmesh, 0.0f);
-    s21_rotate_z(&testmesh, 0.0f);
+    s21_rotate_x(&testmesh, 5.0f);
+    s21_rotate_y(&testmesh, 5.0f);
+    s21_rotate_z(&testmesh, 5.0f);
 
     s21_rotate_x(&testmesh, s21_degree_to_radian(rot_x));
     s21_rotate_y(&testmesh, s21_degree_to_radian(rot_y));
@@ -175,6 +191,14 @@ START_TEST(mesh_scale) {
   float scale_z = 0.0f;
 
   if (errcode == 0) {
+    testmesh.scale.x = 1.0f;
+    testmesh.scale.y = 1.0f;
+    testmesh.scale.z = 1.0f;
+    testmesh.scale.w = 1.0f;
+    testmesh.rotation.x = 0.0f;
+    testmesh.rotation.y = 0.0f;
+    testmesh.rotation.z = 0.0f;
+    testmesh.rotation.w = 1.0f;
     s21_scale(&testmesh, 1.0f, 1.0f, 1.0f);
     s21_rotate_x(&testmesh, 0.0f);
     s21_rotate_y(&testmesh, 0.0f);
@@ -204,7 +228,15 @@ START_TEST(mesh_fastrotation) {
   float rot_z = 0.0f;
 
   if (errcode == 0) {
-    s21_fast_scale(&testmesh, 1.0f, 1.0f, 1.0f);
+    testmesh.scale.x = 1.0f;
+    testmesh.scale.y = 1.0f;
+    testmesh.scale.z = 1.0f;
+    testmesh.scale.w = 1.0f;
+    testmesh.rotation.x = 0.0f;
+    testmesh.rotation.y = 0.0f;
+    testmesh.rotation.z = 0.0f;
+    testmesh.rotation.w = 1.0f;
+    s21_scale(&testmesh, 1.0f, 1.0f, 1.0f);
     s21_fast_rotate_x(&testmesh, 0.0f);
     s21_fast_rotate_y(&testmesh, 0.0f);
     s21_fast_rotate_z(&testmesh, 0.0f);
@@ -234,11 +266,18 @@ START_TEST(mesh_fastscale) {
   float scale_z = 0.0f;
 
   if (errcode == 0) {
+    testmesh.scale.x = 1.0f;
+    testmesh.scale.y = 1.0f;
+    testmesh.scale.z = 1.0f;
+    testmesh.scale.w = 1.0f;
+    testmesh.rotation.x = 1.0f;
+    testmesh.rotation.y = 1.0f;
+    testmesh.rotation.z = 1.0f;
+    testmesh.rotation.w = 1.0f;
     s21_fast_scale(&testmesh, 1.0f, 1.0f, 1.0f);
     s21_fast_rotate_x(&testmesh, 0.0f);
     s21_fast_rotate_y(&testmesh, 0.0f);
     s21_fast_rotate_z(&testmesh, 0.0f);
-
     s21_fast_scale(&testmesh, 1, 1, 1);
     s21_fast_scale(&testmesh, scale_x, scale_y, scale_z);
 
