@@ -292,11 +292,9 @@ void OpenGLWidget::initMesh(char *path_to_mesh) {
     mesh = parse_obj_file(path_to_mesh, &errcode);
 
     if (errcode == 0) {
-        s21_location(0.0f, 0.0f, 0.0f);
-        s21_scale(&mesh, 1.0f, 1.0f, 1.0f);
-        s21_rotate_x(&mesh, 0.0f);
-        s21_rotate_y(&mesh, 0.0f);
-        s21_rotate_z(&mesh, 0.0f);
+        mesh.location = {0, 0, 0, 1};
+        mesh.scale = {1, 1, 1, 1};
+        mesh.rotation = {0, 0, 0, 1};
     } else {
         mesh = old_mesh;
     }
