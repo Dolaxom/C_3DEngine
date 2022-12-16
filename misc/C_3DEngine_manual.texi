@@ -3,6 +3,10 @@
 @settitle C_3DEngine
 @documentencoding UTF-8
 
+@titlepage
+@title
+@end titlepage
+
 This is a @strong{School 21 educational project} - an implementation of a program to view 3D wireframe models (@strong{3D Viewer}) in the @strong{C programming language} with the additional use of @strong{OpenGL}, @strong{Qt} and @strong{QtGifImage} libraries.
 All the values inserted in @strong{C_3DEngine}'s input fields while running the application don't affect the actual model file in an way as @strong{C_3DEngine} is a program made for the model viewing purposes only.
 

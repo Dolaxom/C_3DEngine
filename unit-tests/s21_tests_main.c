@@ -145,9 +145,9 @@ START_TEST(mesh_rotation) {
   int errcode = 0;
   char testpath[300] = "materials/raw/monkey.obj";
   mesh_t testmesh = parse_obj_file(testpath, &errcode);
-  float expected_x = 5.0f;
-  float expected_y = 5.0f;
-  float expected_z = 5.0f;
+  float expected_x = 0.0872665;
+  float expected_y = 0.0872665;
+  float expected_z = 0.0872665;
   float rot_x = 5.0f;
   float rot_y = 5.0f;
   float rot_z = 5.0f;

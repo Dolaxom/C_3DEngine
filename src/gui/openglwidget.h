@@ -4,16 +4,20 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
 #include <QOpenGLWidget>
-#include <QtEvents>
 #include <QTimer>
+#include <QtEvents>
+
 #include "../../libs/QtGifImage-master/src/gifimage/qgifimage.h"
 #include "../engine/math/s21_engine_math.h"
+
+#define GL_SILENCE_DEPRECATION
 
 class OpenGLWidget : public QOpenGLWidget {
   Q_OBJECT
 
  public:
   OpenGLWidget(QWidget *parent = nullptr);
+  void clearMesh();
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;
@@ -22,7 +26,8 @@ class OpenGLWidget : public QOpenGLWidget {
   void setPosition(float new_x, float new_y, float new_z);
   void setRotation(float new_x, float new_y, float new_z, bool new_auto);
   void setScale(float new_x, float new_y, float new_z);
-  void setColors(QColor new_bgcolor, QColor new_vertcolor, QColor new_edgecolor);
+  void setColors(QColor new_bgcolor, QColor new_vertcolor,
+                 QColor new_edgecolor);
   void setSizes(double new_vertsize, double new_edgesize);
   void setStyles(int new_vertstyle, int new_edgestyle);
   int getErrcode();
@@ -32,13 +37,13 @@ class OpenGLWidget : public QOpenGLWidget {
   void recordStart();
   void recordFinish(QString filename, QString fileext);
 
-signals:
+ signals:
   void autorotValueChanged(bool newstate);
   void posValueChanged(float newpos_x, float newpos_y, float newpos_z);
   void rotValueChanged(float newrot_x, float newrot_y, float newrot_z);
   void scaleValueChanged(float newscale_x, float newscale_y, float newscale_z);
 
-private slots:
+ private slots:
   void record();
   void autoRotateLaunch();
   void autoRotate();
@@ -53,7 +58,7 @@ private slots:
   QVector2D getMouseDirection(QMouseEvent *event);
   void updateProjection();
   void initMesh(char *path_to_mesh);
-  void setupMesh();
+  int setupMesh();
   void setupRender();
   void renderMesh();
   void renderModeDefault();
@@ -72,7 +77,7 @@ private slots:
 
   QGifImage *gif = NULL;
   QTimer *gif_timer = NULL;
-  const int gif_interval = 1000/10;
+  const int gif_interval = 1000 / 10;
 
   bool auto_rotation = false;
   QTimer *auto_timer = NULL;

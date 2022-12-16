@@ -2,7 +2,7 @@ app
 src/app
 a.out
 tmp/*
-unit_tests/coverage/*
+unit-tests/coverage/*
 tests
 C_3DEngine
 CMakeCache.txt
@@ -13,9 +13,12 @@ C_3DEngine_autogen
 *.so
 *.so.*
 build/.qt
+build/.cmake
+build/.qtc_clangd
 build/*build-release-v1.tar.gz
 build/*build-debug
 build/*build-release
 build/*-tests
 build/Makefile
 manual.html
+*.DS_Store

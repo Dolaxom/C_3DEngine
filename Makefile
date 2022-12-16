@@ -115,7 +115,7 @@ clean:
 .PHONY : clean
 
 cleanall: clean dvi_clean uninstall
-	rm -rf .qt/ build/CMakeCache.txt build/cmake_install.cmake build/.qt/ build/CMakeFiles build/Makefile
+	rm -rf .qt/ build/CMakeCache.txt build/cmake_install.cmake build/.qt/ build/CMakeFiles build/Makefile build/.cmake build/.qtc_clangd
 	rm -rf build/build-release build/build-debug
 	rm -rf $(OUTNAME) build/$(OUTNAME) build/$(OUTNAME)_autogen/ $(OUTNAME_TESTS) build/$(OUTNAME_TESTS) *.a *.so
 	rm -rf build/$(OUTNAME_TAR)
