@@ -1,0 +1,53 @@
+\input texinfo
+@setfilename manual
+@settitle C_3DEngine
+@documentencoding UTF-8
+
+@titlepage
+@title
+@end titlepage
+
+This is a @strong{School 21 educational project} - an implementation of a program to view 3D wireframe models (@strong{3D Viewer}) in the @strong{C programming language} with the additional use of @strong{OpenGL}, @strong{Qt} and @strong{QtGifImage} libraries.
+All the values inserted in @strong{C_3DEngine}'s input fields while running the application don't affect the actual model file in an way as @strong{C_3DEngine} is a program made for the model viewing purposes only.
+
+The project requires preinstalled @strong{Qt libraries} to compile and run. On Linux, all the other dependencies can be installed with the @strong{linux_package_installer.sh} script located in the @strong{utils/} folder of the project.
+
+@strong{C_3DEngine application provides the ability to:}
+@itemize
+@item
+view any applicable .obj file in the filesystem that contains at least up to a 1,000,000 polygons;
+@item
+parse .obj files with unconvential number of polygons;
+@item
+acquire information on the amount of edges and vertices that the model contains;
+@item
+change position, rotation and scale of the model;
+@item
+switch the view between perspective and orthogonal projections;
+@item
+apply several color and style settings to the display field;
+@item
+take a screenshot of the display field and save it in .jpg or .bmp image formats;
+@item
+record the display field as a .gif (10fps, any length).
+@end itemize
+
+@strong{Controls:}
+@itemize
+@item
+@strong{[left mouse button]} - change position of the model on the x, y axis
+@item
+@strong{[right mouse button]} - change rotation of the model on the x, y axis
+@item
+@strong{[mouse scroll wheel]} - change position of the model on the z (perspective mode only)
+@item
+@strong{[enter]} - apply settings and/or redraw
+@item
+@strong{[tab]} - switch focus between input fields
+@item
+@strong{[F11]} - window fullscreen mode
+@item
+@strong{[escape]} - exit
+@end itemize
+
+@bye
