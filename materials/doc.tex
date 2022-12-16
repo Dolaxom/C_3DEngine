@@ -1,0 +1,25 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{3DViewer_v1.0}
+\author{merlinst, fleurdel}
+\date{December 2022}
+
+\begin{document}
+
+\maketitle{}
+
+\section{Project Build Rules}
+Go to the src/ directory and enter the make command. The assembly file will do everything for you, including tests and other optional steps. You must have the Qt and check libraries installed.h, as well as the make utility and the gcc compiler!
+
+\section{Terms of use}
+Run the executable file, the program will open immediately, you will need to select the file to view, it must have the .obj format. Then, at your discretion, you can change the styles of edges and points, the size, rotation and position of the model. You also have the opportunity to take a screenshot or gif!
+
+\section{The main idea of the algorithm}
+At the very beginning , we parse .obj file and write the found points to the model structure. Next, each iteration of the game cycle, we reset all the points of the model to the initial state, after which we calculate the necessary values of rotation, size and location. After all the calculations, the rendering is underway and the iteration of the cycle ends.
+
+\section{Other information}
+Technologies used: C, Qt, OpenGL;\\
+The engine has 2 types of rendering. Both work with CPU usage, but have different rendering speeds. If you want to get the best use experience, then load models with ONLY triangular polygons. Otherwise, the rendering speed will drop several times;
+
+\end{document}
